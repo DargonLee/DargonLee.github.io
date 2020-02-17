@@ -7,7 +7,7 @@
 <meta name="description" content="我不在乎是悲伤的离别还是不痛快的离别，只要是离开一个地方，我总希望离开的时候自己心中有数。">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<link rel="shortcut icon" href="https://dargonlee.github.io/favicon.ico?v=1581921563314">
+<link rel="shortcut icon" href="https://dargonlee.github.io/favicon.ico?v=1581921697754">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
@@ -88,13 +88,27 @@
     <p class="article-meta">
       2020-02-17
       
-        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge ">
+        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
           iOS
         </a>
       
     </p>
     <p class="text-lead">
-      
+      <p><code>控制器声明周期</code></p>
+<pre><code>//通过nib问价初始化触发
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+
+//nib文件被加载的时候，会发送一个消息到nib文件中的每一个对象
+- (void)awakeFromNib
+
+//开始加载视图控制器自带的view
+- (void)loadView
+
+//视图控制器的view被加载完成
+- (void)viewDidLoad
+
+//视图控制器的view将要显示在window上</code></pre>
+
     </p>
     <div class="row">
       <a href="https://dargonlee.github.io/post/ios-kong-zhi-qi-view-jia-zai-shun-xu-xiang-xi-ban/" class="readmore-link">
@@ -112,13 +126,20 @@
     <p class="article-meta">
       2019-11-16
       
-        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge success">
+        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
           iOS
         </a>
       
     </p>
     <p class="text-lead">
-      
+      <blockquote>
+<p>一个项目引用另一个项目这里列举两种情况</p>
+<ul>
+<li>一个 Single View App 项目要引用另一个Single View App 项目</li>
+<li>一个 Single View App 项目要引用 动态库的项目（Cocoa Touch Framework）</li>
+</ul>
+</blockquote>
+
     </p>
     <div class="row">
       <a href="https://dargonlee.github.io/post/ios-kai-fa-jiang-yi-ge-gong-cheng-tian-jia-dao-ling-yi-ge-gong-cheng-zhong/" class="readmore-link">
@@ -136,7 +157,7 @@
     <p class="article-meta">
       2019-11-15
       
-        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
+        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge warning">
           iOS
         </a>
       
@@ -162,7 +183,7 @@
     <p class="article-meta">
       2019-11-14
       
-        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge ">
+        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
           iOS
         </a>
       
@@ -186,7 +207,7 @@
     <p class="article-meta">
       2019-09-17
       
-        <a href="https://dargonlee.github.io/tag/nXwjG0N5T/" class="badge warning">
+        <a href="https://dargonlee.github.io/tag/nXwjG0N5T/" class="badge secondary">
           Flutter
         </a>
       
@@ -245,7 +266,7 @@ git config --system -l </code></pre>
     <p class="article-meta">
       2019-07-09
       
-        <a href="https://dargonlee.github.io/tag/CucL5DqtM/" class="badge secondary">
+        <a href="https://dargonlee.github.io/tag/CucL5DqtM/" class="badge warning">
           HTMl
         </a>
       
@@ -318,7 +339,7 @@ git config --system -l </code></pre>
     <p class="article-meta">
       2019-02-13
       
-        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge warning">
+        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge ">
           iOS
         </a>
       
@@ -387,7 +408,7 @@ git config --system -l </code></pre>
       
       <div class="sm-12 md-4 col sidebar">
   <div class="paper info-container">
-    <img src="https://dargonlee.github.io/images/avatar.png?v=1581921563314" class="no-responsive avatar">
+    <img src="https://dargonlee.github.io/images/avatar.png?v=1581921697754" class="no-responsive avatar">
     <div class="text-muted">我不在乎是悲伤的离别还是不痛快的离别，只要是离开一个地方，我总希望离开的时候自己心中有数。</div>
     <div class="social-container">
       
@@ -505,15 +526,15 @@ git config --system -l </code></pre>
           Flutter
         </a>
       
-        <a href="https://dargonlee.github.io/tag/xkXg3f75J/" class="badge success">
+        <a href="https://dargonlee.github.io/tag/xkXg3f75J/" class="badge warning">
           Git
         </a>
       
-        <a href="https://dargonlee.github.io/tag/CucL5DqtM/" class="badge ">
+        <a href="https://dargonlee.github.io/tag/CucL5DqtM/" class="badge success">
           HTMl
         </a>
       
-        <a href="https://dargonlee.github.io/tag/JKeKhLXWK/" class="badge warning">
+        <a href="https://dargonlee.github.io/tag/JKeKhLXWK/" class="badge secondary">
           Gridea
         </a>
       
@@ -521,11 +542,11 @@ git config --system -l </code></pre>
           WebView
         </a>
       
-        <a href="https://dargonlee.github.io/tag/9csAFw8eL/" class="badge secondary">
+        <a href="https://dargonlee.github.io/tag/9csAFw8eL/" class="badge success">
           tableView
         </a>
       
-        <a href="https://dargonlee.github.io/tag/KlflZd7io/" class="badge warning">
+        <a href="https://dargonlee.github.io/tag/KlflZd7io/" class="badge success">
           tableHeaderView
         </a>
       

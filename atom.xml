@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-02-17T06:40:11.936Z</updated>
+    <updated>2020-02-17T06:41:40.078Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
@@ -16,6 +16,21 @@
         <link href="https://dargonlee.github.io/post/ios-kong-zhi-qi-view-jia-zai-shun-xu-xiang-xi-ban/">
         </link>
         <updated>2020-02-17T06:35:16.000Z</updated>
+        <summary type="html"><![CDATA[<p><code>控制器声明周期</code></p>
+<pre><code>//通过nib问价初始化触发
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+
+//nib文件被加载的时候，会发送一个消息到nib文件中的每一个对象
+- (void)awakeFromNib
+
+//开始加载视图控制器自带的view
+- (void)loadView
+
+//视图控制器的view被加载完成
+- (void)viewDidLoad
+
+//视图控制器的view将要显示在window上</code></pre>
+]]></summary>
         <content type="html"><![CDATA[<p><code>控制器声明周期</code></p>
 <pre><code>//通过nib问价初始化触发
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -30,6 +45,7 @@
 - (void)viewDidLoad
 
 //视图控制器的view将要显示在window上
+&lt;!-- more --&gt;
 - (void)viewWillAppear:(BOOL)animated
 
 //视图控制器的view开始更新Autolayout
@@ -165,6 +181,14 @@
         <link href="https://dargonlee.github.io/post/ios-kai-fa-jiang-yi-ge-gong-cheng-tian-jia-dao-ling-yi-ge-gong-cheng-zhong/">
         </link>
         <updated>2019-11-16T06:38:45.000Z</updated>
+        <summary type="html"><![CDATA[<blockquote>
+<p>一个项目引用另一个项目这里列举两种情况</p>
+<ul>
+<li>一个 Single View App 项目要引用另一个Single View App 项目</li>
+<li>一个 Single View App 项目要引用 动态库的项目（Cocoa Touch Framework）</li>
+</ul>
+</blockquote>
+]]></summary>
         <content type="html"><![CDATA[<blockquote>
 <p>一个项目引用另一个项目这里列举两种情况</p>
 <ul>
@@ -172,6 +196,7 @@
 <li>一个 Single View App 项目要引用 动态库的项目（Cocoa Touch Framework）</li>
 </ul>
 </blockquote>
+<!-- more -->
 <h4 id="先说第一种情况的做法">先说第一种情况的做法</h4>
 <ul>
 <li>先在一个文件夹下 新建两个 Single View App 项目 一个为demo1 另一个为demo2</li>
