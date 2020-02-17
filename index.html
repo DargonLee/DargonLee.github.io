@@ -116,67 +116,13 @@
     
   </div>
   <div class="md:mx-8 flex-shrink-0 self-start rounded-full border-4 border-dotted border-transparent hover:border-yellow-50 p-2 w-32 h-32 order-1 md:order-2 mx-auto s3-dotted">
-    <img class="rounded-full object-cover" src="https://dargonlee.github.io/images/avatar.png?v=1581940236117" alt="七里田间的守望者" width="100%" height="100%">
+    <img class="rounded-full object-cover" src="https://dargonlee.github.io/images/avatar.png?v=1581940272516" alt="七里田间的守望者" width="100%" height="100%">
   </div>
 </header>
       
 
       <div class="shadow-box bg-white dark:bg-gray-600 border-gray-300 rounded-none md:rounded-lg -mx-1 md:mx-0 md:px-0">
         
-  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
-    
-    <div class="flex-1 order-2 md:order-1">
-      <h2 class="text-2xl font-semibold mb-4">
-        <a href="https://dargonlee.github.io/post/ios-kong-zhi-qi-view-jia-zai-shun-xu-xiang-xi-ban/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
-          iOS控制器View加载顺序详细版
-        </a>
-      </h2>
-      <div class="mb-4 text-xs text-gray-500">2020-02-17</div>
-      <div class="mb-4 text-gray-500 dark:text-gray-300">
-        <p><code>控制器声明周期</code></p>
-<pre><code class="language-objectivec">//通过nib问价初始化触发
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-
-//nib文件被加载的时候，会发送一个消息到nib文件中的每一个对象
-- (void)awakeFromNib
-
-//开始加载视图控制器自带的view
-- (void)loadView
-
-//视图控制器的view被加载完成
-- (void)viewDidLoad
-
-//视图控制器的view将要显示在window上
-
-- (void)viewWillAppear:(BOOL)animated
-
-//视图控制器的view开始更新Autolayout
-- (void)updateViewConstraints
-
-//视图控制器的view开始更新内容视图的位置
-- (void)viewWillLayoutSubviews
-
-//视图控制器的view已经更新内容视图的位置
-- (void)viewDidLayoutSubviews
-
-//视图控制器的view已经显示到window上
-- (void)viewDidAppear:(BOOL)animated
-
-//视图控制的view将要从window上消失
-- (void)viewWillDisappear:(BOOL)animated
-
-//视图控制器的view已经从window上消失
-- (void)viewDidDisappear:(BOOL)animated
-</code></pre>
-
-      </div>
-      <a href="https://dargonlee.github.io/post/ios-kong-zhi-qi-view-jia-zai-shun-xu-xiang-xi-ban/" class="btn">
-        Read more
-      </a>
-    </div>
-    
-  </div>
-
   <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
     
     <div class="flex-1 order-2 md:order-1">
@@ -408,6 +354,60 @@ git config --system -l </code></pre>
 
       </div>
       <a href="https://dargonlee.github.io/post/xiu-gai-ios-fan-hui-an-niu-de-ji-chong-fang-shi/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://dargonlee.github.io/post/ios-kong-zhi-qi-view-jia-zai-shun-xu-xiang-xi-ban/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          iOS控制器View加载顺序详细版
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2019-01-23</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <p><code>控制器声明周期</code></p>
+<pre><code class="language-objectivec">//通过nib问价初始化触发
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+
+//nib文件被加载的时候，会发送一个消息到nib文件中的每一个对象
+- (void)awakeFromNib
+
+//开始加载视图控制器自带的view
+- (void)loadView
+
+//视图控制器的view被加载完成
+- (void)viewDidLoad
+
+//视图控制器的view将要显示在window上
+
+- (void)viewWillAppear:(BOOL)animated
+
+//视图控制器的view开始更新Autolayout
+- (void)updateViewConstraints
+
+//视图控制器的view开始更新内容视图的位置
+- (void)viewWillLayoutSubviews
+
+//视图控制器的view已经更新内容视图的位置
+- (void)viewDidLayoutSubviews
+
+//视图控制器的view已经显示到window上
+- (void)viewDidAppear:(BOOL)animated
+
+//视图控制的view将要从window上消失
+- (void)viewWillDisappear:(BOOL)animated
+
+//视图控制器的view已经从window上消失
+- (void)viewDidDisappear:(BOOL)animated
+</code></pre>
+
+      </div>
+      <a href="https://dargonlee.github.io/post/ios-kong-zhi-qi-view-jia-zai-shun-xu-xiang-xi-ban/" class="btn">
         Read more
       </a>
     </div>
