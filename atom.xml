@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>http://github.com/dargonlee/dargonlee.github.io</id>
+    <id>http://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-02-17T01:49:50.972Z</updated>
+    <updated>2020-02-17T02:00:00.464Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="http://github.com/dargonlee/dargonlee.github.io"/>
-    <link rel="self" href="http://github.com/dargonlee/dargonlee.github.io/atom.xml"/>
+    <link rel="alternate" href="http://dargonlee.github.io"/>
+    <link rel="self" href="http://dargonlee.github.io/atom.xml"/>
     <subtitle>温故而知新</subtitle>
-    <logo>http://github.com/dargonlee/dargonlee.github.io/images/avatar.png</logo>
-    <icon>http://github.com/dargonlee/dargonlee.github.io/favicon.ico</icon>
+    <logo>http://dargonlee.github.io/images/avatar.png</logo>
+    <icon>http://dargonlee.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 七里田间的守望者</rights>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
-        <id>http://github.com/dargonlee/dargonlee.github.io/post/hello-gridea/</id>
-        <link href="http://github.com/dargonlee/dargonlee.github.io/post/hello-gridea/">
+        <id>http://dargonlee.github.io/post/hello-gridea/</id>
+        <link href="http://dargonlee.github.io/post/hello-gridea/">
         </link>
         <updated>2018-12-11T16:00:00.000Z</updated>
         <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
