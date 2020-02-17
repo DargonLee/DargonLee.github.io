@@ -7,7 +7,7 @@
 <meta name="description" content="我不在乎是悲伤的离别还是不痛快的离别，只要是离开一个地方，我总希望离开的时候自己心中有数。">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<link rel="shortcut icon" href="https://dargonlee.github.io/favicon.ico?v=1581921837596">
+<link rel="shortcut icon" href="https://dargonlee.github.io/favicon.ico?v=1581921945632">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
@@ -158,7 +158,7 @@
     <p class="article-meta">
       2019-11-15
       
-        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
+        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge ">
           iOS
         </a>
       
@@ -184,13 +184,25 @@
     <p class="article-meta">
       2019-11-14
       
-        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge ">
+        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
           iOS
         </a>
       
     </p>
     <p class="text-lead">
-      
+      <blockquote>
+<p>iOS如果项目中不用xib或者storyboard的话，给view做约束一般都是用第三方库<code>Masonry</code>，为什么不用系统提供的AutoLayout呢？<code>因为代码太多不好用</code></p>
+</blockquote>
+<ul>
+<li>今天给大家介绍一个苹果iOS9后更新的一个布局的好用的类 <code>NSLayoutAnchor</code></li>
+</ul>
+<hr>
+<h4 id="分别用-nslayoutconstraint-nslayoutanchor-和-masonry来进行如下图所示的布局">分别用 <code>NSLayoutConstraint</code> <code>NSLayoutAnchor</code> 和 <code>Masonry</code>来进行如下图所示的布局</h4>
+<blockquote>
+<p>在进行布局的时候，我会分别讲解下系统 <code>NSLayoutConstraint</code> <code>NSLayoutAnchor</code>两种布局的方法使用和参数说明<br>
+至于<code>Masonry</code>的使用 我就不做多介绍了（官方介绍的很清楚，网上资料也不少）</p>
+</blockquote>
+
     </p>
     <div class="row">
       <a href="https://dargonlee.github.io/post/nslayoutanchor-shi-jian/" class="readmore-link">
@@ -208,13 +220,27 @@
     <p class="article-meta">
       2019-09-17
       
-        <a href="https://dargonlee.github.io/tag/nXwjG0N5T/" class="badge ">
+        <a href="https://dargonlee.github.io/tag/nXwjG0N5T/" class="badge success">
           Flutter
         </a>
       
     </p>
     <p class="text-lead">
-      
+      <h4 id="行布局-在x轴上">行布局 （在X轴上）</h4>
+<blockquote>
+<p>Row.mainAxisAlignment 主轴排列方式</p>
+</blockquote>
+<pre><code>Row(
+  mainAxisAlignment: MainAxisAlignment.spaceAround,  // 改变这个值 可以更改排列方式 如下图
+  mainAxisSize: MainAxisSize.max,
+  children: [
+    Icon(Icons.stars, size: 50.0),
+    Icon(Icons.stars, size: 50.0),
+    Icon(Icons.stars, size: 50.0),
+], )
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://upload-images.jianshu.io/upload_images/646265-2fc1ab8a4b7f57a4.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="row.jpg" loading="lazy"></figure>
+
     </p>
     <div class="row">
       <a href="https://dargonlee.github.io/post/flutter-chang-yong-bu-ju/" class="readmore-link">
@@ -232,7 +258,7 @@
     <p class="article-meta">
       2019-08-12
       
-        <a href="https://dargonlee.github.io/tag/xkXg3f75J/" class="badge ">
+        <a href="https://dargonlee.github.io/tag/xkXg3f75J/" class="badge secondary">
           Git
         </a>
       
@@ -302,7 +328,7 @@ git config --system -l </code></pre>
     <p class="article-meta">
       2019-06-11
       
-        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge success">
+        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
           iOS
         </a>
       
@@ -374,7 +400,7 @@ git config --system -l </code></pre>
     <p class="article-meta">
       2018-12-12
       
-        <a href="https://dargonlee.github.io/tag/JKeKhLXWK/" class="badge ">
+        <a href="https://dargonlee.github.io/tag/JKeKhLXWK/" class="badge secondary">
           Gridea
         </a>
       
@@ -409,7 +435,7 @@ git config --system -l </code></pre>
       
       <div class="sm-12 md-4 col sidebar">
   <div class="paper info-container">
-    <img src="https://dargonlee.github.io/images/avatar.png?v=1581921837596" class="no-responsive avatar">
+    <img src="https://dargonlee.github.io/images/avatar.png?v=1581921945632" class="no-responsive avatar">
     <div class="text-muted">我不在乎是悲伤的离别还是不痛快的离别，只要是离开一个地方，我总希望离开的时候自己心中有数。</div>
     <div class="social-container">
       
@@ -519,35 +545,35 @@ git config --system -l </code></pre>
     </div>
     <div class="row">
       
-        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge ">
+        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
           iOS
         </a>
       
-        <a href="https://dargonlee.github.io/tag/nXwjG0N5T/" class="badge ">
+        <a href="https://dargonlee.github.io/tag/nXwjG0N5T/" class="badge secondary">
           Flutter
         </a>
       
-        <a href="https://dargonlee.github.io/tag/xkXg3f75J/" class="badge warning">
+        <a href="https://dargonlee.github.io/tag/xkXg3f75J/" class="badge secondary">
           Git
         </a>
       
-        <a href="https://dargonlee.github.io/tag/CucL5DqtM/" class="badge warning">
+        <a href="https://dargonlee.github.io/tag/CucL5DqtM/" class="badge secondary">
           HTMl
         </a>
       
-        <a href="https://dargonlee.github.io/tag/JKeKhLXWK/" class="badge secondary">
+        <a href="https://dargonlee.github.io/tag/JKeKhLXWK/" class="badge ">
           Gridea
         </a>
       
-        <a href="https://dargonlee.github.io/tag/9B1ux8xCh/" class="badge success">
+        <a href="https://dargonlee.github.io/tag/9B1ux8xCh/" class="badge secondary">
           WebView
         </a>
       
-        <a href="https://dargonlee.github.io/tag/9csAFw8eL/" class="badge warning">
+        <a href="https://dargonlee.github.io/tag/9csAFw8eL/" class="badge secondary">
           tableView
         </a>
       
-        <a href="https://dargonlee.github.io/tag/KlflZd7io/" class="badge warning">
+        <a href="https://dargonlee.github.io/tag/KlflZd7io/" class="badge secondary">
           tableHeaderView
         </a>
       
