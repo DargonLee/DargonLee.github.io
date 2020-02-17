@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-02-17T05:50:59.029Z</updated>
+    <updated>2020-02-17T06:10:05.472Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
-    <subtitle>温故而知新</subtitle>
+    <subtitle>我不在乎是悲伤的离别还是不痛快的离别，只要是离开一个地方，我总希望离开的时候自己心中有数。</subtitle>
     <logo>https://dargonlee.github.io/images/avatar.png</logo>
     <icon>https://dargonlee.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 七里田间的守望者</rights>
