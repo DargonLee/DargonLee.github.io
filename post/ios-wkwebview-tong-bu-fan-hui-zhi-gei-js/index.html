@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>iOS WKWebView 同步返回值给JS | 七里田间的守望者</title>
+<meta name="description" content="温故而知新">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://dargonlee.github.io/favicon.ico?v=1581918637612">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://dargonlee.github.io/styles/main.css">
+
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://dargonlee.github.io">七里田间的守望者</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="/" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>iOS WKWebView 同步返回值给JS</h1>
+            <p class="article-meta">
+              2018-10-23
+              
+                <a href="https://dargonlee.github.io/tag/9B1ux8xCh/" class="badge secondary">
+                  WebView
+                </a>
+              
+                <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
+                  iOS
+                </a>
+              
+            </p>
+            
+            <div class="post-content">
+              <blockquote>
+<p>我们都知道iOS WKWebView 跟JS通信的时候 由于JS Call OC 同步返回我这里采用了不同于异步messageHandler的通信方式，因此同步返回要单独进行设计</p>
+<p>在我发现下面方法的时候 一般我们处理 与JS交互的时候都是 JS调用我们 然后我们再去调用JS方法 并不能同步给JS返回值</p>
+</blockquote>
+<!--more-->
+<h3 id="代理方法分析">代理方法分析</h3>
+<p>在我们写WKWebView的时候需要遵守<code>WKUIDelegate</code>协议 其中里面有这几个方法</p>
+<pre><code class="language-objectivec">// 获取js 里面的提示
+-(void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler
+{
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@&quot;提示&quot; message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@&quot;确定&quot; style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        completionHandler();
+    }]];
+
+    [self presentViewController:alert animated:YES completion:NULL];
+}
+
+// js 信息的交流
+-(void)webView:(WKWebView *)webView runJavaScriptConfirmPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(BOOL))completionHandler
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@&quot;提示&quot; message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@&quot;确定&quot; style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        completionHandler(YES);
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@&quot;取消&quot; style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        completionHandler(NO);
+    }]];
+    [self presentViewController:alert animated:YES completion:NULL];
+}
+
+// 交互。可输入的文本。
+-(void)webView:(WKWebView *)webView runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt defaultText:(NSString *)defaultText initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSString * _Nullable))completionHandler
+{
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@&quot;textinput&quot; message:@&quot;JS调用输入框&quot; preferredStyle:UIAlertControllerStyleAlert];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.textColor = [UIColor redColor];
+    }];
+    [alert addAction:[UIAlertAction actionWithTitle:@&quot;确定&quot; style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        completionHandler([[alert.textFields lastObject] text]);
+    }]];
+
+    [self presentViewController:alert animated:YES completion:NULL];
+
+}
+</code></pre>
+<p>以上三个方法都是在js调用alert confirm prompt 的时候 进行拦截 然后弹出系统样式的界面</p>
+<ul>
+<li><code>runJavaScriptConfirmPanelWithMessage</code>这个代理方法是在JS 调用 <code>alert('xxx')</code>的时候会调用  且回调函数参数为空</li>
+<li><code>runJavaScriptConfirmPanelWithMessage</code>这个代理方法是在JS调用confirm函数的时候会进行拦截调用 且回调函数参数为Bool值 同步告诉JS 当前用户点击了确定按钮还是取消按钮</li>
+<li><code>runJavaScriptTextInputPanelWithPrompt</code> 这个代理方法是在JS调用prompt函数的时候进行拦截调用的 且回调函数的参数为<code>NSString</code>类型</li>
+</ul>
+<h3 id="解决方法">解决方法</h3>
+<p>细心的同学可能就已经明白了 在这个<code>runJavaScriptTextInputPanelWithPrompt</code> 代理方法中 可以回调字符串 也就意味着可以给JS返回值<br>
+可能有同学会问 我不需要那个弹出窗怎么办  其实你不需要的话 直接在代理方法中写<br>
+<code>completionHandler(&quot;xxxx&quot;);</code>就行 不需要写<code>UIAlertController</code>那一大堆</p>
+<h3 id="下面给出相应的具体代码">下面给出相应的具体代码</h3>
+<ul>
+<li>
+<p>JS部分 在需要跟原生交互的地方写下面的方法</p>
+<pre><code>window.prompt(text,defaultText);
+</code></pre>
+<p><code>text</code>可选。要在对话框中显示的提示信息（纯文本）</p>
+<p><code>defaultText</code>可选。默认的输入文本。</p>
+<p>一般只需要写text就行 defaultText 为空字符就可以</p>
+</li>
+<li>
+<p>OC部分 在js调用prompt方法后会来到相应的代理方法中</p>
+<pre><code class="language-objectivec">// 交互。可输入的文本。
+-(void)webView:(WKWebView *)webView runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt defaultText:(NSString *)defaultText initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSString * _Nullable))completionHandler
+{
+  NSLog(@&quot;%@---%@&quot;,prompt,defaultText);
+  completionHandler(@&quot;xxxxx&quot;);//这里就是要返回给JS的返回值
+}
+</code></pre>
+<p><code>prompt</code> 就是上面JS <code>text</code>参数</p>
+<p><code>defaultText</code> 就是上面JS <code>defaultText</code>参数</p>
+</li>
+</ul>
+<p>如果你需要做参数区分的话 可以灵活的运用这两个方法 去返回给JS不同的返回值<br>
+<code>提示</code> 如果要一次返回多个参数值 你可以把参数以逗号拼接为一个字符串 返回给JS 然后JS接收到参数的时候 再进行分割解析运用 这里只是给出一些想法 更多的就要靠同学们自己灵活运用了</p>
+<h3 id="完毕">完毕</h3>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+            <div class="next-post">
+              <div class="next">
+                下一篇
+              </div>
+              <a href="https://dargonlee.github.io/post/ios-fu-wen-ben/">
+                <h3 class="post-title">
+                  iOS富文本
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://dargonlee.github.io/images/avatar.png?v=1581918637612" class="no-responsive avatar">
+    <div class="text-muted">温故而知新</div>
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/jie-jue-ding-shi-qi-de-xun-huan-yin-yong/">解决定时器的循环引用</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/git-de-chang-yong-ming-ling/">Git的常用命令</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/css-bu-ju/">CSS布局</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-gei-uilabel-zeng-jia-fu-zhi-nian-tie-gong-neng/">iOS-给UILabel增加复制粘贴功能</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/xiu-gai-ios-fan-hui-an-niu-de-ji-chong-fang-shi/">修改iOS返回按钮的几种方式</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/about/">关于</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/hello-gridea/">Hello Gridea</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-wkwebview-tong-bu-fan-hui-zhi-gei-js/">iOS WKWebView 同步返回值给JS</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-fu-wen-ben/">iOS富文本</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-tableheaderview-de-na-xie-keng/">iOS tableHeaderView的那些坑</a>
+            </li>
+          
+        
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
+          iOS
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/xkXg3f75J/" class="badge secondary">
+          Git
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/CucL5DqtM/" class="badge secondary">
+          HTMl
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/JKeKhLXWK/" class="badge success">
+          Gridea
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/9B1ux8xCh/" class="badge success">
+          WebView
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/9csAFw8eL/" class="badge warning">
+          tableView
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/KlflZd7io/" class="badge secondary">
+          tableHeaderView
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+    Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://dargonlee.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>

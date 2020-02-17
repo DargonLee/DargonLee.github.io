@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>iOS tableHeaderView的那些坑 | 七里田间的守望者</title>
+<meta name="description" content="温故而知新">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://dargonlee.github.io/favicon.ico?v=1581918637612">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://dargonlee.github.io/styles/main.css">
+
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://dargonlee.github.io">七里田间的守望者</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="/" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>iOS tableHeaderView的那些坑</h1>
+            <p class="article-meta">
+              2018-09-10
+              
+                <a href="https://dargonlee.github.io/tag/9csAFw8eL/" class="badge secondary">
+                  tableView
+                </a>
+              
+                <a href="https://dargonlee.github.io/tag/KlflZd7io/" class="badge ">
+                  tableHeaderView
+                </a>
+              
+                <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
+                  iOS
+                </a>
+              
+            </p>
+            
+            <div class="post-content">
+              <h1 id="ios-tableheaderview的那些坑">iOS tableHeaderView的那些坑</h1>
+<h3 id="前言">前言:</h3>
+<blockquote>
+<p>tableView 有个属性叫tableHeaderView 用它我们可以做很多事情<br>
+在tableView的头部加上自定义的view 随着tableView一起滚动</p>
+</blockquote>
+<p><code>常用的就是轮播图比如这样</code></p>
+<figure data-type="image" tabindex="1"><img src="http://upload-images.jianshu.io/upload_images/646265-c073e8a0513156ac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="DAD90DE4-84E9-4194-9554-40956AD01E32.png" loading="lazy"></figure>
+<p>tableView 的tableHeaderView 有两种创建方式一中是代码创建另外一种是用xib创建</p>
+<!--more-->
+<p>###用代码创建</p>
+<pre><code class="language-objectivec">  UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 200)];
+    // 设置header
+  self.tableView.tableHeaderView = header;
+</code></pre>
+<ul>
+<li>因为 self.tableView.tableHeaderView的高度是没有办法设置的,所以必须设置自定义View的高度 来达到设置 self.tableView.tableHeaderView的高度</li>
+</ul>
+<p>###用xib创建</p>
+<pre><code class="language-objectivec">BBSTableHeaderView * cell = [BBSTableHeaderView tableHeaderView];
+cell = 291;
+self.tableView.tableHeaderView = header;
+</code></pre>
+<ul>
+<li>按理来说这样设置肯定是没有问题的 但是这时候你设置的高度是不准确的 而且是没有办法适配机型的</li>
+<li>所以这样的设置发放不可行</li>
+<li>然后这里有个小tips  很简单  但是如果你想不到的话 你可能在这个高度问题上调试一整天 比如说我</li>
+</ul>
+<h4 id="-解决方案">- 解决方案</h4>
+<pre><code class="language-objectivec">    UIView * header = [[UIView alloc]init];
+    header.backgroundColor = [UIColor whiteColor];
+    BBSTableHeaderView * cell = [BBSTableHeaderView tableHeaderView];
+    cell.backgroundColor = [UIColor clearColor];
+    [header addSubview:cell];
+    header.height = 291;//注意这里不要进行比例缩放
+    self.tableView.tableHeaderView = header;
+</code></pre>
+<ul>
+<li>原理 就是在xib View下面在加一层View (代码创建的) 这样才能保证你设置的高度是准确的 因为Xib高度 准确 必须再加一层代码创建的view才能保证你的View的高度是准确的 而且是适配各种机型的</li>
+</ul>
+<p>###其他</p>
+<ul>
+<li>tableView 的顶部会由于设置tableHeaderView而变得 有一片空白</li>
+</ul>
+<p>解决方案如下:</p>
+<pre><code class="language-objectivec">//在控制器里面viewDidLoad 写下这句代码应该就可以了
+
+self.automaticallyAdjustsScrollViewInsets = NO;
+
+/*
+* 坐标：以屏幕左上角为原点（iOS7以前在状态栏或者导航条下）
+2.UIScrollView（包括其子类，比如UITableView）:会自动在顶部和底部预留一些空白（因为滚动经过半透明导航条或者tabbar下面，需要能隐约看到的效果），是否预留空白可以由UIViewController的
+automaticallyAdjustsScrollViewInsets的这个属性控制（默认YES,表示预留空白）。
+上面这些只要你用iOS开发，就能发现。
+
+一个控制器中，出现UIScrollView（包括其子类），必须是第一个添加到控制器的视图上才会预留空白，这里的第一个是相对于所有的子视图，不仅仅是其他UIScrollView（包括其子类）。
+
+那么我遇到的问题如何解决呢，还是这个属性automaticallyAdjustsScrollViewInsets，仔细看它的文档说明，它说了，如果一个控制器中出现两个以上的UIScrollView（包括其子类），这个属性需要设置为NO.即不会预留空白，那么这个控制器中所有的UIScrollView（包括其子类）都需要重新设置坐标
+*/
+</code></pre>
+<ul>
+<li>
+<p>有的时候上面这种方法设置是没有用的 所以如果上面这种方法没有用很有可能是创建tableView的时候用的分组样式,</p>
+<p>解决方法如下</p>
+<p>注意:不要写0 要写一个比较小的数字 别问为什么  因为设置0 没有效果</p>
+</li>
+</ul>
+<pre><code class="language-objectivec">- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0.01;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 0.01;
+}
+</code></pre>
+<ul>
+<li>如果你还有其他的需求比如怎么隐藏 self.tableView.tableHeaderView 或者比如怎么改变self.tableView.tableHeaderView的高度看下面</li>
+</ul>
+<pre><code class="language-objectivec">//显示headerView
+[self.tableView.tableHeaderView setHidden:NO];
+
+//隐藏headerView
+ [self.tableView.tableHeaderView setHidden:YES];
+</code></pre>
+<pre><code class="language-objectivec">//这样设置是没有用的 不信你可以试试 始终为0
+self.tableView.tableHeaderView.height = xxx;
+
+//应该这么设置
+UIView *tableHeaderView = _tableView.tableHeaderView;
+tableHeaderView.height = 0.01;
+[_tableView setTableHeaderView:tableHeaderView];
+//如果你要设置
+tableHeaderView.height = 0;//这样是没有效果的 而且tableView的顶部又会多处一片空白  一定要设置一个比较小的值 当然这个值并不是0;
+</code></pre>
+<p>#写在末尾<br>
+以上内容是自己在开发中遇到过得问题 以及自己的解决方案 写在这里 是想让更多人知道这里的坑  以免在这个小问题上耽误大家的时间.</p>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+            <div class="next-post">
+              <div class="next">
+                下一篇
+              </div>
+              <a href="https://dargonlee.github.io/post/tableview-de-duo-xuan-he-dan-xuan/">
+                <h3 class="post-title">
+                  tableView的多选和单选
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://dargonlee.github.io/images/avatar.png?v=1581918637612" class="no-responsive avatar">
+    <div class="text-muted">温故而知新</div>
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/jie-jue-ding-shi-qi-de-xun-huan-yin-yong/">解决定时器的循环引用</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/git-de-chang-yong-ming-ling/">Git的常用命令</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/css-bu-ju/">CSS布局</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-gei-uilabel-zeng-jia-fu-zhi-nian-tie-gong-neng/">iOS-给UILabel增加复制粘贴功能</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/xiu-gai-ios-fan-hui-an-niu-de-ji-chong-fang-shi/">修改iOS返回按钮的几种方式</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/about/">关于</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/hello-gridea/">Hello Gridea</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-wkwebview-tong-bu-fan-hui-zhi-gei-js/">iOS WKWebView 同步返回值给JS</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-fu-wen-ben/">iOS富文本</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-tableheaderview-de-na-xie-keng/">iOS tableHeaderView的那些坑</a>
+            </li>
+          
+        
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
+          iOS
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/xkXg3f75J/" class="badge ">
+          Git
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/CucL5DqtM/" class="badge success">
+          HTMl
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/JKeKhLXWK/" class="badge ">
+          Gridea
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/9B1ux8xCh/" class="badge secondary">
+          WebView
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/9csAFw8eL/" class="badge secondary">
+          tableView
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/KlflZd7io/" class="badge secondary">
+          tableHeaderView
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+    Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://dargonlee.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>

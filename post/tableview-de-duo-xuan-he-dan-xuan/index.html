@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>tableView的多选和单选 | 七里田间的守望者</title>
+<meta name="description" content="温故而知新">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://dargonlee.github.io/favicon.ico?v=1581918637612">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://dargonlee.github.io/styles/main.css">
+
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://dargonlee.github.io">七里田间的守望者</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="/" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>tableView的多选和单选</h1>
+            <p class="article-meta">
+              2018-07-31
+              
+                <a href="https://dargonlee.github.io/tag/9csAFw8eL/" class="badge warning">
+                  tableView
+                </a>
+              
+                <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge ">
+                  iOS
+                </a>
+              
+            </p>
+            
+            <div class="post-content">
+              <h3 id="系统自带的多选">系统自带的多选</h3>
+<figure data-type="image" tabindex="1"><img src="http://upload-images.jianshu.io/upload_images/646265-0171d1fe767ed431.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Snip20170605_1.png" loading="lazy"></figure>
+<!--more-->
+<ul>
+<li>
+<p>首先让tableView允许多选操作</p>
+<pre><code class="language-objectivec">// 允许在编辑模式进行多选操作
+self.tableView.allowsMultipleSelectionDuringEditing = YES;
+</code></pre>
+</li>
+<li>
+<p>当点击编辑的时候设置tableView的编辑模式</p>
+<pre><code class="language-objectivec">[self.tableView setEditing:YES animated:YES];
+</code></pre>
+</li>
+<li>
+<p>如果你想让一个按钮来控制tableView的编辑和不编辑的状态可以这么写</p>
+<pre><code class="language-objectivec">[self.tableView setEditing:!self.tableView.isEditing animated:YES];
+</code></pre>
+</li>
+<li>
+<p>完成以上几步就可以选择想要删除的cell了</p>
+</li>
+<li>
+<p>但是如果你想删除选中的数据要实现下面的方法</p>
+</li>
+</ul>
+<pre><code class="language-objectivec">- (void)remove
+{
+    // 获得所有被选中的行
+    NSArray *indexPaths = [self.tableView indexPathsForSelectedRows];
+
+
+    // 便利所有的行号
+    NSMutableArray *deletedDeals = [NSMutableArray array];
+    for (NSIndexPath *path in indexPaths) {
+        [deletedDeals addObject:self.deals[path.row]];
+    }
+
+    // 删除模型数据
+    [self.deals removeObjectsInArray:deletedDeals];
+
+   // 刷新表格  一定要刷新数据
+    [self.tableView reloadData];
+}
+# 说明:self.deals 是存放模型的数组
+</code></pre>
+<h3 id="自定义cell多选">自定义cell多选</h3>
+<figure data-type="image" tabindex="2"><img src="http://upload-images.jianshu.io/upload_images/646265-a38436d429f4f56f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Snip20170605_2.png" loading="lazy"></figure>
+<ul>
+<li>首先开发模式是MVC思想(如果不是MVC思想往后看)
+<ul>
+<li>给模型增加一个属性</li>
+<li>这个属性是用来显示或者隐藏 打钩 的图片的</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-objectivec">/** 状态量标识有无被打钩 */
+@property (assign, nonatomic, getter=isChecked) BOOL checked;
+</code></pre>
+<ul>
+<li>然后再给cell赋值的时候判断cell子控件打钩图片的显示隐藏</li>
+</ul>
+<pre><code class="language-objectivec">// 设置打钩控件的显示和隐藏
+self.checkView.hidden = !deal.isChecked;
+</code></pre>
+<ul>
+<li>最后一步就是 给模型的checked属性赋值
+<ul>
+<li>在tableView的点击方法中实现下面代码</li>
+<li>(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-objectivec">// 取消选中这一行
+[tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+// 模型的打钩属性取反
+Deal *deal = self.deals[indexPath.row];
+deal.checked = !deal.isChecked;
+
+// 刷新表格
+[tableView reloadData];
+
+# 说明:Deal 是模型数据    self.deals是存放模型数据的数组
+</code></pre>
+<h3 id="自定义cell多选不是mvc开发模式">自定义cell多选(不是MVC开发模式)</h3>
+<ul>
+<li>首先声明一个可变数组用来存放点击cell的indexPath</li>
+</ul>
+<pre><code class="language-objectivec">@property (nonatomic, strong) NSMutableArray *indexPaths;
+
+# 并且进行懒加载
+- (NSMutableArray *)indexPaths
+{
+    if (!_indexPaths) {
+        _indexPaths = [NSMutableArray array];
+    }
+    return _indexPaths;
+}
+</code></pre>
+<ul>
+<li>然后再给你cell赋值的地方写下面代码</li>
+</ul>
+<pre><code class="language-objectivec">//mr_tb 未选中图片  xz_tb选中图片
+#默认是没有任何选中的cell的
+cell.imageView.image = [UIImage imageNamed:@&quot;mr_tb&quot;];
+//多选
+for (NSIndexPath * index in self.indexPaths) 
+{//遍历数组里面的索引 和 当前索引是否一致
+     if (index == indexPath)
+     {//改变在选择的数组里面的记录
+          cell.imageView.image = [UIImage imageNamed:@&quot;xz_tb&quot;];//选中
+          break;
+     }
+}
+</code></pre>
+<ul>
+<li>在tableView的点击代理方法中实现下面方法</li>
+</ul>
+<pre><code class="language-objectivec">//取出当前cell
+UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+UIImage * image = [UIImage imageNamed:@&quot;xz_tb&quot;];
+if ([cell.imageView.image isEqual:image]) 
+{//如果为选中 变成未选中
+     cell.imageView.image = [UIImage imageNamed:@&quot;mr_tb&quot;];
+     [self.indexPaths removeObject:indexPath];
+}else{//如果为未选中 变成选中
+      cell.imageView.image = [UIImage imageNamed:@&quot;xz_tb&quot;];
+      [self.indexPaths addObject:indexPath];
+}
+</code></pre>
+<ul>
+<li>如果你想控制多选的个数的话 你可以这么写</li>
+</ul>
+<pre><code class="language-objectivec"> UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+UIImage * image = [UIImage imageNamed:@&quot;xz_tb&quot;];
+if ([cell.imageView.image isEqual:image])
+ {//如果为选中
+       cell.imageView.image = [UIImage imageNamed:@&quot;mr_tb&quot;];
+       [self.indexPaths removeObject:indexPath];
+}else{
+       if (self.indexPaths.count &gt;= 2)
+       {//如果当前数组存储的索引超过两个直接返回
+        [self showMessage:@&quot;最多只能选择两个&quot;];
+         return;
+        }else{
+                cell.imageView.image = [UIImage imageNamed:@&quot;xz_tb&quot;];
+                [self.indexPaths addObject:indexPath];
+            }
+
+        }
+</code></pre>
+<ul>
+<li>整体的思想就是当你选中某一个cell的时候取出当前cell的图片 和 选中图片进行对比 如果一样 就把当前cell的iamge变成另外一个图片 (当变成未选中的时候 要把在数组里面的indexPath移除,当变成选中的时候设置选中的图片 并且把当前选中的indexPath保存在数组中)</li>
+</ul>
+<h3 id="自定义cell单选">自定义cell单选</h3>
+<ul>
+<li>在tableView的点击dialing方法中写下下面代码</li>
+</ul>
+<pre><code class="language-objectivec">for (int i = 0; i &lt; self.deals.count; i++) {
+        Deal *deal = self.deals[i];
+        if (i != indexPath.row) {
+            deal.checked = YES;
+        }else{
+            deal.checked = NO;
+        }
+    }
+# Deal 是数据模型   self.deals 是存放数据模型的数组
+</code></pre>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://dargonlee.github.io/images/avatar.png?v=1581918637612" class="no-responsive avatar">
+    <div class="text-muted">温故而知新</div>
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/jie-jue-ding-shi-qi-de-xun-huan-yin-yong/">解决定时器的循环引用</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/git-de-chang-yong-ming-ling/">Git的常用命令</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/css-bu-ju/">CSS布局</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-gei-uilabel-zeng-jia-fu-zhi-nian-tie-gong-neng/">iOS-给UILabel增加复制粘贴功能</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/xiu-gai-ios-fan-hui-an-niu-de-ji-chong-fang-shi/">修改iOS返回按钮的几种方式</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/about/">关于</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/hello-gridea/">Hello Gridea</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-wkwebview-tong-bu-fan-hui-zhi-gei-js/">iOS WKWebView 同步返回值给JS</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-fu-wen-ben/">iOS富文本</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-tableheaderview-de-na-xie-keng/">iOS tableHeaderView的那些坑</a>
+            </li>
+          
+        
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
+          iOS
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/xkXg3f75J/" class="badge secondary">
+          Git
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/CucL5DqtM/" class="badge secondary">
+          HTMl
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/JKeKhLXWK/" class="badge secondary">
+          Gridea
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/9B1ux8xCh/" class="badge warning">
+          WebView
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/9csAFw8eL/" class="badge ">
+          tableView
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/KlflZd7io/" class="badge ">
+          tableHeaderView
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+    Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://dargonlee.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>

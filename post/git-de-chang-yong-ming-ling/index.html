@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Git的常用命令 | 七里田间的守望者</title>
+<meta name="description" content="温故而知新">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://dargonlee.github.io/favicon.ico?v=1581918637612">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://dargonlee.github.io/styles/main.css">
+
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://dargonlee.github.io">七里田间的守望者</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="/" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>Git的常用命令</h1>
+            <p class="article-meta">
+              2019-08-12
+              
+                <a href="https://dargonlee.github.io/tag/xkXg3f75J/" class="badge warning">
+                  Git
+                </a>
+              
+            </p>
+            
+            <div class="post-content">
+              <pre><code class="language-bash"># 显示当前的Git配置
+$ git config --list
+
+# 查看仓库配置
+git config --local -l 
+
+# 查看用户配置
+git config --global -l 
+
+# 查看系统配置
+git config --system -l 
+
+&lt;!-- more --&gt;
+
+# 编辑Git配置文件
+
+git config --local -e 编辑仓库级别配置文件
+git config --global -e 编辑用户级别配置文件
+git config --system -e 编辑系统级别配置文件
+
+# 设置提交代码时的用户信息
+$ git config [--global] user.name &quot;[name]&quot;
+$ git config [--global] user.email &quot;[email address]&quot;
+</code></pre>
+<p>推送操作 切记直接使用 <code>git push</code></p>
+<pre><code class="language-bash">git push origin HEAD:refs/for/develop  
+</code></pre>
+<p>创建并切换到dev分支（本地分支）</p>
+<pre><code class="language-bash">git checkout -b dev
+</code></pre>
+<p>删除本地dev分支(本地)</p>
+<pre><code class="language-bash">git branch -d dev
+</code></pre>
+<p>分支合并</p>
+<pre><code class="language-scheme">git checkout master
+git merge dev
+</code></pre>
+<p>推送本地分支到远程</p>
+<pre><code class="language-bash">git push -u origin develop
+</code></pre>
+<p>查看分支：</p>
+<pre><code class="language-bash">git branch
+</code></pre>
+<p>创建分支：</p>
+<pre><code class="language-bash">git branch 
+</code></pre>
+<p>切换分支：</p>
+<pre><code class="language-bash">git checkout `或者`git switch `
+</code></pre>
+<p>删除远程分支：</p>
+<pre><code class="language-bash"> git push origin --delete 
+</code></pre>
+<p>打tag</p>
+<pre><code class="language-bash">git tag 
+</code></pre>
+<p>删除本地tag</p>
+<pre><code class="language-bash">git tag -d 
+</code></pre>
+<p>删除远程tag</p>
+<pre><code class="language-bash">git push origin --delete tag 
+</code></pre>
+<p>推送到哪个分支</p>
+<pre><code class="language-bash">git push origin HEAD:refs/for/branch
+</code></pre>
+<p>回退相关操作</p>
+<pre><code class="language-bash">git reset --hard HEAD^ // 回退pull操作
+
+git reset --mixed HEAD^ // 回退commit 只退一步
+
+git reset --hard 139dcfaa558e3276b30b6b2e5cbbb9c00bbdca96 // 回退到某一个版本
+git reset --soft HEAD^//该命令会将工作去的文件回退到目标版本，但是不会改变暂存区的状态。
+
+--hard 会清空工作目录和暂存区的改动,而 --soft则会保留工作目录的内容，并把因为保留工作目录内容所带来的新的文件差异放进暂存区
+</code></pre>
+<p>执行存储时，添加备注，方便查找，只有git stash 也要可以的，但查找时不方便识别。</p>
+<pre><code class="language-bash">git stash save &quot;save message&quot; :
+</code></pre>
+<p>查看stash了哪些存储</p>
+<pre><code class="language-bash">git stash list
+</code></pre>
+<p>显示做了哪些改动，默认show第一个存储,如果要显示其他存贮，后面加stash@{$num}，比如第二个 git stash show stash@{1}</p>
+<pre><code class="language-scheme">git stash show
+</code></pre>
+<p>显示第一个存储的改动，如果想显示其他存存储，命令：git stash show stash@{$num} -p ，比如第二个：git stash show stash@{1} -p</p>
+<pre><code class="language-bash">git stash show -p
+</code></pre>
+<p>应用某个存储,但不会把存储从存储列表中删除，默认使用第一个存储,即stash@{0}，如果要使用其他个，git stash apply stash@{$num} ， 比如第二个：git stash apply stash@{1}</p>
+<pre><code class="language-bash">git stash apply
+</code></pre>
+<p>命令恢复之前缓存的工作目录，将缓存堆栈中的对应stash删除，并将对应修改应用到当前的工作目录下,默认为第一个stash,即stash@{0}，如果要应用并删除其他stash，命令：git stash pop stash@{$num} ，比如应用并删除第二个：git stash pop stash@{1}</p>
+<pre><code class="language-bash">git stash pop
+</code></pre>
+<p>从列表中删除这个存储</p>
+<pre><code class="language-bash">git stash drop stash@{$num} ：丢弃stash@{$num}存储
+</code></pre>
+<p>删除所有缓存的stash</p>
+<pre><code class="language-bash">git stash clear
+</code></pre>
+<p>代码提交</p>
+<pre><code class="language-bash"># 提交暂存区到仓库区
+$ git commit -m [message]
+
+# 提交暂存区的指定文件到仓库区
+$ git commit [file1] [file2] ... -m [message]
+
+# 提交工作区自上次commit之后的变化，直接到仓库区
+$ git commit -a
+
+# 提交时显示所有diff信息
+$ git commit -v
+
+# 使用一次新的commit，替代上一次提交
+# 如果代码没有任何新变化，则用来改写上一次commit的提交信息
+$ git commit --amend -m [message]
+
+# 重做上一次commit，并包括指定文件的新变化
+$ git commit --amend [file1] [file2] ...
+</code></pre>
+<p>分支</p>
+<pre><code class="language-bash"># 列出所有本地分支
+$ git branch
+
+# 列出所有远程分支
+$ git branch -r
+
+# 列出所有本地分支和远程分支
+$ git branch -a
+
+# 新建一个分支，但依然停留在当前分支
+$ git branch [branch-name]
+
+# 新建一个分支，并切换到该分支
+$ git checkout -b [branch]
+
+# 新建一个分支，指向指定commit
+$ git branch [branch] [commit]
+
+# 新建一个分支，与指定的远程分支建立追踪关系
+$ git branch --track [branch] [remote-branch]
+
+# 切换到指定分支，并更新工作区
+$ git checkout [branch-name]
+
+# 切换到上一个分支
+$ git checkout -
+
+# 建立追踪关系，在现有分支与指定的远程分支之间
+$ git branch --set-upstream [branch] [remote-branch]
+
+# 合并指定分支到当前分支
+$ git merge [branch]
+
+# 选择一个commit，合并进当前分支
+$ git cherry-pick [commit]
+
+# 删除分支
+$ git branch -d [branch-name]
+
+# 删除远程分支
+$ git push origin --delete [branch-name]
+$ git branch -dr [remote/branch]
+</code></pre>
+<p>查看信息</p>
+<pre><code class="language-bash"># 显示有变更的文件
+$ git status
+
+# 显示当前分支的版本历史
+$ git log
+
+# 显示commit历史，以及每次commit发生变更的文件
+$ git log --stat
+
+# 搜索提交历史，根据关键词
+$ git log -S [keyword]
+
+# 显示某个commit之后的所有变动，每个commit占据一行
+$ git log [tag] HEAD --pretty=format:%s
+
+# 显示某个commit之后的所有变动，其&quot;提交说明&quot;必须符合搜索条件
+$ git log [tag] HEAD --grep feature
+
+# 显示某个文件的版本历史，包括文件改名
+$ git log --follow [file]
+$ git whatchanged [file]
+
+# 显示指定文件相关的每一次diff
+$ git log -p [file]
+
+# 显示过去5次提交
+$ git log -5 --pretty --oneline
+
+# 显示所有提交过的用户，按提交次数排序
+$ git shortlog -sn
+
+# 显示指定文件是什么人在什么时间修改过
+$ git blame [file]
+
+# 显示暂存区和工作区的差异
+$ git diff
+
+# 显示暂存区和上一个commit的差异
+$ git diff --cached [file]
+
+# 显示工作区与当前分支最新commit之间的差异
+$ git diff HEAD
+
+# 显示两次提交之间的差异
+$ git diff [first-branch]...[second-branch]
+
+# 显示今天你写了多少行代码
+$ git diff --shortstat &quot;@{0 day ago}&quot;
+
+# 显示某次提交的元数据和内容变化
+$ git show [commit]
+
+# 显示某次提交发生变化的文件
+$ git show --name-only [commit]
+
+# 显示某次提交时，某个文件的内容
+$ git show [commit]:[filename]
+
+# 显示当前分支的最近几次提交
+$ git reflog
+</code></pre>
+<p>远程同步</p>
+<pre><code class="language-bash"># 下载远程仓库的所有变动
+$ git fetch [remote]
+
+# 显示所有远程仓库
+$ git remote -v
+
+# 显示某个远程仓库的信息
+$ git remote show [remote]
+
+# 增加一个新的远程仓库，并命名
+$ git remote add [shortname] [url]
+
+# 取回远程仓库的变化，并与本地分支合并
+$ git pull [remote] [branch]
+
+# 上传本地指定分支到远程仓库
+$ git push [remote] [branch]
+
+# 强行推送当前分支到远程仓库，即使有冲突
+$ git push [remote] --force
+
+# 推送所有分支到远程仓库
+$ git push [remote] --all
+</code></pre>
+<p>撤销</p>
+<pre><code class="language-bash"># 恢复暂存区的指定文件到工作区
+$ git checkout [file]
+
+# 恢复某个commit的指定文件到暂存区和工作区
+$ git checkout [commit] [file]
+
+# 恢复暂存区的所有文件到工作区
+$ git checkout .
+
+# 重置暂存区的指定文件，与上一次commit保持一致，但工作区不变
+$ git reset [file]
+
+# 重置暂存区与工作区，与上一次commit保持一致
+$ git reset --hard
+
+# 重置当前分支的指针为指定commit，同时重置暂存区，但工作区不变
+$ git reset [commit]
+
+# 重置当前分支的HEAD为指定commit，同时重置暂存区和工作区，与指定commit一致
+$ git reset --hard [commit]
+
+# 重置当前HEAD为指定commit，但保持暂存区和工作区不变
+$ git reset --keep [commit]
+
+# 新建一个commit，用来撤销指定commit
+# 后者的所有变化都将被前者抵消，并且应用到当前分支
+$ git revert [commit]
+
+# 暂时将未提交的变化移除，稍后再移入
+$ git stash
+$ git stash pop
+</code></pre>
+<p>撤销本地提交</p>
+<blockquote>
+<p>HEAD^的意思是上一个版本，也可以写成HEAD~1<br>
+如果你进行了2次commit，想都撤回，可以使用HEAD~2</p>
+</blockquote>
+<p>至于这几个参数：</p>
+<pre><code>--mixed 
+意思是：不删除工作空间改动代码，撤销commit，并且撤销git add . 操作
+这个为默认参数,git reset --mixed HEAD^ 和 git reset HEAD^ 效果是一样的
+</code></pre>
+<pre><code>--soft  
+不删除工作空间改动代码，撤销commit，不撤销git add . 
+</code></pre>
+<pre><code>--hard
+删除工作空间改动代码，撤销commit，撤销git add . 
+注意完成这个操作后，就恢复到了上一次的commit状态。
+</code></pre>
+<pre><code>顺便说一下，如果commit注释写错了，只是想改一下注释，只需要：
+git commit --amend
+此时会进入默认vim编辑器，修改注释完毕后保存就好了
+</code></pre>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+            <div class="next-post">
+              <div class="next">
+                下一篇
+              </div>
+              <a href="https://dargonlee.github.io/post/css-bu-ju/">
+                <h3 class="post-title">
+                  CSS布局
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://dargonlee.github.io/images/avatar.png?v=1581918637612" class="no-responsive avatar">
+    <div class="text-muted">温故而知新</div>
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/jie-jue-ding-shi-qi-de-xun-huan-yin-yong/">解决定时器的循环引用</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/git-de-chang-yong-ming-ling/">Git的常用命令</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/css-bu-ju/">CSS布局</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-gei-uilabel-zeng-jia-fu-zhi-nian-tie-gong-neng/">iOS-给UILabel增加复制粘贴功能</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/xiu-gai-ios-fan-hui-an-niu-de-ji-chong-fang-shi/">修改iOS返回按钮的几种方式</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/about/">关于</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/hello-gridea/">Hello Gridea</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-wkwebview-tong-bu-fan-hui-zhi-gei-js/">iOS WKWebView 同步返回值给JS</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-fu-wen-ben/">iOS富文本</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-tableheaderview-de-na-xie-keng/">iOS tableHeaderView的那些坑</a>
+            </li>
+          
+        
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge success">
+          iOS
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/xkXg3f75J/" class="badge secondary">
+          Git
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/CucL5DqtM/" class="badge warning">
+          HTMl
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/JKeKhLXWK/" class="badge secondary">
+          Gridea
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/9B1ux8xCh/" class="badge success">
+          WebView
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/9csAFw8eL/" class="badge ">
+          tableView
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/KlflZd7io/" class="badge ">
+          tableHeaderView
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+    Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://dargonlee.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>

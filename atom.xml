@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-02-17T02:36:59.226Z</updated>
+    <updated>2020-02-17T05:50:59.029Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
@@ -10,6 +10,763 @@
     <logo>https://dargonlee.github.io/images/avatar.png</logo>
     <icon>https://dargonlee.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 七里田间的守望者</rights>
+    <entry>
+        <title type="html"><![CDATA[解决定时器的循环引用]]></title>
+        <id>https://dargonlee.github.io/post/jie-jue-ding-shi-qi-de-xun-huan-yin-yong/</id>
+        <link href="https://dargonlee.github.io/post/jie-jue-ding-shi-qi-de-xun-huan-yin-yong/">
+        </link>
+        <updated>2019-11-15T02:40:51.000Z</updated>
+        <summary type="html"><![CDATA[<p>一般使用定时器的方法，在控制器返回上级的时候。定时器都不会停止，会导致循环引用，控制器的<code>delloc</code>方法不会调用。<br>
+以下两种方式就是为了解决，定时器在控制器返回上级的时候解决循环引用的问题。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>一般使用定时器的方法，在控制器返回上级的时候。定时器都不会停止，会导致循环引用，控制器的<code>delloc</code>方法不会调用。<br>
+以下两种方式就是为了解决，定时器在控制器返回上级的时候解决循环引用的问题。</p>
+<!-- more --> 
+<h5 id="在控制器中使用定时器常规的方法">在控制器中使用定时器常规的方法</h5>
+<pre><code class="language-objc">@interface ViewController ()
+
+@property (nonatomic,strong) NSTimer *timer;
+
+@property (nonatomic,strong) CADisplayLink *link;
+
+@end
+</code></pre>
+<pre><code class="language-objc">
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    // Timer的使用
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timerTest) userInfo:nil repeats:YES];
+    
+    // CADisplayLink的使用
+    self.link = [CADisplayLink displayLinkWithTarget:self selector:@selector(timerTest)];
+    [self.link addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+}
+
+- (void)timerTest
+{
+    NSLog(@&quot;%s&quot;, __func__);
+}
+</code></pre>
+<p>以上这种写法就是常规的写法，就是在一个控制器push到当前这个控制器的时候开启定时器。<br>
+但是这种写法有问题，会产生循环引用问题，从而导致内存泄露。<br>
+<code>ViewController</code> 引用 <code>timer定时器</code> <code>timer</code>的<code>target</code>又引用<code>ViewController</code> 而且三者都是使用 <code>storng</code>引用 这样在 <code>ViewController</code>返回上级的时候，不会调用<code>delloc</code>方法 从而导致循环引用。</p>
+<h4 id="解决方法的思路">解决方法的思路：</h4>
+<p>我们知道引起循环引用的问题是 <code>ViewController</code> <code>timer</code> <code>timer的target</code> 三者都是强引用导致的 我们只要在这个三个中间一个地方给设置<code>weak</code>引用 就不会产生循环引用了。<br>
+思路就是 -&gt; 设置<code>timer</code>的<code>target</code>的时候不要直接设置 <code>ViewController</code> 而是设置一个 自定义的对象 比如 <code>TimerTarget</code> 然后由这个对象对控制器<code>弱引用</code>，本来由控制器的直接调用的定时方法，现在由 <code>TimerTarget</code> 对象对控制器进行转发。从而达到解决循环引用的问题。<br>
+代码如下：</p>
+<pre><code class="language-objc">
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    
+    self.link = [CADisplayLink displayLinkWithTarget:[TimerTarget proxyWithTarget:self] selector:@selector(timerTest)];
+    
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:[TimerTarget proxyWithTarget:self] selector:@selector(timerTest) userInfo:nil repeats:YES];
+}
+
+- (void)timerTest
+{
+    NSLog(@&quot;%s&quot;, __func__);
+}
+</code></pre>
+<p><code>TimerTarget对象的方法实现</code></p>
+<pre><code class="language-objc">@interface TimerTarget : NSObject
+
+@property (nonatomic, weak) id target;
+// 接收一个可以相应 定时器的对象
++ (instancetype)proxyWithTarget:(id)target;
+
+@end
+
+
++ (instancetype)proxyWithTarget:(id)target
+{
+    TimerTarget *targets = [[TimerTarget alloc]init];
+    targets.target = target;//然后对外部的对象进行弱引用
+    return targets;
+}
+// 在定时器给当前对象发送方法的时候 会走当前对象的消息转发机制 
+// 然后可以在这个方法里面对弱应用的对象去响应要调用的方法
+- (id)forwardingTargetForSelector:(SEL)aSelector
+{
+    return self.target;
+}
+</code></pre>
+<blockquote>
+<p>上面的方法可以解决问题，但是这样效率不够高。因为在 <code>TimerTarget</code> 在做消息转发之前，会对父类方法查找和方法缓存中去找方法。这样效率不高。</p>
+</blockquote>
+<p>下面介绍一个苹果提供专门进行消息转发的类叫<code>NSProxy</code> 上面的解决方法我们是继承<code>NSObject</code> 下面我们可以直接继承这个类<br>
+代码如下：</p>
+<pre><code class="language-objc">@interface TimerProxy : NSProxy
+
+@property (nonatomic, weak) id target;
+
++ (instancetype)proxyWithTarget:(id)target;
+
+@end
+
+
+
++ (instancetype)proxyWithTarget:(id)target
+{
+    // NSProxy 不需要init方法
+    TimerProxy *targets = [TimerProxy alloc];
+    targets.target = target;
+    return targets;
+}
+
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)sel
+{
+    return [self.target methodSignatureForSelector:sel];
+}
+
+- (void)forwardInvocation:(NSInvocation *)invocation
+{
+    [invocation invokeWithTarget:self.target];
+}
+</code></pre>
+<p>这样的话 在定时的方法来的时候可以直接进行转发，而不会再去父类找了。</p>
+<h4 id="补充">补充</h4>
+<pre><code>__weak typeof(self) weakSelf = self;
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 repeats:YES block:^(NSTimer * _Nonnull timer) {
+        [weakSelf timerTest];
+    }];
+</code></pre>
+<p>这种block的方法也可以解决循环引用</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Git的常用命令]]></title>
+        <id>https://dargonlee.github.io/post/git-de-chang-yong-ming-ling/</id>
+        <link href="https://dargonlee.github.io/post/git-de-chang-yong-ming-ling/">
+        </link>
+        <updated>2019-08-12T05:38:57.000Z</updated>
+        <summary type="html"><![CDATA[<pre><code class="language-bash"># 显示当前的Git配置
+$ git config --list
+
+# 查看仓库配置
+git config --local -l 
+
+# 查看用户配置
+git config --global -l 
+
+# 查看系统配置
+git config --system -l </code></pre>
+]]></summary>
+        <content type="html"><![CDATA[<pre><code class="language-bash"># 显示当前的Git配置
+$ git config --list
+
+# 查看仓库配置
+git config --local -l 
+
+# 查看用户配置
+git config --global -l 
+
+# 查看系统配置
+git config --system -l 
+
+&lt;!-- more --&gt;
+
+# 编辑Git配置文件
+
+git config --local -e 编辑仓库级别配置文件
+git config --global -e 编辑用户级别配置文件
+git config --system -e 编辑系统级别配置文件
+
+# 设置提交代码时的用户信息
+$ git config [--global] user.name &quot;[name]&quot;
+$ git config [--global] user.email &quot;[email address]&quot;
+</code></pre>
+<p>推送操作 切记直接使用 <code>git push</code></p>
+<pre><code class="language-bash">git push origin HEAD:refs/for/develop  
+</code></pre>
+<p>创建并切换到dev分支（本地分支）</p>
+<pre><code class="language-bash">git checkout -b dev
+</code></pre>
+<p>删除本地dev分支(本地)</p>
+<pre><code class="language-bash">git branch -d dev
+</code></pre>
+<p>分支合并</p>
+<pre><code class="language-scheme">git checkout master
+git merge dev
+</code></pre>
+<p>推送本地分支到远程</p>
+<pre><code class="language-bash">git push -u origin develop
+</code></pre>
+<p>查看分支：</p>
+<pre><code class="language-bash">git branch
+</code></pre>
+<p>创建分支：</p>
+<pre><code class="language-bash">git branch 
+</code></pre>
+<p>切换分支：</p>
+<pre><code class="language-bash">git checkout `或者`git switch `
+</code></pre>
+<p>删除远程分支：</p>
+<pre><code class="language-bash"> git push origin --delete 
+</code></pre>
+<p>打tag</p>
+<pre><code class="language-bash">git tag 
+</code></pre>
+<p>删除本地tag</p>
+<pre><code class="language-bash">git tag -d 
+</code></pre>
+<p>删除远程tag</p>
+<pre><code class="language-bash">git push origin --delete tag 
+</code></pre>
+<p>推送到哪个分支</p>
+<pre><code class="language-bash">git push origin HEAD:refs/for/branch
+</code></pre>
+<p>回退相关操作</p>
+<pre><code class="language-bash">git reset --hard HEAD^ // 回退pull操作
+
+git reset --mixed HEAD^ // 回退commit 只退一步
+
+git reset --hard 139dcfaa558e3276b30b6b2e5cbbb9c00bbdca96 // 回退到某一个版本
+git reset --soft HEAD^//该命令会将工作去的文件回退到目标版本，但是不会改变暂存区的状态。
+
+--hard 会清空工作目录和暂存区的改动,而 --soft则会保留工作目录的内容，并把因为保留工作目录内容所带来的新的文件差异放进暂存区
+</code></pre>
+<p>执行存储时，添加备注，方便查找，只有git stash 也要可以的，但查找时不方便识别。</p>
+<pre><code class="language-bash">git stash save &quot;save message&quot; :
+</code></pre>
+<p>查看stash了哪些存储</p>
+<pre><code class="language-bash">git stash list
+</code></pre>
+<p>显示做了哪些改动，默认show第一个存储,如果要显示其他存贮，后面加stash@{$num}，比如第二个 git stash show stash@{1}</p>
+<pre><code class="language-scheme">git stash show
+</code></pre>
+<p>显示第一个存储的改动，如果想显示其他存存储，命令：git stash show stash@{$num} -p ，比如第二个：git stash show stash@{1} -p</p>
+<pre><code class="language-bash">git stash show -p
+</code></pre>
+<p>应用某个存储,但不会把存储从存储列表中删除，默认使用第一个存储,即stash@{0}，如果要使用其他个，git stash apply stash@{$num} ， 比如第二个：git stash apply stash@{1}</p>
+<pre><code class="language-bash">git stash apply
+</code></pre>
+<p>命令恢复之前缓存的工作目录，将缓存堆栈中的对应stash删除，并将对应修改应用到当前的工作目录下,默认为第一个stash,即stash@{0}，如果要应用并删除其他stash，命令：git stash pop stash@{$num} ，比如应用并删除第二个：git stash pop stash@{1}</p>
+<pre><code class="language-bash">git stash pop
+</code></pre>
+<p>从列表中删除这个存储</p>
+<pre><code class="language-bash">git stash drop stash@{$num} ：丢弃stash@{$num}存储
+</code></pre>
+<p>删除所有缓存的stash</p>
+<pre><code class="language-bash">git stash clear
+</code></pre>
+<p>代码提交</p>
+<pre><code class="language-bash"># 提交暂存区到仓库区
+$ git commit -m [message]
+
+# 提交暂存区的指定文件到仓库区
+$ git commit [file1] [file2] ... -m [message]
+
+# 提交工作区自上次commit之后的变化，直接到仓库区
+$ git commit -a
+
+# 提交时显示所有diff信息
+$ git commit -v
+
+# 使用一次新的commit，替代上一次提交
+# 如果代码没有任何新变化，则用来改写上一次commit的提交信息
+$ git commit --amend -m [message]
+
+# 重做上一次commit，并包括指定文件的新变化
+$ git commit --amend [file1] [file2] ...
+</code></pre>
+<p>分支</p>
+<pre><code class="language-bash"># 列出所有本地分支
+$ git branch
+
+# 列出所有远程分支
+$ git branch -r
+
+# 列出所有本地分支和远程分支
+$ git branch -a
+
+# 新建一个分支，但依然停留在当前分支
+$ git branch [branch-name]
+
+# 新建一个分支，并切换到该分支
+$ git checkout -b [branch]
+
+# 新建一个分支，指向指定commit
+$ git branch [branch] [commit]
+
+# 新建一个分支，与指定的远程分支建立追踪关系
+$ git branch --track [branch] [remote-branch]
+
+# 切换到指定分支，并更新工作区
+$ git checkout [branch-name]
+
+# 切换到上一个分支
+$ git checkout -
+
+# 建立追踪关系，在现有分支与指定的远程分支之间
+$ git branch --set-upstream [branch] [remote-branch]
+
+# 合并指定分支到当前分支
+$ git merge [branch]
+
+# 选择一个commit，合并进当前分支
+$ git cherry-pick [commit]
+
+# 删除分支
+$ git branch -d [branch-name]
+
+# 删除远程分支
+$ git push origin --delete [branch-name]
+$ git branch -dr [remote/branch]
+</code></pre>
+<p>查看信息</p>
+<pre><code class="language-bash"># 显示有变更的文件
+$ git status
+
+# 显示当前分支的版本历史
+$ git log
+
+# 显示commit历史，以及每次commit发生变更的文件
+$ git log --stat
+
+# 搜索提交历史，根据关键词
+$ git log -S [keyword]
+
+# 显示某个commit之后的所有变动，每个commit占据一行
+$ git log [tag] HEAD --pretty=format:%s
+
+# 显示某个commit之后的所有变动，其&quot;提交说明&quot;必须符合搜索条件
+$ git log [tag] HEAD --grep feature
+
+# 显示某个文件的版本历史，包括文件改名
+$ git log --follow [file]
+$ git whatchanged [file]
+
+# 显示指定文件相关的每一次diff
+$ git log -p [file]
+
+# 显示过去5次提交
+$ git log -5 --pretty --oneline
+
+# 显示所有提交过的用户，按提交次数排序
+$ git shortlog -sn
+
+# 显示指定文件是什么人在什么时间修改过
+$ git blame [file]
+
+# 显示暂存区和工作区的差异
+$ git diff
+
+# 显示暂存区和上一个commit的差异
+$ git diff --cached [file]
+
+# 显示工作区与当前分支最新commit之间的差异
+$ git diff HEAD
+
+# 显示两次提交之间的差异
+$ git diff [first-branch]...[second-branch]
+
+# 显示今天你写了多少行代码
+$ git diff --shortstat &quot;@{0 day ago}&quot;
+
+# 显示某次提交的元数据和内容变化
+$ git show [commit]
+
+# 显示某次提交发生变化的文件
+$ git show --name-only [commit]
+
+# 显示某次提交时，某个文件的内容
+$ git show [commit]:[filename]
+
+# 显示当前分支的最近几次提交
+$ git reflog
+</code></pre>
+<p>远程同步</p>
+<pre><code class="language-bash"># 下载远程仓库的所有变动
+$ git fetch [remote]
+
+# 显示所有远程仓库
+$ git remote -v
+
+# 显示某个远程仓库的信息
+$ git remote show [remote]
+
+# 增加一个新的远程仓库，并命名
+$ git remote add [shortname] [url]
+
+# 取回远程仓库的变化，并与本地分支合并
+$ git pull [remote] [branch]
+
+# 上传本地指定分支到远程仓库
+$ git push [remote] [branch]
+
+# 强行推送当前分支到远程仓库，即使有冲突
+$ git push [remote] --force
+
+# 推送所有分支到远程仓库
+$ git push [remote] --all
+</code></pre>
+<p>撤销</p>
+<pre><code class="language-bash"># 恢复暂存区的指定文件到工作区
+$ git checkout [file]
+
+# 恢复某个commit的指定文件到暂存区和工作区
+$ git checkout [commit] [file]
+
+# 恢复暂存区的所有文件到工作区
+$ git checkout .
+
+# 重置暂存区的指定文件，与上一次commit保持一致，但工作区不变
+$ git reset [file]
+
+# 重置暂存区与工作区，与上一次commit保持一致
+$ git reset --hard
+
+# 重置当前分支的指针为指定commit，同时重置暂存区，但工作区不变
+$ git reset [commit]
+
+# 重置当前分支的HEAD为指定commit，同时重置暂存区和工作区，与指定commit一致
+$ git reset --hard [commit]
+
+# 重置当前HEAD为指定commit，但保持暂存区和工作区不变
+$ git reset --keep [commit]
+
+# 新建一个commit，用来撤销指定commit
+# 后者的所有变化都将被前者抵消，并且应用到当前分支
+$ git revert [commit]
+
+# 暂时将未提交的变化移除，稍后再移入
+$ git stash
+$ git stash pop
+</code></pre>
+<p>撤销本地提交</p>
+<blockquote>
+<p>HEAD^的意思是上一个版本，也可以写成HEAD~1<br>
+如果你进行了2次commit，想都撤回，可以使用HEAD~2</p>
+</blockquote>
+<p>至于这几个参数：</p>
+<pre><code>--mixed 
+意思是：不删除工作空间改动代码，撤销commit，并且撤销git add . 操作
+这个为默认参数,git reset --mixed HEAD^ 和 git reset HEAD^ 效果是一样的
+</code></pre>
+<pre><code>--soft  
+不删除工作空间改动代码，撤销commit，不撤销git add . 
+</code></pre>
+<pre><code>--hard
+删除工作空间改动代码，撤销commit，撤销git add . 
+注意完成这个操作后，就恢复到了上一次的commit状态。
+</code></pre>
+<pre><code>顺便说一下，如果commit注释写错了，只是想改一下注释，只需要：
+git commit --amend
+此时会进入默认vim编辑器，修改注释完毕后保存就好了
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[CSS布局]]></title>
+        <id>https://dargonlee.github.io/post/css-bu-ju/</id>
+        <link href="https://dargonlee.github.io/post/css-bu-ju/">
+        </link>
+        <updated>2019-07-09T05:36:06.000Z</updated>
+        <summary type="html"><![CDATA[<h1 id="position">position</h1>
+<blockquote>
+<p>为了制作更多复杂的布局，我们需要讨论下<code>position</code>属性。它有一大堆的值，名字还都特抽象，别提有多难记了。让我们先一个个的过一遍，不过你最好还是把这页放到书签里。</p>
+</blockquote>
+<ul>
+<li><code>static</code>元素框正常生成。块级元素生成一个矩形框，作为文档流的一部分；行内元素则会创建一个或多个行框，置于其父元素中。</li>
+</ul>
+<pre><code class="language-css">.static {
+    position: static;
+}
+</code></pre>
+]]></summary>
+        <content type="html"><![CDATA[<h1 id="position">position</h1>
+<blockquote>
+<p>为了制作更多复杂的布局，我们需要讨论下<code>position</code>属性。它有一大堆的值，名字还都特抽象，别提有多难记了。让我们先一个个的过一遍，不过你最好还是把这页放到书签里。</p>
+</blockquote>
+<ul>
+<li><code>static</code>元素框正常生成。块级元素生成一个矩形框，作为文档流的一部分；行内元素则会创建一个或多个行框，置于其父元素中。</li>
+</ul>
+<pre><code class="language-css">.static {
+    position: static;
+}
+</code></pre>
+<!--more-->
+<p><code>static</code>是默认值。任意<code>position: static;</code>的元素不会被特殊的定位。一个 static 元素表示它<em>不会被“positioned”</em>，一个 position 属性被设置为其他值的元素表示它<em>会被“positioned”</em>。</p>
+<ul>
+<li><code>relative</code>元素框相对于之前正常文档流中的位置发生偏移，并且原先的位置仍然被占据。发生偏移的时候，可能会覆盖其他元素。</li>
+</ul>
+<pre><code class="language-css">.relative1 {
+  position: relative;
+}
+
+.relative2 {
+  position: relative;
+  top: -20px;
+  left: 20px;
+  background-color: white;
+  width: 500px;
+}
+</code></pre>
+<blockquote>
+<p>relative1 的表现和static一样，除非你添加了一些额外的属性</p>
+<p>在一个相对定位（position属性的值为relative）的元素上设置<code>top</code>、<code>right</code>、<code>bottom</code>和<code>left</code>属性会使其偏离其正常位置。其他的元素的位置则不会受该元素的影响发生位置改变来弥补它偏离后剩下的空隙</p>
+</blockquote>
+<p><code>absolute</code>元素框不再占有文档流位置，并且相对于包含块进行偏移(所谓的包含块就是最近一级外层元素position不为static的元素)</p>
+<p><code>absolute</code>与<code>fixed</code>的表现类似，但是它不是相对于视窗而是相对于<em>最近的“positioned”祖先元素</em>。如果绝对定位（position属性的值为absolute）的元素没有“positioned”祖先元素，那么它是相对于文档的 body 元素，并且它会随着页面滚动而移动。记住一个“positioned”元素是指 position 值不是<code>static</code>的元素。</p>
+<pre><code class="language-css">.relative { // 父元素
+  position: relative; 
+  width: 600px;
+  height: 400px;
+}
+.absolute { // 子元素
+  position: absolute;
+  top: 120px;
+  right: 0;
+  width: 300px;
+  height: 200px;
+}
+</code></pre>
+<blockquote>
+<p>子元素是相对定位的。如果它的父元素是<code>position: static;</code>，子元素会跳过父元素直接相对于body元素定位。</p>
+<p>换句话说就是 子元素要想使用  `absolute 进行绝对定位 那么它相对的那个元素postition必须relative，如果父元素没有relative的话 子元素会相对本身最近的一个有relative属性的元素进行定位</p>
+</blockquote>
+<p><code>fixed</code>元素框不再占有文档流位置，并且相对于视窗进行定位</p>
+<pre><code class="language-css">&lt;div class=&quot;footer&quot;&gt;&lt;/div&gt;
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 70px;
+  background-color: white;
+  width: 100%;
+}
+</code></pre>
+<p><code>sticky</code>(这是css3新增的属性值)粘性定位，官方的介绍比较简单，或许你不能理解。其实，它就相当于relative和fixed混合。最初会被当作是relative，相对于原来的位置进行偏移；一旦超过一定阈值之后，会被当成fixed定位，相对于视口进行定位</p>
+<blockquote>
+<p>相对于body定位并且是悬浮的</p>
+</blockquote>
+<ul>
+<li><code>floate</code></li>
+</ul>
+<blockquote>
+<p>另一个布局中常用的CSS属性是<code>float</code>。Float 可用于实现文字环绕图片</p>
+</blockquote>
+<pre><code class="language-css">img {
+  float: right;
+  margin: 0 0 1em 1em;
+}
+</code></pre>
+<ul>
+<li><code>clear</code></li>
+</ul>
+<blockquote>
+<p><code>clear</code>属性被用于控制浮动。比较下面两个例子：</p>
+</blockquote>
+<pre><code class="language-html">&lt;div class=&quot;box&quot;&gt;...&lt;/div&gt;
+&lt;section&gt;...&lt;/section&gt;
+</code></pre>
+<pre><code class="language-css">.box {
+  float: left;
+  width: 200px;
+  height: 100px;
+  margin: 1em;
+}
+在这个例子中， section 元素实际上是在 div 之后的（译注：DOM结构上）。然而 div 元素是浮动到左边的，于是 section 中的文字就围绕了 div ，并且 section 元素包围了整个元素。如果我们想让 section 显示在浮动元素之后呢？
+</code></pre>
+<pre><code class="language-css">.box {
+  float: left;
+  width: 200px;
+  height: 100px;
+  margin: 1em;
+}
+.after-box {
+  clear: left;
+}
+使用 clear 我们就可以将这个段落移动到浮动元素 div 下面。你需要用 left 值才能清除元素的向左浮动。你还可以用 right 或 both 来清除向右浮动或同时清除向左向右浮动。
+</code></pre>
+<p>清除浮动</p>
+<pre><code class="language-css">img {
+  float: right;
+}
+
+.clearfix { //清除浮动
+  overflow: auto;
+}
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[iOS-给UILabel增加复制粘贴功能]]></title>
+        <id>https://dargonlee.github.io/post/ios-gei-uilabel-zeng-jia-fu-zhi-nian-tie-gong-neng/</id>
+        <link href="https://dargonlee.github.io/post/ios-gei-uilabel-zeng-jia-fu-zhi-nian-tie-gong-neng/">
+        </link>
+        <updated>2019-06-11T05:37:07.000Z</updated>
+        <summary type="html"><![CDATA[<h2 id="第一步">第一步</h2>
+<pre><code class="language-objectivec">//让label有资格成为第一响应者
+- (BOOL)becomeFirstResponder
+{
+    return YES;
+}
+
+//label能执行哪些操作(比如 拷贝 等)
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{
+    if (action == @selector(copy:) || action == @selector(paste:) || action == @selector(cut:)) return YES;
+    return NO;
+}
+</code></pre>
+]]></summary>
+        <content type="html"><![CDATA[<h2 id="第一步">第一步</h2>
+<pre><code class="language-objectivec">//让label有资格成为第一响应者
+- (BOOL)becomeFirstResponder
+{
+    return YES;
+}
+
+//label能执行哪些操作(比如 拷贝 等)
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{
+    if (action == @selector(copy:) || action == @selector(paste:) || action == @selector(cut:)) return YES;
+    return NO;
+}
+</code></pre>
+<!--more-->
+<h2 id="第二步">第二步</h2>
+<pre><code class="language-objectivec">
+- (void)copy:(UIMenuController *)menu
+{
+    //将自己的文字赋值到粘贴板
+    [self copy:menu];
+    //清空文字
+    self.text = nil;
+}
+
+- (void)paste:(UIMenuController *)menu
+{
+    //将自己的文字赋值到粘贴板
+    UIPasteboard * board = [UIPasteboard generalPasteboard];
+    board.string = self.text;
+}
+
+- (void)cut:(UIMenuController *)menu
+{
+    UIPasteboard * board = [UIPasteboard generalPasteboard];
+    self.text = board.string;
+}
+</code></pre>
+<h2 id="第三步">第三步</h2>
+<pre><code class="language-objectivec">- (void)awakeFromNib
+{
+    [self setup];
+    [super awakeFromNib];
+}
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    if (self == [super initWithFrame:frame]) {
+        [self setup];
+    }
+    return self;
+}
+
+- (void)setup
+{
+    self.userInteractionEnabled = YES;
+
+    [self addGestureRecognizer:[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(labelClick)]];
+}
+</code></pre>
+<p>显示menu</p>
+<pre><code class="language-objectivec">- (void)labelClick
+{
+    //1.让label成为第一响应者(这里的self是UILabel)
+    [self becomeFirstResponder];
+
+    //2.显示menuController
+    UIMenuController * menu = [UIMenuController sharedMenuController];
+//    [menu setTargetRect:self.frame inView:self.superview];
+    [menu setTargetRect:self.bounds inView:self];
+    [menu setMenuVisible:YES animated:YES];
+
+    NSLog(@&quot;%s&quot;,__func__);
+}
+</code></pre>
+<h1 id="over">OVER</h1>
+<p>如果你想自定义的话可以写下面方法(相应的实现方法需要再控制器里面实现不然用不了)</p>
+<pre><code class="language-objectivec">UIMenuController * menu = [UIMenuController sharedMenuController];
+UIMenuItem * reply = [[UIMenuItem alloc]initWithTitle:@&quot;回复&quot; action:@selector(replay:)];
+UIMenuItem * ding = [[UIMenuItem alloc]initWithTitle:@&quot;顶&quot; action:@selector(ding:)];
+UIMenuItem * report = [[UIMenuItem alloc]initWithTitle:@&quot;举报&quot; action:@selector(report:)];
+menu.menuItems = @[reply,ding,report];
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[修改iOS返回按钮的几种方式]]></title>
+        <id>https://dargonlee.github.io/post/xiu-gai-ios-fan-hui-an-niu-de-ji-chong-fang-shi/</id>
+        <link href="https://dargonlee.github.io/post/xiu-gai-ios-fan-hui-an-niu-de-ji-chong-fang-shi/">
+        </link>
+        <updated>2019-02-13T02:43:05.000Z</updated>
+        <summary type="html"><![CDATA[<h3 id="第一种">第一种</h3>
+<pre><code class="language-objectivec">UIImage *backButtonImage = [[UIImage imageNamed:@&quot;back&quot;] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)];
+
+[[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButtonImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+
+[[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(NSIntegerMin, NSIntegerMin) forBarMetrics:UIBarMetricsDefault];
+</code></pre>
+<blockquote>
+<p>提示:上面这种方法会被系统给拉伸,需要在当前控制器里面设置</p>
+</blockquote>
+]]></summary>
+        <content type="html"><![CDATA[<h3 id="第一种">第一种</h3>
+<pre><code class="language-objectivec">UIImage *backButtonImage = [[UIImage imageNamed:@&quot;back&quot;] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)];
+
+[[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButtonImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+
+[[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(NSIntegerMin, NSIntegerMin) forBarMetrics:UIBarMetricsDefault];
+</code></pre>
+<blockquote>
+<p>提示:上面这种方法会被系统给拉伸,需要在当前控制器里面设置</p>
+</blockquote>
+<!--more-->
+<h3 id="第二种">第二种</h3>
+<pre><code class="language-objectivec">UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
+backItem.title = @&quot;&quot;;
+//主要是以下两个图片设置
+self.navigationController.navigationBar.backIndicatorImage = [UIImage imageNamed:@&quot;backPic&quot;];
+self.navigationController.navigationBar.backIndicatorTransitionMaskImage = [UIImage imageNamed:@&quot;backPic&quot;];        
+self.navigationItem.backBarButtonItem = backItem;
+</code></pre>
+<blockquote>
+<p>提示: 这种方法在父类方法中设置好使</p>
+</blockquote>
+<h3 id="-以上两种方法都是在不改变系统手势滑动返回的情况下的">- 以上两种方法都是在不改变系统手势滑动返回的情况下的</h3>
+<h3 id="第三种">第三种</h3>
+<pre><code class="language-objectivec">//创建一个UIButton
+UIButton *backButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
+//设置UIButton的图像
+[backButton setImage:[UIImage imageNamed:@&quot;left_select_img.png&quot;] forState:UIControlStateNormal];
+//给UIButton绑定一个方法，在这个方法中进行popViewControllerAnimated
+[backButton addTarget:self action:@selector(backItemClick) forControlEvents:UIControlEventTouchUpInside];
+//然后通过系统给的自定义BarButtonItem的方法创建BarButtonItem
+UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithCustomView:backButton];
+//覆盖返回按键
+self.navigationItem.leftBarButtonItem = backItem;
+</code></pre>
+<blockquote>
+<p>提示:这种方法会失去手势滑动返回的功能</p>
+</blockquote>
+<h3 id="第四种">第四种</h3>
+<pre><code class="language-objectivec">//重新创建一个barButtonItem
+UIBarButtonItem *backItem = [[UIBarButtonItem alloc]initWithTitle:@&quot;你想要设置的返回按钮文字&quot; style:UIBarButtonItemStylePlain target:nil action:nil];
+//设置backBarButtonItem即可
+self.navigationItem.backBarButtonItem = backItem;
+</code></pre>
+<blockquote>
+<p>提示:上面这种方式只是修改返回文字而已 至于返回图标还是系统提供的 手势滑动返回依然存在</p>
+</blockquote>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
         <id>https://dargonlee.github.io/post/hello-gridea/</id>
@@ -40,6 +797,556 @@
 <p>未来，它一定会成为你离不开的伙伴</p>
 <p>尽情发挥你的才华吧！</p>
 <p>😘 Enjoy~</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[iOS WKWebView 同步返回值给JS]]></title>
+        <id>https://dargonlee.github.io/post/ios-wkwebview-tong-bu-fan-hui-zhi-gei-js/</id>
+        <link href="https://dargonlee.github.io/post/ios-wkwebview-tong-bu-fan-hui-zhi-gei-js/">
+        </link>
+        <updated>2018-10-23T05:49:38.000Z</updated>
+        <summary type="html"><![CDATA[<blockquote>
+<p>我们都知道iOS WKWebView 跟JS通信的时候 由于JS Call OC 同步返回我这里采用了不同于异步messageHandler的通信方式，因此同步返回要单独进行设计</p>
+<p>在我发现下面方法的时候 一般我们处理 与JS交互的时候都是 JS调用我们 然后我们再去调用JS方法 并不能同步给JS返回值</p>
+</blockquote>
+]]></summary>
+        <content type="html"><![CDATA[<blockquote>
+<p>我们都知道iOS WKWebView 跟JS通信的时候 由于JS Call OC 同步返回我这里采用了不同于异步messageHandler的通信方式，因此同步返回要单独进行设计</p>
+<p>在我发现下面方法的时候 一般我们处理 与JS交互的时候都是 JS调用我们 然后我们再去调用JS方法 并不能同步给JS返回值</p>
+</blockquote>
+<!--more-->
+<h3 id="代理方法分析">代理方法分析</h3>
+<p>在我们写WKWebView的时候需要遵守<code>WKUIDelegate</code>协议 其中里面有这几个方法</p>
+<pre><code class="language-objectivec">// 获取js 里面的提示
+-(void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler
+{
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@&quot;提示&quot; message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@&quot;确定&quot; style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        completionHandler();
+    }]];
+
+    [self presentViewController:alert animated:YES completion:NULL];
+}
+
+// js 信息的交流
+-(void)webView:(WKWebView *)webView runJavaScriptConfirmPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(BOOL))completionHandler
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@&quot;提示&quot; message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@&quot;确定&quot; style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        completionHandler(YES);
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@&quot;取消&quot; style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        completionHandler(NO);
+    }]];
+    [self presentViewController:alert animated:YES completion:NULL];
+}
+
+// 交互。可输入的文本。
+-(void)webView:(WKWebView *)webView runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt defaultText:(NSString *)defaultText initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSString * _Nullable))completionHandler
+{
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@&quot;textinput&quot; message:@&quot;JS调用输入框&quot; preferredStyle:UIAlertControllerStyleAlert];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.textColor = [UIColor redColor];
+    }];
+    [alert addAction:[UIAlertAction actionWithTitle:@&quot;确定&quot; style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        completionHandler([[alert.textFields lastObject] text]);
+    }]];
+
+    [self presentViewController:alert animated:YES completion:NULL];
+
+}
+</code></pre>
+<p>以上三个方法都是在js调用alert confirm prompt 的时候 进行拦截 然后弹出系统样式的界面</p>
+<ul>
+<li><code>runJavaScriptConfirmPanelWithMessage</code>这个代理方法是在JS 调用 <code>alert('xxx')</code>的时候会调用  且回调函数参数为空</li>
+<li><code>runJavaScriptConfirmPanelWithMessage</code>这个代理方法是在JS调用confirm函数的时候会进行拦截调用 且回调函数参数为Bool值 同步告诉JS 当前用户点击了确定按钮还是取消按钮</li>
+<li><code>runJavaScriptTextInputPanelWithPrompt</code> 这个代理方法是在JS调用prompt函数的时候进行拦截调用的 且回调函数的参数为<code>NSString</code>类型</li>
+</ul>
+<h3 id="解决方法">解决方法</h3>
+<p>细心的同学可能就已经明白了 在这个<code>runJavaScriptTextInputPanelWithPrompt</code> 代理方法中 可以回调字符串 也就意味着可以给JS返回值<br>
+可能有同学会问 我不需要那个弹出窗怎么办  其实你不需要的话 直接在代理方法中写<br>
+<code>completionHandler(&quot;xxxx&quot;);</code>就行 不需要写<code>UIAlertController</code>那一大堆</p>
+<h3 id="下面给出相应的具体代码">下面给出相应的具体代码</h3>
+<ul>
+<li>
+<p>JS部分 在需要跟原生交互的地方写下面的方法</p>
+<pre><code>window.prompt(text,defaultText);
+</code></pre>
+<p><code>text</code>可选。要在对话框中显示的提示信息（纯文本）</p>
+<p><code>defaultText</code>可选。默认的输入文本。</p>
+<p>一般只需要写text就行 defaultText 为空字符就可以</p>
+</li>
+<li>
+<p>OC部分 在js调用prompt方法后会来到相应的代理方法中</p>
+<pre><code class="language-objectivec">// 交互。可输入的文本。
+-(void)webView:(WKWebView *)webView runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt defaultText:(NSString *)defaultText initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSString * _Nullable))completionHandler
+{
+  NSLog(@&quot;%@---%@&quot;,prompt,defaultText);
+  completionHandler(@&quot;xxxxx&quot;);//这里就是要返回给JS的返回值
+}
+</code></pre>
+<p><code>prompt</code> 就是上面JS <code>text</code>参数</p>
+<p><code>defaultText</code> 就是上面JS <code>defaultText</code>参数</p>
+</li>
+</ul>
+<p>如果你需要做参数区分的话 可以灵活的运用这两个方法 去返回给JS不同的返回值<br>
+<code>提示</code> 如果要一次返回多个参数值 你可以把参数以逗号拼接为一个字符串 返回给JS 然后JS接收到参数的时候 再进行分割解析运用 这里只是给出一些想法 更多的就要靠同学们自己灵活运用了</p>
+<h3 id="完毕">完毕</h3>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[iOS富文本]]></title>
+        <id>https://dargonlee.github.io/post/ios-fu-wen-ben/</id>
+        <link href="https://dargonlee.github.io/post/ios-fu-wen-ben/">
+        </link>
+        <updated>2018-09-13T05:45:37.000Z</updated>
+        <summary type="html"><![CDATA[<p>在iOS上能进行文本显示的控件有UILable，UITextField，UITextView。然而这些控件本身对文本的展现方式很单一，通常仅仅能够控制字体样式、大小、颜色、加粗、斜体等等，而对于行距控制，字距控制，段落控制等高级功能却无能为力。</p>
+<p>而iOS7的发布，苹果又引入了TextKit,TextKit是一个快速而又现代化的文字排版和渲染引擎。</p>
+<p>TextKit并没有新增类，只是在原有的文本显示控件上进行了封装，可以在平时我们最喜欢使用的UILabel，UITextField，UITextView等控件里面使用，其最主要的作用就是为程序提供文字排版和渲染的功能</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>在iOS上能进行文本显示的控件有UILable，UITextField，UITextView。然而这些控件本身对文本的展现方式很单一，通常仅仅能够控制字体样式、大小、颜色、加粗、斜体等等，而对于行距控制，字距控制，段落控制等高级功能却无能为力。</p>
+<p>而iOS7的发布，苹果又引入了TextKit,TextKit是一个快速而又现代化的文字排版和渲染引擎。</p>
+<p>TextKit并没有新增类，只是在原有的文本显示控件上进行了封装，可以在平时我们最喜欢使用的UILabel，UITextField，UITextView等控件里面使用，其最主要的作用就是为程序提供文字排版和渲染的功能</p>
+<!--more-->
+<h2 id="1-nsmutableattributedstring的基本使用">1、NSMutableAttributedString的基本使用</h2>
+<p>富文本注意：<br>
+先设置的先显示，后设置的，如果和先设置的样式不一致，是会覆盖的，富文本的设置具有先后顺序。<br>
+不要忽略了空格也是一个字符。<br>
+建议使用灵活的好用的NSMutableAttributedString，不要使用NSAttributedString。<br>
+富文本基本使用方法的思路概要</p>
+<p>1、创建一个NSMutableAttributedString富文本对象(一般不用NSAttributedString)<br>
+2、设置addAttribute属性<br>
+(1) addAttribute: 一个属性<br>
+(2) addAttributes: 一个存储多个属性的属性字典，比如这个字典可以是：</p>
+<pre><code class="language-objectivec"> NSDictionary *attrDic = @{ 
+   NSFontAttributeName: [UIFont fontWithName: @&quot;Zapfino&quot; size: 15],                               
+   NSForegroundColorAttributeName: [UIColor blueColor] 
+};
+</code></pre>
+<p>3、控件.attributedText = 富文本对象(和控件.txt = NSString文本对象不一样的)</p>
+<pre><code class="language-objectivec">
+    //添加富文本对象
+    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc]initWithString:str];
+    //设置字体颜色为红色
+    [attr addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(4, 5)];
+    //设置字体大小
+    [attr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:28] range:NSMakeRange(4, 5)];
+
+    self.label.attributedText = attr;
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="http://upload-images.jianshu.io/upload_images/646265-b146d2754a533bd3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" loading="lazy"></figure>
+<p>###NSMutableAttributedString可以设置的属性有：</p>
+<pre><code class="language-objectivec">NSFontAttributeName                设置字体属性，默认值：字体：Helvetica(Neue) 字号：12
+NSForegroundColorAttributeNam      设置字体颜色，取值为 UIColor对象，默认值为黑色
+NSBackgroundColorAttributeName     设置字体所在区域背景颜色，取值为 UIColor对象，默认值为nil, 透明色
+NSLigatureAttributeName            设置连体属性，取值为NSNumber 对象(整数)，0 表示没有连体字符，1 表示使用默认的连体字符
+NSKernAttributeName                设定字符间距，取值为 NSNumber 对象（整数），正值间距加宽，负值间距变窄
+NSStrikethroughStyleAttributeName  设置删除线，取值为 NSNumber 对象（整数）
+NSStrikethroughColorAttributeName  设置删除线颜色，取值为 UIColor 对象，默认值为黑色
+NSUnderlineStyleAttributeName      设置下划线，取值为 NSNumber 对象（整数），枚举常量 NSUnderlineStyle中的值，与删除线类似
+NSUnderlineColorAttributeName      设置下划线颜色，取值为 UIColor 对象，默认值为黑色
+NSStrokeWidthAttributeName         设置笔画宽度，取值为 NSNumber 对象（整数），负值填充效果，正值中空效果
+NSStrokeColorAttributeName         填充部分颜色，不是字体颜色，取值为 UIColor 对象
+NSShadowAttributeName              设置阴影属性，取值为 NSShadow 对象
+NSTextEffectAttributeName          设置文本特殊效果，取值为 NSString 对象，目前只有图版印刷效果可用：
+NSBaselineOffsetAttributeName      设置基线偏移值，取值为 NSNumber （float）,正值上偏，负值下偏
+NSObliquenessAttributeName         设置字形倾斜度，取值为 NSNumber （float）,正值右倾，负值左倾
+NSExpansionAttributeName           设置文本横向拉伸属性，取值为 NSNumber （float）,正值横向拉伸文本，负值横向压缩文本
+NSWritingDirectionAttributeName    设置文字书写方向，从左向右书写或者从右向左书写
+NSVerticalGlyphFormAttributeName   设置文字排版方向，取值为 NSNumber 对象(整数)，0 表示横排文本，1 表示竖排文本
+NSLinkAttributeName                设置链接属性，点击后调用浏览器打开指定URL地址
+NSAttachmentAttributeName          设置文本附件,取值为NSTextAttachment对象,常用于文字图片混排
+NSParagraphStyleAttributeName      设置文本段落排版格式，取值为 NSParagraphStyle 对象
+</code></pre>
+<h3 id="2nstextattachment图文混排简单应用">2.NSTextAttachment图文混排简单应用</h3>
+<pre><code class="language-objectivec">
+    //设置图片
+    NSTextAttachment * attachment = [[NSTextAttachment alloc]init];
+    //设置图片属性
+    attachment.image = [UIImage imageNamed:@&quot;selected&quot;];
+    //设置图片的bounds
+    attachment.bounds = CGRectMake(0, 0, self.view.bounds.size.width, 180);
+    //将attachment转换成字符串属性
+    NSMutableAttributedString *attachmentString = (NSMutableAttributedString *)[NSAttributedString attributedStringWithAttachment:attachment];
+    //把图片插入到文本中
+    [self.textView.textStorage insertAttributedString:attachmentString atIndex:0];
+
+//也可以拼接到文本后面
+//    [self.textView.textStorage appendAttributedString:attachmentString];
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="http://upload-images.jianshu.io/upload_images/646265-1ff7c031aef05e6f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" loading="lazy"></figure>
+<p>###textview的实际使用</p>
+<ul>
+<li>
+<p>实现的过程如下:</p>
+<p>storage --&gt; layoutManager --&gt; textContainer --&gt; textView</p>
+</li>
+</ul>
+<pre><code class="language-objectivec">
+    // 装载内容的容器
+    NSTextStorage *storage = [NSTextStorage new];
+    [storage replaceCharactersInRange:NSMakeRange(0, 0)
+                           withString:
+     @&quot;未选择的路-弗罗斯特\n\n黄色的树林里分出两条路，\n可惜我不能同时去涉足，\n我在那路口久久伫立，\n我向着一条路极目望去，\n直到它消失在丛林深处。\n但我却选了另外一条路，\n它荒草萋萋，十分幽寂，\n显得更诱人、更美丽，\n虽然在这两条小路上，\n都很少留下旅人的足迹，\n虽然那天清晨落叶满地，\n两条路都未经脚印污染。\n啊，留下一条路等改日再见！\n但我知道路径延绵无尽头，\n恐怕我难以再回返。\n也许多少年后在某个地方，\n我将轻声叹息把往事回顾，\n一片树林里分出两条路，\n而我选了人迹更少的一条，\n从此决定了我一生的道路。&quot;];
+
+    // 给内容容器添加布局(可以添加多个)
+    NSLayoutManager *layoutManager = [NSLayoutManager new];
+    [storage addLayoutManager:layoutManager];
+
+    // 带有内容和布局的容器
+    NSTextContainer *textContainer = [NSTextContainer new];
+    [layoutManager addTextContainer:textContainer];
+
+    // 给TextView添加带有内容和布局的容器
+    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(10, 20, 300, 400)
+                                               textContainer:textContainer];
+    textView.layer.borderWidth = 1;
+    textView.scrollEnabled = NO;
+    textView.editable      = NO;
+    [self.view addSubview:textView];
+</code></pre>
+<p>制作富文本，你可能会有一些定制的需求，比如图片的高度不想每个都要设置一边，你可以写一个继承，然后将下面方法重写</p>
+<pre><code class="language-objectivec">
+-(CGRect)attachmentBoundsForTextContainer:(NSTextContainer *)textContainer proposedLineFragment:(CGRect)lineFrag glyphPosition:(CGPoint)position characterIndex:(NSUInteger)charIndex
+{
+  return CGRectMake( 0 , 0 , lineFrag.size.height , lineFrag.size.height);
+}
+</code></pre>
+<p>替换文本内容里面的字符为图片</p>
+<pre><code class="language-objectivec">
+    //添加富文本对象
+    NSMutableAttributedString * attachmentString = [[NSMutableAttributedString alloc]initWithString:str];
+    //设置图片
+    NSTextAttachment * attachment = [[NSTextAttachment alloc]init];
+    //设置图片属性
+    attachment.image = [UIImage imageNamed:@&quot;selected&quot;];
+    //设置图片的bounds
+    attachment.bounds = CGRectMake(0, 0, self.view.bounds.size.width, 180);
+
+    NSAttributedString * text = [NSAttributedString attributedStringWithAttachment:attachment];
+
+    NSRange range = [[attachmentString string] rangeOfString:@&quot;icon&quot;];
+
+    [attachmentString replaceCharactersInRange:range withAttributedString:text];
+
+    self.label.attributedText = attachmentString;
+
+1.为某一范围内文字设置多个属性
+- (void)setAttributes:(NSDictionary *)attrs range:(NSRange)range;
+为某一范围内文字添加某个属性
+- (void)addAttribute:(NSString *)name value:(id)value range:(NSRange)range;
+
+为某一范围内文字添加多个属性
+- (void)addAttributes:(NSDictionary *)attrs range:(NSRange)range;
+移除某范围内的某个属性
+- (void)removeAttribute:(NSString *)name range:(NSRange)range;
+</code></pre>
+<pre><code class="language-objectivec">label.lineBreakMode = NSLineBreakByCharWrapping;以字符为显示单位显示，后面部分省略不显示。
+label.lineBreakMode = NSLineBreakByClipping;剪切与文本宽度相同的内容长度，后半部分被删除。
+label.lineBreakMode = NSLineBreakByTruncatingHead;前面部分文字以……方式省略，显示尾部文字内容。
+label.lineBreakMode = NSLineBreakByTruncatingMiddle;中间的内容以……方式省略，显示头尾的文字内容。
+label.lineBreakMode = NSLineBreakByTruncatingTail;结尾部分的内容以……方式省略，显示头的文字内容。
+label.lineBreakMode = NSLineBreakByWordWrapping;以单词为显示单位显示，后面部分省略不显示。
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[iOS tableHeaderView的那些坑]]></title>
+        <id>https://dargonlee.github.io/post/ios-tableheaderview-de-na-xie-keng/</id>
+        <link href="https://dargonlee.github.io/post/ios-tableheaderview-de-na-xie-keng/">
+        </link>
+        <updated>2018-09-10T05:43:41.000Z</updated>
+        <summary type="html"><![CDATA[<h1 id="ios-tableheaderview的那些坑">iOS tableHeaderView的那些坑</h1>
+<h3 id="前言">前言:</h3>
+<blockquote>
+<p>tableView 有个属性叫tableHeaderView 用它我们可以做很多事情<br>
+在tableView的头部加上自定义的view 随着tableView一起滚动</p>
+</blockquote>
+<p><code>常用的就是轮播图比如这样</code></p>
+<figure data-type="image" tabindex="1"><img src="http://upload-images.jianshu.io/upload_images/646265-c073e8a0513156ac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="DAD90DE4-84E9-4194-9554-40956AD01E32.png" loading="lazy"></figure>
+<p>tableView 的tableHeaderView 有两种创建方式一中是代码创建另外一种是用xib创建</p>
+]]></summary>
+        <content type="html"><![CDATA[<h1 id="ios-tableheaderview的那些坑">iOS tableHeaderView的那些坑</h1>
+<h3 id="前言">前言:</h3>
+<blockquote>
+<p>tableView 有个属性叫tableHeaderView 用它我们可以做很多事情<br>
+在tableView的头部加上自定义的view 随着tableView一起滚动</p>
+</blockquote>
+<p><code>常用的就是轮播图比如这样</code></p>
+<figure data-type="image" tabindex="1"><img src="http://upload-images.jianshu.io/upload_images/646265-c073e8a0513156ac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="DAD90DE4-84E9-4194-9554-40956AD01E32.png" loading="lazy"></figure>
+<p>tableView 的tableHeaderView 有两种创建方式一中是代码创建另外一种是用xib创建</p>
+<!--more-->
+<p>###用代码创建</p>
+<pre><code class="language-objectivec">  UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 200)];
+    // 设置header
+  self.tableView.tableHeaderView = header;
+</code></pre>
+<ul>
+<li>因为 self.tableView.tableHeaderView的高度是没有办法设置的,所以必须设置自定义View的高度 来达到设置 self.tableView.tableHeaderView的高度</li>
+</ul>
+<p>###用xib创建</p>
+<pre><code class="language-objectivec">BBSTableHeaderView * cell = [BBSTableHeaderView tableHeaderView];
+cell = 291;
+self.tableView.tableHeaderView = header;
+</code></pre>
+<ul>
+<li>按理来说这样设置肯定是没有问题的 但是这时候你设置的高度是不准确的 而且是没有办法适配机型的</li>
+<li>所以这样的设置发放不可行</li>
+<li>然后这里有个小tips  很简单  但是如果你想不到的话 你可能在这个高度问题上调试一整天 比如说我</li>
+</ul>
+<h4 id="-解决方案">- 解决方案</h4>
+<pre><code class="language-objectivec">    UIView * header = [[UIView alloc]init];
+    header.backgroundColor = [UIColor whiteColor];
+    BBSTableHeaderView * cell = [BBSTableHeaderView tableHeaderView];
+    cell.backgroundColor = [UIColor clearColor];
+    [header addSubview:cell];
+    header.height = 291;//注意这里不要进行比例缩放
+    self.tableView.tableHeaderView = header;
+</code></pre>
+<ul>
+<li>原理 就是在xib View下面在加一层View (代码创建的) 这样才能保证你设置的高度是准确的 因为Xib高度 准确 必须再加一层代码创建的view才能保证你的View的高度是准确的 而且是适配各种机型的</li>
+</ul>
+<p>###其他</p>
+<ul>
+<li>tableView 的顶部会由于设置tableHeaderView而变得 有一片空白</li>
+</ul>
+<p>解决方案如下:</p>
+<pre><code class="language-objectivec">//在控制器里面viewDidLoad 写下这句代码应该就可以了
+
+self.automaticallyAdjustsScrollViewInsets = NO;
+
+/*
+* 坐标：以屏幕左上角为原点（iOS7以前在状态栏或者导航条下）
+2.UIScrollView（包括其子类，比如UITableView）:会自动在顶部和底部预留一些空白（因为滚动经过半透明导航条或者tabbar下面，需要能隐约看到的效果），是否预留空白可以由UIViewController的
+automaticallyAdjustsScrollViewInsets的这个属性控制（默认YES,表示预留空白）。
+上面这些只要你用iOS开发，就能发现。
+
+一个控制器中，出现UIScrollView（包括其子类），必须是第一个添加到控制器的视图上才会预留空白，这里的第一个是相对于所有的子视图，不仅仅是其他UIScrollView（包括其子类）。
+
+那么我遇到的问题如何解决呢，还是这个属性automaticallyAdjustsScrollViewInsets，仔细看它的文档说明，它说了，如果一个控制器中出现两个以上的UIScrollView（包括其子类），这个属性需要设置为NO.即不会预留空白，那么这个控制器中所有的UIScrollView（包括其子类）都需要重新设置坐标
+*/
+</code></pre>
+<ul>
+<li>
+<p>有的时候上面这种方法设置是没有用的 所以如果上面这种方法没有用很有可能是创建tableView的时候用的分组样式,</p>
+<p>解决方法如下</p>
+<p>注意:不要写0 要写一个比较小的数字 别问为什么  因为设置0 没有效果</p>
+</li>
+</ul>
+<pre><code class="language-objectivec">- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0.01;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 0.01;
+}
+</code></pre>
+<ul>
+<li>如果你还有其他的需求比如怎么隐藏 self.tableView.tableHeaderView 或者比如怎么改变self.tableView.tableHeaderView的高度看下面</li>
+</ul>
+<pre><code class="language-objectivec">//显示headerView
+[self.tableView.tableHeaderView setHidden:NO];
+
+//隐藏headerView
+ [self.tableView.tableHeaderView setHidden:YES];
+</code></pre>
+<pre><code class="language-objectivec">//这样设置是没有用的 不信你可以试试 始终为0
+self.tableView.tableHeaderView.height = xxx;
+
+//应该这么设置
+UIView *tableHeaderView = _tableView.tableHeaderView;
+tableHeaderView.height = 0.01;
+[_tableView setTableHeaderView:tableHeaderView];
+//如果你要设置
+tableHeaderView.height = 0;//这样是没有效果的 而且tableView的顶部又会多处一片空白  一定要设置一个比较小的值 当然这个值并不是0;
+</code></pre>
+<p>#写在末尾<br>
+以上内容是自己在开发中遇到过得问题 以及自己的解决方案 写在这里 是想让更多人知道这里的坑  以免在这个小问题上耽误大家的时间.</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[tableView的多选和单选]]></title>
+        <id>https://dargonlee.github.io/post/tableview-de-duo-xuan-he-dan-xuan/</id>
+        <link href="https://dargonlee.github.io/post/tableview-de-duo-xuan-he-dan-xuan/">
+        </link>
+        <updated>2018-07-31T05:47:26.000Z</updated>
+        <summary type="html"><![CDATA[<h3 id="系统自带的多选">系统自带的多选</h3>
+<figure data-type="image" tabindex="1"><img src="http://upload-images.jianshu.io/upload_images/646265-0171d1fe767ed431.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Snip20170605_1.png" loading="lazy"></figure>
+]]></summary>
+        <content type="html"><![CDATA[<h3 id="系统自带的多选">系统自带的多选</h3>
+<figure data-type="image" tabindex="1"><img src="http://upload-images.jianshu.io/upload_images/646265-0171d1fe767ed431.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Snip20170605_1.png" loading="lazy"></figure>
+<!--more-->
+<ul>
+<li>
+<p>首先让tableView允许多选操作</p>
+<pre><code class="language-objectivec">// 允许在编辑模式进行多选操作
+self.tableView.allowsMultipleSelectionDuringEditing = YES;
+</code></pre>
+</li>
+<li>
+<p>当点击编辑的时候设置tableView的编辑模式</p>
+<pre><code class="language-objectivec">[self.tableView setEditing:YES animated:YES];
+</code></pre>
+</li>
+<li>
+<p>如果你想让一个按钮来控制tableView的编辑和不编辑的状态可以这么写</p>
+<pre><code class="language-objectivec">[self.tableView setEditing:!self.tableView.isEditing animated:YES];
+</code></pre>
+</li>
+<li>
+<p>完成以上几步就可以选择想要删除的cell了</p>
+</li>
+<li>
+<p>但是如果你想删除选中的数据要实现下面的方法</p>
+</li>
+</ul>
+<pre><code class="language-objectivec">- (void)remove
+{
+    // 获得所有被选中的行
+    NSArray *indexPaths = [self.tableView indexPathsForSelectedRows];
+
+
+    // 便利所有的行号
+    NSMutableArray *deletedDeals = [NSMutableArray array];
+    for (NSIndexPath *path in indexPaths) {
+        [deletedDeals addObject:self.deals[path.row]];
+    }
+
+    // 删除模型数据
+    [self.deals removeObjectsInArray:deletedDeals];
+
+   // 刷新表格  一定要刷新数据
+    [self.tableView reloadData];
+}
+# 说明:self.deals 是存放模型的数组
+</code></pre>
+<h3 id="自定义cell多选">自定义cell多选</h3>
+<figure data-type="image" tabindex="2"><img src="http://upload-images.jianshu.io/upload_images/646265-a38436d429f4f56f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Snip20170605_2.png" loading="lazy"></figure>
+<ul>
+<li>首先开发模式是MVC思想(如果不是MVC思想往后看)
+<ul>
+<li>给模型增加一个属性</li>
+<li>这个属性是用来显示或者隐藏 打钩 的图片的</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-objectivec">/** 状态量标识有无被打钩 */
+@property (assign, nonatomic, getter=isChecked) BOOL checked;
+</code></pre>
+<ul>
+<li>然后再给cell赋值的时候判断cell子控件打钩图片的显示隐藏</li>
+</ul>
+<pre><code class="language-objectivec">// 设置打钩控件的显示和隐藏
+self.checkView.hidden = !deal.isChecked;
+</code></pre>
+<ul>
+<li>最后一步就是 给模型的checked属性赋值
+<ul>
+<li>在tableView的点击方法中实现下面代码</li>
+<li>(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-objectivec">// 取消选中这一行
+[tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+// 模型的打钩属性取反
+Deal *deal = self.deals[indexPath.row];
+deal.checked = !deal.isChecked;
+
+// 刷新表格
+[tableView reloadData];
+
+# 说明:Deal 是模型数据    self.deals是存放模型数据的数组
+</code></pre>
+<h3 id="自定义cell多选不是mvc开发模式">自定义cell多选(不是MVC开发模式)</h3>
+<ul>
+<li>首先声明一个可变数组用来存放点击cell的indexPath</li>
+</ul>
+<pre><code class="language-objectivec">@property (nonatomic, strong) NSMutableArray *indexPaths;
+
+# 并且进行懒加载
+- (NSMutableArray *)indexPaths
+{
+    if (!_indexPaths) {
+        _indexPaths = [NSMutableArray array];
+    }
+    return _indexPaths;
+}
+</code></pre>
+<ul>
+<li>然后再给你cell赋值的地方写下面代码</li>
+</ul>
+<pre><code class="language-objectivec">//mr_tb 未选中图片  xz_tb选中图片
+#默认是没有任何选中的cell的
+cell.imageView.image = [UIImage imageNamed:@&quot;mr_tb&quot;];
+//多选
+for (NSIndexPath * index in self.indexPaths) 
+{//遍历数组里面的索引 和 当前索引是否一致
+     if (index == indexPath)
+     {//改变在选择的数组里面的记录
+          cell.imageView.image = [UIImage imageNamed:@&quot;xz_tb&quot;];//选中
+          break;
+     }
+}
+</code></pre>
+<ul>
+<li>在tableView的点击代理方法中实现下面方法</li>
+</ul>
+<pre><code class="language-objectivec">//取出当前cell
+UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+UIImage * image = [UIImage imageNamed:@&quot;xz_tb&quot;];
+if ([cell.imageView.image isEqual:image]) 
+{//如果为选中 变成未选中
+     cell.imageView.image = [UIImage imageNamed:@&quot;mr_tb&quot;];
+     [self.indexPaths removeObject:indexPath];
+}else{//如果为未选中 变成选中
+      cell.imageView.image = [UIImage imageNamed:@&quot;xz_tb&quot;];
+      [self.indexPaths addObject:indexPath];
+}
+</code></pre>
+<ul>
+<li>如果你想控制多选的个数的话 你可以这么写</li>
+</ul>
+<pre><code class="language-objectivec"> UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+UIImage * image = [UIImage imageNamed:@&quot;xz_tb&quot;];
+if ([cell.imageView.image isEqual:image])
+ {//如果为选中
+       cell.imageView.image = [UIImage imageNamed:@&quot;mr_tb&quot;];
+       [self.indexPaths removeObject:indexPath];
+}else{
+       if (self.indexPaths.count &gt;= 2)
+       {//如果当前数组存储的索引超过两个直接返回
+        [self showMessage:@&quot;最多只能选择两个&quot;];
+         return;
+        }else{
+                cell.imageView.image = [UIImage imageNamed:@&quot;xz_tb&quot;];
+                [self.indexPaths addObject:indexPath];
+            }
+
+        }
+</code></pre>
+<ul>
+<li>整体的思想就是当你选中某一个cell的时候取出当前cell的图片 和 选中图片进行对比 如果一样 就把当前cell的iamge变成另外一个图片 (当变成未选中的时候 要把在数组里面的indexPath移除,当变成选中的时候设置选中的图片 并且把当前选中的indexPath保存在数组中)</li>
+</ul>
+<h3 id="自定义cell单选">自定义cell单选</h3>
+<ul>
+<li>在tableView的点击dialing方法中写下下面代码</li>
+</ul>
+<pre><code class="language-objectivec">for (int i = 0; i &lt; self.deals.count; i++) {
+        Deal *deal = self.deals[i];
+        if (i != indexPath.row) {
+            deal.checked = YES;
+        }else{
+            deal.checked = NO;
+        }
+    }
+# Deal 是数据模型   self.deals 是存放数据模型的数组
+</code></pre>
 ]]></content>
     </entry>
 </feed>

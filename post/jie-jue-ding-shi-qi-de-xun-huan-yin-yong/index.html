@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>Hello Gridea | 七里田间的守望者</title>
+<title>解决定时器的循环引用 | 七里田间的守望者</title>
 <meta name="description" content="温故而知新">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -81,40 +81,134 @@
       <div class="sm-12 md-8 col">
         <div class="paper">
           <article class="article">
-            <h1>Hello Gridea</h1>
+            <h1>解决定时器的循环引用</h1>
             <p class="article-meta">
-              2018-12-12
+              2019-11-15
               
-                <a href="https://dargonlee.github.io/tag/JKeKhLXWK/" class="badge ">
-                  Gridea
+                <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
+                  iOS
                 </a>
               
             </p>
             
-              <img src="https://dargonlee.github.io/post-images/hello-gridea.png" alt="Hello Gridea">
-            
             <div class="post-content">
-              <p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-<!-- more -->
-<p><a href="https://github.com/getgridea/gridea">Github</a><br>
-<a href="https://gridea.dev/">Gridea 主页</a><br>
-<a href="http://fehey.com/">示例网站</a></p>
-<h2 id="特性">特性👇</h2>
-<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
-<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
-<p>🏷️  你可以对文章进行标签分组</p>
-<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
-<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
-<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
-<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
-<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
-<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
-<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
-<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
-<p>未来，它一定会成为你离不开的伙伴</p>
-<p>尽情发挥你的才华吧！</p>
-<p>😘 Enjoy~</p>
+              <p>一般使用定时器的方法，在控制器返回上级的时候。定时器都不会停止，会导致循环引用，控制器的<code>delloc</code>方法不会调用。<br>
+以下两种方式就是为了解决，定时器在控制器返回上级的时候解决循环引用的问题。</p>
+<!-- more --> 
+<h5 id="在控制器中使用定时器常规的方法">在控制器中使用定时器常规的方法</h5>
+<pre><code class="language-objc">@interface ViewController ()
+
+@property (nonatomic,strong) NSTimer *timer;
+
+@property (nonatomic,strong) CADisplayLink *link;
+
+@end
+</code></pre>
+<pre><code class="language-objc">
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    // Timer的使用
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timerTest) userInfo:nil repeats:YES];
+    
+    // CADisplayLink的使用
+    self.link = [CADisplayLink displayLinkWithTarget:self selector:@selector(timerTest)];
+    [self.link addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+}
+
+- (void)timerTest
+{
+    NSLog(@&quot;%s&quot;, __func__);
+}
+</code></pre>
+<p>以上这种写法就是常规的写法，就是在一个控制器push到当前这个控制器的时候开启定时器。<br>
+但是这种写法有问题，会产生循环引用问题，从而导致内存泄露。<br>
+<code>ViewController</code> 引用 <code>timer定时器</code> <code>timer</code>的<code>target</code>又引用<code>ViewController</code> 而且三者都是使用 <code>storng</code>引用 这样在 <code>ViewController</code>返回上级的时候，不会调用<code>delloc</code>方法 从而导致循环引用。</p>
+<h4 id="解决方法的思路">解决方法的思路：</h4>
+<p>我们知道引起循环引用的问题是 <code>ViewController</code> <code>timer</code> <code>timer的target</code> 三者都是强引用导致的 我们只要在这个三个中间一个地方给设置<code>weak</code>引用 就不会产生循环引用了。<br>
+思路就是 -&gt; 设置<code>timer</code>的<code>target</code>的时候不要直接设置 <code>ViewController</code> 而是设置一个 自定义的对象 比如 <code>TimerTarget</code> 然后由这个对象对控制器<code>弱引用</code>，本来由控制器的直接调用的定时方法，现在由 <code>TimerTarget</code> 对象对控制器进行转发。从而达到解决循环引用的问题。<br>
+代码如下：</p>
+<pre><code class="language-objc">
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    
+    self.link = [CADisplayLink displayLinkWithTarget:[TimerTarget proxyWithTarget:self] selector:@selector(timerTest)];
+    
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:[TimerTarget proxyWithTarget:self] selector:@selector(timerTest) userInfo:nil repeats:YES];
+}
+
+- (void)timerTest
+{
+    NSLog(@&quot;%s&quot;, __func__);
+}
+</code></pre>
+<p><code>TimerTarget对象的方法实现</code></p>
+<pre><code class="language-objc">@interface TimerTarget : NSObject
+
+@property (nonatomic, weak) id target;
+// 接收一个可以相应 定时器的对象
++ (instancetype)proxyWithTarget:(id)target;
+
+@end
+
+
++ (instancetype)proxyWithTarget:(id)target
+{
+    TimerTarget *targets = [[TimerTarget alloc]init];
+    targets.target = target;//然后对外部的对象进行弱引用
+    return targets;
+}
+// 在定时器给当前对象发送方法的时候 会走当前对象的消息转发机制 
+// 然后可以在这个方法里面对弱应用的对象去响应要调用的方法
+- (id)forwardingTargetForSelector:(SEL)aSelector
+{
+    return self.target;
+}
+</code></pre>
+<blockquote>
+<p>上面的方法可以解决问题，但是这样效率不够高。因为在 <code>TimerTarget</code> 在做消息转发之前，会对父类方法查找和方法缓存中去找方法。这样效率不高。</p>
+</blockquote>
+<p>下面介绍一个苹果提供专门进行消息转发的类叫<code>NSProxy</code> 上面的解决方法我们是继承<code>NSObject</code> 下面我们可以直接继承这个类<br>
+代码如下：</p>
+<pre><code class="language-objc">@interface TimerProxy : NSProxy
+
+@property (nonatomic, weak) id target;
+
++ (instancetype)proxyWithTarget:(id)target;
+
+@end
+
+
+
++ (instancetype)proxyWithTarget:(id)target
+{
+    // NSProxy 不需要init方法
+    TimerProxy *targets = [TimerProxy alloc];
+    targets.target = target;
+    return targets;
+}
+
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)sel
+{
+    return [self.target methodSignatureForSelector:sel];
+}
+
+- (void)forwardInvocation:(NSInvocation *)invocation
+{
+    [invocation invokeWithTarget:self.target];
+}
+</code></pre>
+<p>这样的话 在定时的方法来的时候可以直接进行转发，而不会再去父类找了。</p>
+<h4 id="补充">补充</h4>
+<pre><code>__weak typeof(self) weakSelf = self;
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 repeats:YES block:^(NSTimer * _Nonnull timer) {
+        [weakSelf timerTest];
+    }];
+</code></pre>
+<p>这种block的方法也可以解决循环引用</p>
 
             </div>
           </article>
@@ -125,9 +219,9 @@
               <div class="next">
                 下一篇
               </div>
-              <a href="https://dargonlee.github.io/post/ios-wkwebview-tong-bu-fan-hui-zhi-gei-js/">
+              <a href="https://dargonlee.github.io/post/git-de-chang-yong-ming-ling/">
                 <h3 class="post-title">
-                  iOS WKWebView 同步返回值给JS
+                  Git的常用命令
                 </h3>
               </a>
             </div>
@@ -232,7 +326,7 @@
     </div>
     <div class="row">
       
-        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge warning">
+        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge ">
           iOS
         </a>
       
@@ -244,7 +338,7 @@
           HTMl
         </a>
       
-        <a href="https://dargonlee.github.io/tag/JKeKhLXWK/" class="badge secondary">
+        <a href="https://dargonlee.github.io/tag/JKeKhLXWK/" class="badge warning">
           Gridea
         </a>
       
@@ -252,11 +346,11 @@
           WebView
         </a>
       
-        <a href="https://dargonlee.github.io/tag/9csAFw8eL/" class="badge warning">
+        <a href="https://dargonlee.github.io/tag/9csAFw8eL/" class="badge ">
           tableView
         </a>
       
-        <a href="https://dargonlee.github.io/tag/KlflZd7io/" class="badge secondary">
+        <a href="https://dargonlee.github.io/tag/KlflZd7io/" class="badge warning">
           tableHeaderView
         </a>
       
