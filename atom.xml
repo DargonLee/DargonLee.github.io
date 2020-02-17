@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-02-17T07:25:24.930Z</updated>
+    <updated>2020-02-17T07:31:10.253Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
@@ -319,7 +319,7 @@
 以下两种方式就是为了解决，定时器在控制器返回上级的时候解决循环引用的问题。</p>
 <!-- more --> 
 <h5 id="在控制器中使用定时器常规的方法">在控制器中使用定时器常规的方法</h5>
-<pre><code class="language-objc">@interface ViewController ()
+<pre><code class="language-objectivec">@interface ViewController ()
 
 @property (nonatomic,strong) NSTimer *timer;
 
@@ -327,7 +327,7 @@
 
 @end
 </code></pre>
-<pre><code class="language-objc">
+<pre><code class="language-objectivec">
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -352,7 +352,7 @@
 <p>我们知道引起循环引用的问题是 <code>ViewController</code> <code>timer</code> <code>timer的target</code> 三者都是强引用导致的 我们只要在这个三个中间一个地方给设置<code>weak</code>引用 就不会产生循环引用了。<br>
 思路就是 -&gt; 设置<code>timer</code>的<code>target</code>的时候不要直接设置 <code>ViewController</code> 而是设置一个 自定义的对象 比如 <code>TimerTarget</code> 然后由这个对象对控制器<code>弱引用</code>，本来由控制器的直接调用的定时方法，现在由 <code>TimerTarget</code> 对象对控制器进行转发。从而达到解决循环引用的问题。<br>
 代码如下：</p>
-<pre><code class="language-objc">
+<pre><code class="language-objectivec">
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -396,7 +396,7 @@
 </blockquote>
 <p>下面介绍一个苹果提供专门进行消息转发的类叫<code>NSProxy</code> 上面的解决方法我们是继承<code>NSObject</code> 下面我们可以直接继承这个类<br>
 代码如下：</p>
-<pre><code class="language-objc">@interface TimerProxy : NSProxy
+<pre><code class="language-objectivec">@interface TimerProxy : NSProxy
 
 @property (nonatomic, weak) id target;
 
@@ -426,7 +426,7 @@
 </code></pre>
 <p>这样的话 在定时的方法来的时候可以直接进行转发，而不会再去父类找了。</p>
 <h4 id="补充">补充</h4>
-<pre><code>__weak typeof(self) weakSelf = self;
+<pre><code class="language-objectivec">__weak typeof(self) weakSelf = self;
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 repeats:YES block:^(NSTimer * _Nonnull timer) {
         [weakSelf timerTest];
     }];
@@ -466,7 +466,7 @@
 <!-- more -->
 <figure data-type="image" tabindex="1"><img src="https://upload-images.jianshu.io/upload_images/646265-8b480a3ee6085ef6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190509-105625@2x.png" loading="lazy"></figure>
 <h3 id="第一种-nslayoutconstraint">第一种 <code>NSLayoutConstraint</code></h3>
-<pre><code># NSLayoutConstraint 的核心布局方法
+<pre><code class="language-objectivec"># NSLayoutConstraint 的核心布局方法
 [NSLayoutConstraint constraintWithItem:self.redView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
 
 </code></pre>
@@ -475,7 +475,7 @@
 如果还不是很明白的话 看下图就一目了然了</p>
 <figure data-type="image" tabindex="2"><img src="https://upload-images.jianshu.io/upload_images/646265-b155f2e0c3eaa558.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190509-110720@2x.png" loading="lazy"></figure>
 <h4 id="接下来我们来讲一下初始化方法中各个参数的意义">接下来我们来讲一下初始化方法中各个参数的意义：</h4>
-<pre><code>item:        要布局的view
+<pre><code class="language-objectivec">item:        要布局的view
 
 attribute: 是一个NSLayoutAttribute枚举，可以看到他的枚举值有 left、right、bottom、top 等
 
@@ -493,7 +493,7 @@ constant:  是来计算两个视图之间约束的倍数关系的基础上再加
 
 </code></pre>
 <h4 id="下面看约束代码">下面看约束代码</h4>
-<pre><code>// 布局redView
+<pre><code class="language-objectivec">// 布局redView
     NSLayoutConstraint *centerX = [NSLayoutConstraint constraintWithItem:self.redView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
     NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.redView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTopMargin multiplier:1.0 constant:10];
     
@@ -524,14 +524,14 @@ constant:  是来计算两个视图之间约束的倍数关系的基础上再加
 2.如果两个视图（也就是参数 item 和 toItem）是兄弟关系，设置两兄弟的约束，约束会添加到第一个共同的父控件上<br>
 3.如果两个视图（也就是参数 item 和 toItem）是同一个视图，约束会添加到自己上(一般给自己添加约束toItem为nil attribute为NSLayoutAttributeNotAnAttribute)<br>
 4.要给添加约束的view要设置<code>translatesAutoresizingMaskIntoConstraints</code>为NO 否则约束不生效</p>
-<pre><code>    UIView *redView = [[UIView alloc]init];
+<pre><code class="language-objectivec">    UIView *redView = [[UIView alloc]init];
     redView.backgroundColor = [UIColor redColor];
     // 要禁止 autoresize 意思就是遵循autoLayout抛弃原有设置的高度宽度等
     // 使用autolayout的视图必须要设置该属性
     redView.translatesAutoresizingMaskIntoConstraints = NO;
 </code></pre>
 <h3 id="第二种-nslayoutanchor-ios9以后">第二种 <code>NSLayoutAnchor</code> ios9以后</h3>
-<pre><code>- (NSLayoutConstraint *)constraintEqualToAnchor:(NSLayoutAnchor&lt;AnchorType&gt; *)anchor;
+<pre><code class="language-objectivec">- (NSLayoutConstraint *)constraintEqualToAnchor:(NSLayoutAnchor&lt;AnchorType&gt; *)anchor;
 - (NSLayoutConstraint *)constraintGreaterThanOrEqualToAnchor:(NSLayoutAnchor&lt;AnchorType&gt; *)anchor;
 - (NSLayoutConstraint *)constraintLessThanOrEqualToAnchor:(NSLayoutAnchor&lt;AnchorType&gt; *)anchor;
 
@@ -544,11 +544,11 @@ constant:  是来计算两个视图之间约束的倍数关系的基础上再加
 </code></pre>
 <h4 id="接下来我们来讲一下使用方法">接下来我们来讲一下使用方法</h4>
 <p>比如要给redView设置一个约束，如下</p>
-<pre><code>[self.redView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor];
+<pre><code class="language-objectivec">[self.redView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor];
 </code></pre>
 <p>上面代码的意思为 <code>红色的view的centerX和self.view的centerX相等</code></p>
 <h4 id="下面看使用nslayoutanchor写的约束代码">下面看使用<code>NSLayoutAnchor</code>写的约束代码</h4>
-<pre><code>    [self.redView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
+<pre><code class="language-objectivec">    [self.redView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
     [self.redView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:20].active = YES;
     [self.redView.widthAnchor constraintEqualToConstant:200].active = YES;
     [self.redView.heightAnchor constraintEqualToConstant:200].active = YES;
@@ -563,7 +563,7 @@ constant:  是来计算两个视图之间约束的倍数关系的基础上再加
 2.<code>active</code>要设置为YES 这个是控制约束是否真正添加的开关 设置为NO的时候 约束失效</p>
 <h3 id="第三种-masonry">第三种 <code>Masonry</code></h3>
 <h4 id="直接上代码了">直接上代码了</h4>
-<pre><code>    [self.redView mas_makeConstraints:^(MASConstraintMaker *make) {
+<pre><code class="language-objectivec">    [self.redView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view.mas_topMargin).with.offset(20);
         make.centerX.equalTo(self.view.mas_centerX);
         make.width.height.equalTo(@200);
@@ -587,7 +587,7 @@ constant:  是来计算两个视图之间约束的倍数关系的基础上再加
 <blockquote>
 <p>Row.mainAxisAlignment 主轴排列方式</p>
 </blockquote>
-<pre><code>Row(
+<pre><code class="language-objectivec">Row(
   mainAxisAlignment: MainAxisAlignment.spaceAround,  // 改变这个值 可以更改排列方式 如下图
   mainAxisSize: MainAxisSize.max,
   children: [
@@ -602,7 +602,7 @@ constant:  是来计算两个视图之间约束的倍数关系的基础上再加
 <blockquote>
 <p>Row.mainAxisAlignment 主轴排列方式</p>
 </blockquote>
-<pre><code>Row(
+<pre><code class="language-objectivec">Row(
   mainAxisAlignment: MainAxisAlignment.spaceAround,  // 改变这个值 可以更改排列方式 如下图
   mainAxisSize: MainAxisSize.max,
   children: [
@@ -616,7 +616,7 @@ constant:  是来计算两个视图之间约束的倍数关系的基础上再加
 <blockquote>
 <p>Row.crossAxisAlignment 纵轴排列方式</p>
 </blockquote>
-<pre><code>Row(
+<pre><code class="language-objectivec">Row(
   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
   crossAxisAlignment: CrossAxisAlignment.start,  // 改变这个值 可以更改排列方式 如下图
   children: [
@@ -630,7 +630,7 @@ constant:  是来计算两个视图之间约束的倍数关系的基础上再加
 <blockquote>
 <p>Column.mainAxisAlignment 列布局 主轴排列方式</p>
 </blockquote>
-<pre><code>Column(
+<pre><code class="language-objectivec">Column(
   mainAxisAlignment: MainAxisAlignment.start, // 改变这个值 可以更改排列方式 如下图
   mainAxisSize: MainAxisSize.max,
   children: [
@@ -643,7 +643,7 @@ constant:  是来计算两个视图之间约束的倍数关系的基础上再加
 <blockquote>
 <p>Column.mainAxisAlignment 列布局 纵轴排列方式</p>
 </blockquote>
-<pre><code>Column(
+<pre><code class="language-objectivec">Column(
   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
   crossAxisAlignment: CrossAxisAlignment.start, // 改变这个值 可以更改排列方式 如下图
   children: [
@@ -657,7 +657,7 @@ constant:  是来计算两个视图之间约束的倍数关系的基础上再加
 <blockquote>
 <p>Stack.alignment</p>
 </blockquote>
-<pre><code>Stack(
+<pre><code class="language-objectivec">Stack(
   alignment: AlignmentDirectional.topStart, //改变这个值 可以更改排列方式 如下面两张图
   children:[
     SizedBox(
@@ -674,14 +674,13 @@ constant:  是来计算两个视图之间约束的倍数关系的基础上再加
       child: Container(color: Colors.red),
 ), ],
 )
-</code></pre>
-<p><img src="https://upload-images.jianshu.io/upload_images/646265-6ea3906a2a13098f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"><br>
-<img src="https://upload-images.jianshu.io/upload_images/646265-9e0c8ba13561b3a8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></p>
-<h4 id="positioned布局">Positioned布局</h4>
-<blockquote>
-<p>Stack允许子widget堆叠，而Positioned可以给子widget定位 <code>根据Stack的四个角</code></p>
-</blockquote>
-<pre><code>Stack(
+```objectivec
+![image.png](https://upload-images.jianshu.io/upload_images/646265-6ea3906a2a13098f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](https://upload-images.jianshu.io/upload_images/646265-9e0c8ba13561b3a8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+#### Positioned布局
+&gt; Stack允许子widget堆叠，而Positioned可以给子widget定位 `根据Stack的四个角`
+```objectivec
+Stack(
   children: [
     SizedBox(
       width: 300.0,
@@ -709,7 +708,7 @@ constant:  是来计算两个视图之间约束的倍数关系的基础上再加
 <blockquote>
 <p>Expanded组件可以使Row、Column、Flex等子组件在其主轴方向上展开并填充可用空间(例如，Row在水平方向，Column在垂直方向)。如果多个子组件展开，可用空间会被其flex factor(表示扩展的速度、比例)分割。</p>
 </blockquote>
-<pre><code>Row(
+<pre><code class="language-objectivec">Row(
       crossAxisAlignment: CrossAxisAlignment.stretch,
           children: &lt;Widget&gt;[
             Expanded(
@@ -741,7 +740,7 @@ constant:  是来计算两个视图之间约束的倍数关系的基础上再加
 <blockquote>
 <p>如何用 <code>padding</code> 和 <code>SizeBox</code> 给内容之间添加间隙</p>
 </blockquote>
-<pre><code>Container(
+<pre><code class="language-objectivec">Container(
         height: 200.0,
         color: Colors.yellow,
         padding: EdgeInsets.all(16.0),

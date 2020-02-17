@@ -74,7 +74,7 @@
 以下两种方式就是为了解决，定时器在控制器返回上级的时候解决循环引用的问题。</p>
 <!-- more --> 
 <h5 id="在控制器中使用定时器常规的方法">在控制器中使用定时器常规的方法</h5>
-<pre><code class="language-objc">@interface ViewController ()
+<pre><code class="language-objectivec">@interface ViewController ()
 
 @property (nonatomic,strong) NSTimer *timer;
 
@@ -82,7 +82,7 @@
 
 @end
 </code></pre>
-<pre><code class="language-objc">
+<pre><code class="language-objectivec">
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -107,7 +107,7 @@
 <p>我们知道引起循环引用的问题是 <code>ViewController</code> <code>timer</code> <code>timer的target</code> 三者都是强引用导致的 我们只要在这个三个中间一个地方给设置<code>weak</code>引用 就不会产生循环引用了。<br>
 思路就是 -&gt; 设置<code>timer</code>的<code>target</code>的时候不要直接设置 <code>ViewController</code> 而是设置一个 自定义的对象 比如 <code>TimerTarget</code> 然后由这个对象对控制器<code>弱引用</code>，本来由控制器的直接调用的定时方法，现在由 <code>TimerTarget</code> 对象对控制器进行转发。从而达到解决循环引用的问题。<br>
 代码如下：</p>
-<pre><code class="language-objc">
+<pre><code class="language-objectivec">
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -151,7 +151,7 @@
 </blockquote>
 <p>下面介绍一个苹果提供专门进行消息转发的类叫<code>NSProxy</code> 上面的解决方法我们是继承<code>NSObject</code> 下面我们可以直接继承这个类<br>
 代码如下：</p>
-<pre><code class="language-objc">@interface TimerProxy : NSProxy
+<pre><code class="language-objectivec">@interface TimerProxy : NSProxy
 
 @property (nonatomic, weak) id target;
 
@@ -181,7 +181,7 @@
 </code></pre>
 <p>这样的话 在定时的方法来的时候可以直接进行转发，而不会再去父类找了。</p>
 <h4 id="补充">补充</h4>
-<pre><code>__weak typeof(self) weakSelf = self;
+<pre><code class="language-objectivec">__weak typeof(self) weakSelf = self;
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 repeats:YES block:^(NSTimer * _Nonnull timer) {
         [weakSelf timerTest];
     }];

@@ -77,7 +77,7 @@ Row(
 <blockquote>
 <p>Row.mainAxisAlignment 主轴排列方式</p>
 </blockquote>
-<pre><code>Row(
+<pre><code class="language-objectivec">Row(
   mainAxisAlignment: MainAxisAlignment.spaceAround,  // 改变这个值 可以更改排列方式 如下图
   mainAxisSize: MainAxisSize.max,
   children: [
@@ -91,7 +91,7 @@ Row(
 <blockquote>
 <p>Row.crossAxisAlignment 纵轴排列方式</p>
 </blockquote>
-<pre><code>Row(
+<pre><code class="language-objectivec">Row(
   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
   crossAxisAlignment: CrossAxisAlignment.start,  // 改变这个值 可以更改排列方式 如下图
   children: [
@@ -105,7 +105,7 @@ Row(
 <blockquote>
 <p>Column.mainAxisAlignment 列布局 主轴排列方式</p>
 </blockquote>
-<pre><code>Column(
+<pre><code class="language-objectivec">Column(
   mainAxisAlignment: MainAxisAlignment.start, // 改变这个值 可以更改排列方式 如下图
   mainAxisSize: MainAxisSize.max,
   children: [
@@ -118,7 +118,7 @@ Row(
 <blockquote>
 <p>Column.mainAxisAlignment 列布局 纵轴排列方式</p>
 </blockquote>
-<pre><code>Column(
+<pre><code class="language-objectivec">Column(
   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
   crossAxisAlignment: CrossAxisAlignment.start, // 改变这个值 可以更改排列方式 如下图
   children: [
@@ -132,7 +132,7 @@ Row(
 <blockquote>
 <p>Stack.alignment</p>
 </blockquote>
-<pre><code>Stack(
+<pre><code class="language-objectivec">Stack(
   alignment: AlignmentDirectional.topStart, //改变这个值 可以更改排列方式 如下面两张图
   children:[
     SizedBox(
@@ -149,14 +149,13 @@ Row(
       child: Container(color: Colors.red),
 ), ],
 )
-</code></pre>
-<p><img src="https://upload-images.jianshu.io/upload_images/646265-6ea3906a2a13098f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"><br>
-<img src="https://upload-images.jianshu.io/upload_images/646265-9e0c8ba13561b3a8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></p>
-<h4 id="positioned布局">Positioned布局</h4>
-<blockquote>
-<p>Stack允许子widget堆叠，而Positioned可以给子widget定位 <code>根据Stack的四个角</code></p>
-</blockquote>
-<pre><code>Stack(
+```objectivec
+![image.png](https://upload-images.jianshu.io/upload_images/646265-6ea3906a2a13098f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](https://upload-images.jianshu.io/upload_images/646265-9e0c8ba13561b3a8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+#### Positioned布局
+&gt; Stack允许子widget堆叠，而Positioned可以给子widget定位 `根据Stack的四个角`
+```objectivec
+Stack(
   children: [
     SizedBox(
       width: 300.0,
@@ -184,7 +183,7 @@ Row(
 <blockquote>
 <p>Expanded组件可以使Row、Column、Flex等子组件在其主轴方向上展开并填充可用空间(例如，Row在水平方向，Column在垂直方向)。如果多个子组件展开，可用空间会被其flex factor(表示扩展的速度、比例)分割。</p>
 </blockquote>
-<pre><code>Row(
+<pre><code class="language-objectivec">Row(
       crossAxisAlignment: CrossAxisAlignment.stretch,
           children: &lt;Widget&gt;[
             Expanded(
@@ -216,7 +215,7 @@ Row(
 <blockquote>
 <p>如何用 <code>padding</code> 和 <code>SizeBox</code> 给内容之间添加间隙</p>
 </blockquote>
-<pre><code>Container(
+<pre><code class="language-objectivec">Container(
         height: 200.0,
         color: Colors.yellow,
         padding: EdgeInsets.all(16.0),
@@ -310,7 +309,6 @@ Row(
 <li><a href="#%E8%A1%8C%E5%B8%83%E5%B1%80-%E5%9C%A8x%E8%BD%B4%E4%B8%8A">行布局 （在X轴上）</a></li>
 <li><a href="#%E5%88%97%E5%B8%83%E5%B1%80%E5%9C%A8y%E8%BD%B4%E4%B8%8A">列布局（在Y轴上）</a></li>
 <li><a href="#stack%E5%B8%83%E5%B1%80%E5%85%81%E8%AE%B8%E5%AD%90widget%E5%A0%86%E5%8F%A0%E5%8F%AF%E4%BB%A5%E5%8F%A0%E5%8A%A0%E5%B8%83%E5%B1%80view%E4%B9%9F%E5%B0%B1%E6%98%AF%E5%9C%A8-z-%E8%BD%B4%E4%B8%8A">Stack布局（允许子widget堆叠，可以叠加布局View，也就是在 Z 轴上）</a></li>
-<li><a href="#positioned%E5%B8%83%E5%B1%80">Positioned布局</a></li>
 <li><a href="#expanded%E5%B8%83%E5%B1%80">Expanded布局</a></li>
 <li><a href="#expanded-padding-sizedbox">Expanded + Padding + SizedBox</a></li>
 </ul>
