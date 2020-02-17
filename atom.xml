@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-02-17T07:17:50.154Z</updated>
+    <updated>2020-02-17T07:25:24.930Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
@@ -17,7 +17,7 @@
         </link>
         <updated>2020-02-17T06:35:16.000Z</updated>
         <summary type="html"><![CDATA[<p><code>控制器声明周期</code></p>
-<pre><code>//通过nib问价初始化触发
+<pre><code class="language-objectivec">//通过nib问价初始化触发
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 
 //nib文件被加载的时候，会发送一个消息到nib文件中的每一个对象
@@ -53,7 +53,7 @@
 </code></pre>
 ]]></summary>
         <content type="html"><![CDATA[<p><code>控制器声明周期</code></p>
-<pre><code>//通过nib问价初始化触发
+<pre><code class="language-objectivec">//通过nib问价初始化触发
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 
 //nib文件被加载的时候，会发送一个消息到nib文件中的每一个对象
@@ -1075,18 +1075,18 @@ $ git stash pop
 如果你进行了2次commit，想都撤回，可以使用HEAD~2</p>
 </blockquote>
 <p>至于这几个参数：</p>
-<pre><code>--mixed 
+<pre><code class="language-bash">--mixed 
 意思是：不删除工作空间改动代码，撤销commit，并且撤销git add . 操作
 这个为默认参数,git reset --mixed HEAD^ 和 git reset HEAD^ 效果是一样的
 </code></pre>
-<pre><code>--soft  
+<pre><code class="language-bash">--soft  
 不删除工作空间改动代码，撤销commit，不撤销git add . 
 </code></pre>
-<pre><code>--hard
+<pre><code class="language-bash">--hard
 删除工作空间改动代码，撤销commit，撤销git add . 
 注意完成这个操作后，就恢复到了上一次的commit状态。
 </code></pre>
-<pre><code>顺便说一下，如果commit注释写错了，只是想改一下注释，只需要：
+<pre><code class="language-bash">顺便说一下，如果commit注释写错了，只是想改一下注释，只需要：
 git commit --amend
 此时会进入默认vim编辑器，修改注释完毕后保存就好了
 </code></pre>
