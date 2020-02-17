@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-02-17T07:09:40.943Z</updated>
+    <updated>2020-02-17T07:11:28.303Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
@@ -29,23 +29,8 @@
 //视图控制器的view被加载完成
 - (void)viewDidLoad
 
-//视图控制器的view将要显示在window上</code></pre>
-]]></summary>
-        <content type="html"><![CDATA[<p><code>控制器声明周期</code></p>
-<pre><code>//通过nib问价初始化触发
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-
-//nib文件被加载的时候，会发送一个消息到nib文件中的每一个对象
-- (void)awakeFromNib
-
-//开始加载视图控制器自带的view
-- (void)loadView
-
-//视图控制器的view被加载完成
-- (void)viewDidLoad
-
 //视图控制器的view将要显示在window上
-&lt;!-- more --&gt;
+
 - (void)viewWillAppear:(BOOL)animated
 
 //视图控制器的view开始更新Autolayout
@@ -66,6 +51,43 @@
 //视图控制器的view已经从window上消失
 - (void)viewDidDisappear:(BOOL)animated
 </code></pre>
+]]></summary>
+        <content type="html"><![CDATA[<p><code>控制器声明周期</code></p>
+<pre><code>//通过nib问价初始化触发
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+
+//nib文件被加载的时候，会发送一个消息到nib文件中的每一个对象
+- (void)awakeFromNib
+
+//开始加载视图控制器自带的view
+- (void)loadView
+
+//视图控制器的view被加载完成
+- (void)viewDidLoad
+
+//视图控制器的view将要显示在window上
+
+- (void)viewWillAppear:(BOOL)animated
+
+//视图控制器的view开始更新Autolayout
+- (void)updateViewConstraints
+
+//视图控制器的view开始更新内容视图的位置
+- (void)viewWillLayoutSubviews
+
+//视图控制器的view已经更新内容视图的位置
+- (void)viewDidLayoutSubviews
+
+//视图控制器的view已经显示到window上
+- (void)viewDidAppear:(BOOL)animated
+
+//视图控制的view将要从window上消失
+- (void)viewWillDisappear:(BOOL)animated
+
+//视图控制器的view已经从window上消失
+- (void)viewDidDisappear:(BOOL)animated
+</code></pre>
+<!-- more -->
 <p>加载过程:<br>
 1 一般情况下调用 init方法或者调用initWithNibName方法实例化UIViewController, 不管调用哪个方法都为调用initWithNibName(方法定义如下)</p>
 <ul>

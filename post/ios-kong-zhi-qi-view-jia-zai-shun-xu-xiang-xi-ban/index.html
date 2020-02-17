@@ -87,7 +87,7 @@
 - (void)viewDidLoad
 
 //视图控制器的view将要显示在window上
-&lt;!-- more --&gt;
+
 - (void)viewWillAppear:(BOOL)animated
 
 //视图控制器的view开始更新Autolayout
@@ -108,6 +108,7 @@
 //视图控制器的view已经从window上消失
 - (void)viewDidDisappear:(BOOL)animated
 </code></pre>
+<!-- more -->
 <p>加载过程:<br>
 1 一般情况下调用 init方法或者调用initWithNibName方法实例化UIViewController, 不管调用哪个方法都为调用initWithNibName(方法定义如下)</p>
 <ul>

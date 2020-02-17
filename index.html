@@ -116,7 +116,7 @@
     
   </div>
   <div class="md:mx-8 flex-shrink-0 self-start rounded-full border-4 border-dotted border-transparent hover:border-yellow-50 p-2 w-32 h-32 order-1 md:order-2 mx-auto s3-dotted">
-    <img class="rounded-full object-cover" src="https://dargonlee.github.io/images/avatar.png?v=1581923377822" alt="七里田间的守望者" width="100%" height="100%">
+    <img class="rounded-full object-cover" src="https://dargonlee.github.io/images/avatar.png?v=1581923485440" alt="七里田间的守望者" width="100%" height="100%">
   </div>
 </header>
       
@@ -146,7 +146,28 @@
 //视图控制器的view被加载完成
 - (void)viewDidLoad
 
-//视图控制器的view将要显示在window上</code></pre>
+//视图控制器的view将要显示在window上
+
+- (void)viewWillAppear:(BOOL)animated
+
+//视图控制器的view开始更新Autolayout
+- (void)updateViewConstraints
+
+//视图控制器的view开始更新内容视图的位置
+- (void)viewWillLayoutSubviews
+
+//视图控制器的view已经更新内容视图的位置
+- (void)viewDidLayoutSubviews
+
+//视图控制器的view已经显示到window上
+- (void)viewDidAppear:(BOOL)animated
+
+//视图控制的view将要从window上消失
+- (void)viewWillDisappear:(BOOL)animated
+
+//视图控制器的view已经从window上消失
+- (void)viewDidDisappear:(BOOL)animated
+</code></pre>
 
       </div>
       <a href="https://dargonlee.github.io/post/ios-kong-zhi-qi-view-jia-zai-shun-xu-xiang-xi-ban/" class="btn">
