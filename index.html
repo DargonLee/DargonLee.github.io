@@ -1,100 +1,86 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" >
-
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>七里田间的守望者</title>
-<meta name="description" content="我不在乎是悲伤的离别还是不痛快的离别，只要是离开一个地方，我总希望离开的时候自己心中有数。">
-
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<link rel="shortcut icon" href="https://dargonlee.github.io/favicon.ico?v=1581921945632">
-
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="shortcut icon" href="https://dargonlee.github.io/favicon.ico">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css">
+<link rel="stylesheet" href="https://dargonlee.github.io/media/css/tailwind.css">
 <link rel="stylesheet" href="https://dargonlee.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="七里田间的守望者 - Atom Feed" href="https://dargonlee.github.io/atom.xml">
 
+    
 
-<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <meta name="description" content="我不在乎是悲伤的离别还是不痛快的离别，只要是离开一个地方，我总希望离开的时候自己心中有数。" />
+</head>
+<body>
+  <div class="antialiased flex flex-col min-h-screen" id="app">
 
-
-<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-
-
-  </head>
-  <body>
-    <nav class="navbar border fixed split-nav">
-  <div class="nav-brand">
-    <h3><a href="https://dargonlee.github.io">七里田间的守望者</a></h3>
-  </div>
-  <div class="collapsible">
-    <input id="collapsible1" type="checkbox" name="collapsible1">
-    <button>
-      <label for="collapsible1">
-        <div class="bar1"></div>
-        <div class="bar2"></div>
-        <div class="bar3"></div>
-      </label>
-    </button>
-    <div class="collapsible-body">
-      <ul class="inline">
-        
-          <li>
-            
-              <a href="/" class="menu">
-                首页
-              </a>
-            
-          </li>
-        
-          <li>
-            
-              <a href="/archives" class="menu">
-                归档
-              </a>
-            
-          </li>
-        
-          <li>
-            
-              <a href="/tags" class="menu">
-                标签
-              </a>
-            
-          </li>
-        
-          <li>
-            
-              <a href="/post/about" class="menu">
-                关于
-              </a>
-            
-          </li>
-        
-      </ul>
+    <div class="nav py-3 md:py-8 fixed w-full z-10 bg-gray-50 dark:bg-gray-700 transition-all duration-300" :class="{ 'scroll': scrolled }">
+  <div class="flex justify-end px-4">
+    <div class="w-8 h-8 flex justify-center items-center rounded-full md:hidden" @click="showMenu = !showMenu">
+      <i class="ri-close-line" v-show="showMenu"></i>
+      <i class="ri-menu-3-line" v-show="!showMenu"></i>
     </div>
   </div>
-</nav>
+  <nav class="max-w-4xl w-full mx-auto text-center flex flex-col md:flex-row justify-center md:block" :class="`${ showMenu ? 'block' : 'hidden' }`">
+    
+      <a href="/" target="" class="py-2 md:py-1 px-4 mx-4 inline-flex transition font-semibold rounded dark:hover:bg-gray-600 hover:bg-gray-200">
+        首页
+      </a>
+    
+      <a href="/archives" target="" class="py-2 md:py-1 px-4 mx-4 inline-flex transition font-semibold rounded dark:hover:bg-gray-600 hover:bg-gray-200">
+        归档
+      </a>
+    
+      <a href="/tags" target="" class="py-2 md:py-1 px-4 mx-4 inline-flex transition font-semibold rounded dark:hover:bg-gray-600 hover:bg-gray-200">
+        标签
+      </a>
+    
+      <a href="/post/about" target="" class="py-2 md:py-1 px-4 mx-4 inline-flex transition font-semibold rounded dark:hover:bg-gray-600 hover:bg-gray-200">
+        关于
+      </a>
+    
+    <a href="https://dargonlee.github.io/atom.xml" target="_blank" class="py-2 md:py-1 px-4 mx-4 inline-flex transition font-semibold rounded dark:hover:bg-gray-600 hover:bg-gray-200">
+      RSS
+    </a>
+  </nav>
+</div>
 
-
-    <div id="top" class="row site">
-      <div class="sm-12 md-8 col">
-        <div class="paper">
-          
-  <article class="article">
-    <h2 class="article-title">
-      <a href="https://dargonlee.github.io/post/ios-kong-zhi-qi-view-jia-zai-shun-xu-xiang-xi-ban/">iOS控制器View加载顺序详细版</a>
-    </h2>
-    <p class="article-meta">
-      2020-02-17
+    <div class="max-w-4xl w-full mx-auto ">
       
-        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge success">
-          iOS
+        <header class="flex py-16 md:py-32 mt-12 flex-col md:flex-row px-4 md:px-0 animated fadeIn">
+  <div class="flex-1 order-2 md:order-1 md:pr-16">
+    <div class="text-4xl font-bold text-center md:text-left">
+      七里田间的守望者
+    </div>
+    <div class="text-xl text-gray-500 mt-4 text-center md:text-left">
+      我不在乎是悲伤的离别还是不痛快的离别，只要是离开一个地方，我总希望离开的时候自己心中有数。
+    </div>
+    
+    
+  </div>
+  <div class="md:mx-8 flex-shrink-0 self-start rounded-full border-4 border-dotted border-transparent hover:border-yellow-50 p-2 w-32 h-32 order-1 md:order-2 mx-auto s3-dotted">
+    <img class="rounded-full object-cover" src="https://dargonlee.github.io/images/avatar.png?v=1581922599426" alt="七里田间的守望者" width="100%" height="100%">
+  </div>
+</header>
+      
+
+      <div class="shadow-box bg-white dark:bg-gray-600 border-gray-300 rounded-none md:rounded-lg -mx-1 md:mx-0 md:px-0">
+        
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://dargonlee.github.io/post/ios-kong-zhi-qi-view-jia-zai-shun-xu-xiang-xi-ban/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          iOS控制器View加载顺序详细版
         </a>
-      
-    </p>
-    <p class="text-lead">
-      <p><code>控制器声明周期</code></p>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2020-02-17</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <p><code>控制器声明周期</code></p>
 <pre><code>//通过nib问价初始化触发
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 
@@ -109,30 +95,25 @@
 
 //视图控制器的view将要显示在window上</code></pre>
 
-    </p>
-    <div class="row">
-      <a href="https://dargonlee.github.io/post/ios-kong-zhi-qi-view-jia-zai-shun-xu-xiang-xi-ban/" class="readmore-link">
-        <button>
-          Read More
-        </button>
+      </div>
+      <a href="https://dargonlee.github.io/post/ios-kong-zhi-qi-view-jia-zai-shun-xu-xiang-xi-ban/" class="btn">
+        阅读更多
       </a>
     </div>
-  </article>
+    
+  </div>
 
-  <article class="article">
-    <h2 class="article-title">
-      <a href="https://dargonlee.github.io/post/ios-kai-fa-jiang-yi-ge-gong-cheng-tian-jia-dao-ling-yi-ge-gong-cheng-zhong/">iOS开发将一个工程添加到另一个工程中</a>
-    </h2>
-    <p class="article-meta">
-      2019-11-16
-      
-        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
-          iOS
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://dargonlee.github.io/post/ios-kai-fa-jiang-yi-ge-gong-cheng-tian-jia-dao-ling-yi-ge-gong-cheng-zhong/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          iOS开发将一个工程添加到另一个工程中
         </a>
-      
-    </p>
-    <p class="text-lead">
-      <blockquote>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2019-11-16</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <blockquote>
 <p>一个项目引用另一个项目这里列举两种情况</p>
 <ul>
 <li>一个 Single View App 项目要引用另一个Single View App 项目</li>
@@ -141,56 +122,46 @@
 </blockquote>
 <h4 id="先说第一种情况的做法">先说第一种情况的做法</h4>
 
-    </p>
-    <div class="row">
-      <a href="https://dargonlee.github.io/post/ios-kai-fa-jiang-yi-ge-gong-cheng-tian-jia-dao-ling-yi-ge-gong-cheng-zhong/" class="readmore-link">
-        <button>
-          Read More
-        </button>
+      </div>
+      <a href="https://dargonlee.github.io/post/ios-kai-fa-jiang-yi-ge-gong-cheng-tian-jia-dao-ling-yi-ge-gong-cheng-zhong/" class="btn">
+        阅读更多
       </a>
     </div>
-  </article>
+    
+  </div>
 
-  <article class="article">
-    <h2 class="article-title">
-      <a href="https://dargonlee.github.io/post/jie-jue-ding-shi-qi-de-xun-huan-yin-yong/">解决定时器的循环引用</a>
-    </h2>
-    <p class="article-meta">
-      2019-11-15
-      
-        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge ">
-          iOS
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://dargonlee.github.io/post/jie-jue-ding-shi-qi-de-xun-huan-yin-yong/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          解决定时器的循环引用
         </a>
-      
-    </p>
-    <p class="text-lead">
-      <p>一般使用定时器的方法，在控制器返回上级的时候。定时器都不会停止，会导致循环引用，控制器的<code>delloc</code>方法不会调用。<br>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2019-11-15</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <p>一般使用定时器的方法，在控制器返回上级的时候。定时器都不会停止，会导致循环引用，控制器的<code>delloc</code>方法不会调用。<br>
 以下两种方式就是为了解决，定时器在控制器返回上级的时候解决循环引用的问题。</p>
 
-    </p>
-    <div class="row">
-      <a href="https://dargonlee.github.io/post/jie-jue-ding-shi-qi-de-xun-huan-yin-yong/" class="readmore-link">
-        <button>
-          Read More
-        </button>
+      </div>
+      <a href="https://dargonlee.github.io/post/jie-jue-ding-shi-qi-de-xun-huan-yin-yong/" class="btn">
+        阅读更多
       </a>
     </div>
-  </article>
+    
+  </div>
 
-  <article class="article">
-    <h2 class="article-title">
-      <a href="https://dargonlee.github.io/post/nslayoutanchor-shi-jian/">NSLayoutAnchor实践</a>
-    </h2>
-    <p class="article-meta">
-      2019-11-14
-      
-        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
-          iOS
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://dargonlee.github.io/post/nslayoutanchor-shi-jian/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          NSLayoutAnchor实践
         </a>
-      
-    </p>
-    <p class="text-lead">
-      <blockquote>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2019-11-14</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <blockquote>
 <p>iOS如果项目中不用xib或者storyboard的话，给view做约束一般都是用第三方库<code>Masonry</code>，为什么不用系统提供的AutoLayout呢？<code>因为代码太多不好用</code></p>
 </blockquote>
 <ul>
@@ -203,30 +174,25 @@
 至于<code>Masonry</code>的使用 我就不做多介绍了（官方介绍的很清楚，网上资料也不少）</p>
 </blockquote>
 
-    </p>
-    <div class="row">
-      <a href="https://dargonlee.github.io/post/nslayoutanchor-shi-jian/" class="readmore-link">
-        <button>
-          Read More
-        </button>
+      </div>
+      <a href="https://dargonlee.github.io/post/nslayoutanchor-shi-jian/" class="btn">
+        阅读更多
       </a>
     </div>
-  </article>
+    
+  </div>
 
-  <article class="article">
-    <h2 class="article-title">
-      <a href="https://dargonlee.github.io/post/flutter-chang-yong-bu-ju/">Flutter 常用布局</a>
-    </h2>
-    <p class="article-meta">
-      2019-09-17
-      
-        <a href="https://dargonlee.github.io/tag/nXwjG0N5T/" class="badge success">
-          Flutter
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://dargonlee.github.io/post/flutter-chang-yong-bu-ju/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          Flutter 常用布局
         </a>
-      
-    </p>
-    <p class="text-lead">
-      <h4 id="行布局-在x轴上">行布局 （在X轴上）</h4>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2019-09-17</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <h4 id="行布局-在x轴上">行布局 （在X轴上）</h4>
 <blockquote>
 <p>Row.mainAxisAlignment 主轴排列方式</p>
 </blockquote>
@@ -241,30 +207,25 @@
 </code></pre>
 <figure data-type="image" tabindex="1"><img src="https://upload-images.jianshu.io/upload_images/646265-2fc1ab8a4b7f57a4.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="row.jpg" loading="lazy"></figure>
 
-    </p>
-    <div class="row">
-      <a href="https://dargonlee.github.io/post/flutter-chang-yong-bu-ju/" class="readmore-link">
-        <button>
-          Read More
-        </button>
+      </div>
+      <a href="https://dargonlee.github.io/post/flutter-chang-yong-bu-ju/" class="btn">
+        阅读更多
       </a>
     </div>
-  </article>
+    
+  </div>
 
-  <article class="article">
-    <h2 class="article-title">
-      <a href="https://dargonlee.github.io/post/git-de-chang-yong-ming-ling/">Git的常用命令</a>
-    </h2>
-    <p class="article-meta">
-      2019-08-12
-      
-        <a href="https://dargonlee.github.io/tag/xkXg3f75J/" class="badge secondary">
-          Git
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://dargonlee.github.io/post/git-de-chang-yong-ming-ling/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          Git的常用命令
         </a>
-      
-    </p>
-    <p class="text-lead">
-      <pre><code class="language-bash"># 显示当前的Git配置
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2019-08-12</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <pre><code class="language-bash"># 显示当前的Git配置
 $ git config --list
 
 # 查看仓库配置
@@ -276,30 +237,25 @@ git config --global -l
 # 查看系统配置
 git config --system -l </code></pre>
 
-    </p>
-    <div class="row">
-      <a href="https://dargonlee.github.io/post/git-de-chang-yong-ming-ling/" class="readmore-link">
-        <button>
-          Read More
-        </button>
+      </div>
+      <a href="https://dargonlee.github.io/post/git-de-chang-yong-ming-ling/" class="btn">
+        阅读更多
       </a>
     </div>
-  </article>
+    
+  </div>
 
-  <article class="article">
-    <h2 class="article-title">
-      <a href="https://dargonlee.github.io/post/css-bu-ju/">CSS布局</a>
-    </h2>
-    <p class="article-meta">
-      2019-07-09
-      
-        <a href="https://dargonlee.github.io/tag/CucL5DqtM/" class="badge secondary">
-          HTMl
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://dargonlee.github.io/post/css-bu-ju/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          CSS布局
         </a>
-      
-    </p>
-    <p class="text-lead">
-      <h1 id="position">position</h1>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2019-07-09</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <h1 id="position">position</h1>
 <blockquote>
 <p>为了制作更多复杂的布局，我们需要讨论下<code>position</code>属性。它有一大堆的值，名字还都特抽象，别提有多难记了。让我们先一个个的过一遍，不过你最好还是把这页放到书签里。</p>
 </blockquote>
@@ -311,30 +267,25 @@ git config --system -l </code></pre>
 }
 </code></pre>
 
-    </p>
-    <div class="row">
-      <a href="https://dargonlee.github.io/post/css-bu-ju/" class="readmore-link">
-        <button>
-          Read More
-        </button>
+      </div>
+      <a href="https://dargonlee.github.io/post/css-bu-ju/" class="btn">
+        阅读更多
       </a>
     </div>
-  </article>
+    
+  </div>
 
-  <article class="article">
-    <h2 class="article-title">
-      <a href="https://dargonlee.github.io/post/ios-gei-uilabel-zeng-jia-fu-zhi-nian-tie-gong-neng/">iOS-给UILabel增加复制粘贴功能</a>
-    </h2>
-    <p class="article-meta">
-      2019-06-11
-      
-        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
-          iOS
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://dargonlee.github.io/post/ios-gei-uilabel-zeng-jia-fu-zhi-nian-tie-gong-neng/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          iOS-给UILabel增加复制粘贴功能
         </a>
-      
-    </p>
-    <p class="text-lead">
-      <h2 id="第一步">第一步</h2>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2019-06-11</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <h2 id="第一步">第一步</h2>
 <pre><code class="language-objectivec">//让label有资格成为第一响应者
 - (BOOL)becomeFirstResponder
 {
@@ -349,30 +300,25 @@ git config --system -l </code></pre>
 }
 </code></pre>
 
-    </p>
-    <div class="row">
-      <a href="https://dargonlee.github.io/post/ios-gei-uilabel-zeng-jia-fu-zhi-nian-tie-gong-neng/" class="readmore-link">
-        <button>
-          Read More
-        </button>
+      </div>
+      <a href="https://dargonlee.github.io/post/ios-gei-uilabel-zeng-jia-fu-zhi-nian-tie-gong-neng/" class="btn">
+        阅读更多
       </a>
     </div>
-  </article>
+    
+  </div>
 
-  <article class="article">
-    <h2 class="article-title">
-      <a href="https://dargonlee.github.io/post/xiu-gai-ios-fan-hui-an-niu-de-ji-chong-fang-shi/">修改iOS返回按钮的几种方式</a>
-    </h2>
-    <p class="article-meta">
-      2019-02-13
-      
-        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge ">
-          iOS
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://dargonlee.github.io/post/xiu-gai-ios-fan-hui-an-niu-de-ji-chong-fang-shi/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          修改iOS返回按钮的几种方式
         </a>
-      
-    </p>
-    <p class="text-lead">
-      <h3 id="第一种">第一种</h3>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2019-02-13</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <h3 id="第一种">第一种</h3>
 <pre><code class="language-objectivec">UIImage *backButtonImage = [[UIImage imageNamed:@&quot;back&quot;] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)];
 
 [[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButtonImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
@@ -383,220 +329,58 @@ git config --system -l </code></pre>
 <p>提示:上面这种方法会被系统给拉伸,需要在当前控制器里面设置</p>
 </blockquote>
 
-    </p>
-    <div class="row">
-      <a href="https://dargonlee.github.io/post/xiu-gai-ios-fan-hui-an-niu-de-ji-chong-fang-shi/" class="readmore-link">
-        <button>
-          Read More
-        </button>
+      </div>
+      <a href="https://dargonlee.github.io/post/xiu-gai-ios-fan-hui-an-niu-de-ji-chong-fang-shi/" class="btn">
+        阅读更多
       </a>
     </div>
-  </article>
+    
+  </div>
 
-  <article class="article">
-    <h2 class="article-title">
-      <a href="https://dargonlee.github.io/post/hello-gridea/">Hello Gridea</a>
-    </h2>
-    <p class="article-meta">
-      2018-12-12
-      
-        <a href="https://dargonlee.github.io/tag/JKeKhLXWK/" class="badge secondary">
-          Gridea
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://dargonlee.github.io/post/hello-gridea/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          Hello Gridea
         </a>
-      
-    </p>
-    <p class="text-lead">
-      <p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2018-12-12</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
 ✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
 
-    </p>
-    <div class="row">
-      <a href="https://dargonlee.github.io/post/hello-gridea/" class="readmore-link">
-        <button>
-          Read More
-        </button>
+      </div>
+      <a href="https://dargonlee.github.io/post/hello-gridea/" class="btn">
+        阅读更多
       </a>
     </div>
-  </article>
-
-
-        </div>
-        
-        <div class="row flex-edges">
+    
+      <img class="flex-shrink-0 self-start md:ml-4 mb-4 md:mb-0 rounded-sm object-cover featured-img order-1 md:order-2 w-full h-40 md:w-56 md:h-32" loading="lazy" src="https://dargonlee.github.io/post-images/hello-gridea.png" alt="Hello Gridea">
+    
+  </div>
   
-  
-    <a href="https://dargonlee.github.io/page/2" class="paper-btn">
-      下一页
-    </a>
-  
-</div>
-
       </div>
+
       
-      <div class="sm-12 md-4 col sidebar">
-  <div class="paper info-container">
-    <img src="https://dargonlee.github.io/images/avatar.png?v=1581921945632" class="no-responsive avatar">
-    <div class="text-muted">我不在乎是悲伤的离别还是不痛快的离别，只要是离开一个地方，我总希望离开的时候自己心中有数。</div>
-    <div class="social-container">
-      
-        
-          <a href="https://github.com/DargonLee" target="_blank">
-            <i class="fab fa-github"></i>
-          </a>
-        
-      
-        
-      
-        
-          <a href="https://weibo.com/u/2246752722/home?wvr=5&amp;lf=reg" target="_blank">
-            <i class="fab fa-weibo"></i>
-          </a>
-        
-      
-        
-      
-        
-      
+  <div class="my-4 flex justify-between px-4 md:px-0">
+    
+    
+      <a href="https://dargonlee.github.io/page/2" class="btn btn-white">
+        下一页
+        <i class="ri-arrow-right-line ml-4"></i>
+      </a>
+    
+  </div>
+
+      <footer class="py-12 text-center px-4 md:px-0" v-pre>
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+</footer>
+
     </div>
   </div>
-  <div class="paper">
-    <div class="sidebar-title">
-      最新文章
-    </div>
-    <div class="row">
-      <ul>
-        
-          
-            <li>
-              <a href="https://dargonlee.github.io/post/ios-kong-zhi-qi-view-jia-zai-shun-xu-xiang-xi-ban/">iOS控制器View加载顺序详细版</a>
-            </li>
-          
-        
-          
-            <li>
-              <a href="https://dargonlee.github.io/post/ios-kai-fa-jiang-yi-ge-gong-cheng-tian-jia-dao-ling-yi-ge-gong-cheng-zhong/">iOS开发将一个工程添加到另一个工程中</a>
-            </li>
-          
-        
-          
-            <li>
-              <a href="https://dargonlee.github.io/post/jie-jue-ding-shi-qi-de-xun-huan-yin-yong/">解决定时器的循环引用</a>
-            </li>
-          
-        
-          
-            <li>
-              <a href="https://dargonlee.github.io/post/nslayoutanchor-shi-jian/">NSLayoutAnchor实践</a>
-            </li>
-          
-        
-          
-            <li>
-              <a href="https://dargonlee.github.io/post/flutter-chang-yong-bu-ju/">Flutter 常用布局</a>
-            </li>
-          
-        
-          
-            <li>
-              <a href="https://dargonlee.github.io/post/git-de-chang-yong-ming-ling/">Git的常用命令</a>
-            </li>
-          
-        
-          
-            <li>
-              <a href="https://dargonlee.github.io/post/css-bu-ju/">CSS布局</a>
-            </li>
-          
-        
-          
-            <li>
-              <a href="https://dargonlee.github.io/post/ios-gei-uilabel-zeng-jia-fu-zhi-nian-tie-gong-neng/">iOS-给UILabel增加复制粘贴功能</a>
-            </li>
-          
-        
-          
-            <li>
-              <a href="https://dargonlee.github.io/post/xiu-gai-ios-fan-hui-an-niu-de-ji-chong-fang-shi/">修改iOS返回按钮的几种方式</a>
-            </li>
-          
-        
-          
-            <li>
-              <a href="https://dargonlee.github.io/post/about/">关于</a>
-            </li>
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-      </ul>
-    </div>
-  </div>
-  <div class="paper">
-    <div class="sidebar-title">
-      标签列表
-    </div>
-    <div class="row">
-      
-        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
-          iOS
-        </a>
-      
-        <a href="https://dargonlee.github.io/tag/nXwjG0N5T/" class="badge secondary">
-          Flutter
-        </a>
-      
-        <a href="https://dargonlee.github.io/tag/xkXg3f75J/" class="badge secondary">
-          Git
-        </a>
-      
-        <a href="https://dargonlee.github.io/tag/CucL5DqtM/" class="badge secondary">
-          HTMl
-        </a>
-      
-        <a href="https://dargonlee.github.io/tag/JKeKhLXWK/" class="badge ">
-          Gridea
-        </a>
-      
-        <a href="https://dargonlee.github.io/tag/9B1ux8xCh/" class="badge secondary">
-          WebView
-        </a>
-      
-        <a href="https://dargonlee.github.io/tag/9csAFw8eL/" class="badge secondary">
-          tableView
-        </a>
-      
-        <a href="https://dargonlee.github.io/tag/KlflZd7io/" class="badge secondary">
-          tableHeaderView
-        </a>
-      
-    </div>
-  </div>
-  <div class="paper">
-    Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://dargonlee.github.io/atom.xml" target="_blank">RSS</a>
-  </div>
-</div>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://dargonlee.github.io/media/scripts/main.js"></script>
+</body>
 
-    </div>
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-
-<script type="application/javascript">
-
-AOS.init();
-
-hljs.initHighlightingOnLoad()
-
-</script>
-
-
-
-
-  </body>
 </html>
