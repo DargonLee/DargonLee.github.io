@@ -62,7 +62,7 @@
 <p>而iOS7的发布，苹果又引入了TextKit,TextKit是一个快速而又现代化的文字排版和渲染引擎。</p>
 <p>TextKit并没有新增类，只是在原有的文本显示控件上进行了封装，可以在平时我们最喜欢使用的UILabel，UITextField，UITextView等控件里面使用，其最主要的作用就是为程序提供文字排版和渲染的功能</p>
 <!--more-->
-<h2 id="1-nsmutableattributedstring的基本使用">1、NSMutableAttributedString的基本使用</h2>
+<h2 id="nsmutableattributedstring的基本使用">NSMutableAttributedString的基本使用</h2>
 <p>富文本注意：<br>
 先设置的先显示，后设置的，如果和先设置的样式不一致，是会覆盖的，富文本的设置具有先后顺序。<br>
 不要忽略了空格也是一个字符。<br>
@@ -89,7 +89,7 @@
     self.label.attributedText = attr;
 </code></pre>
 <figure data-type="image" tabindex="1"><img src="http://upload-images.jianshu.io/upload_images/646265-b146d2754a533bd3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" loading="lazy"></figure>
-<p>###NSMutableAttributedString可以设置的属性有：</p>
+<h3 id="nsmutableattributedstring可以设置的属性有">NSMutableAttributedString可以设置的属性有：</h3>
 <pre><code class="language-objectivec">NSFontAttributeName                设置字体属性，默认值：字体：Helvetica(Neue) 字号：12
 NSForegroundColorAttributeNam      设置字体颜色，取值为 UIColor对象，默认值为黑色
 NSBackgroundColorAttributeName     设置字体所在区域背景颜色，取值为 UIColor对象，默认值为nil, 透明色
@@ -112,7 +112,7 @@ NSLinkAttributeName                设置链接属性，点击后调用浏览器
 NSAttachmentAttributeName          设置文本附件,取值为NSTextAttachment对象,常用于文字图片混排
 NSParagraphStyleAttributeName      设置文本段落排版格式，取值为 NSParagraphStyle 对象
 </code></pre>
-<h3 id="2nstextattachment图文混排简单应用">2.NSTextAttachment图文混排简单应用</h3>
+<h3 id="nstextattachment图文混排简单应用">NSTextAttachment图文混排简单应用</h3>
 <pre><code class="language-objectivec">
     //设置图片
     NSTextAttachment * attachment = [[NSTextAttachment alloc]init];
@@ -129,7 +129,7 @@ NSParagraphStyleAttributeName      设置文本段落排版格式，取值为 NS
 //    [self.textView.textStorage appendAttributedString:attachmentString];
 </code></pre>
 <figure data-type="image" tabindex="2"><img src="http://upload-images.jianshu.io/upload_images/646265-1ff7c031aef05e6f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" loading="lazy"></figure>
-<p>###textview的实际使用</p>
+<h3 id="textview的实际使用">textview的实际使用</h3>
 <ul>
 <li>
 <p>实现的过程如下:</p>
@@ -263,9 +263,11 @@ label.lineBreakMode = NSLineBreakByWordWrapping;以单词为显示单位显示�
         <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li><a href="#1-nsmutableattributedstring%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8">1、NSMutableAttributedString的基本使用</a>
+<li><a href="#nsmutableattributedstring%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8">NSMutableAttributedString的基本使用</a>
 <ul>
-<li><a href="#2nstextattachment%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8">2.NSTextAttachment图文混排简单应用</a></li>
+<li><a href="#nsmutableattributedstring%E5%8F%AF%E4%BB%A5%E8%AE%BE%E7%BD%AE%E7%9A%84%E5%B1%9E%E6%80%A7%E6%9C%89">NSMutableAttributedString可以设置的属性有：</a></li>
+<li><a href="#nstextattachment%E5%9B%BE%E6%96%87%E6%B7%B7%E6%8E%92%E7%AE%80%E5%8D%95%E5%BA%94%E7%94%A8">NSTextAttachment图文混排简单应用</a></li>
+<li><a href="#textview%E7%9A%84%E5%AE%9E%E9%99%85%E4%BD%BF%E7%94%A8">textview的实际使用</a></li>
 </ul>
 </li>
 </ul>
