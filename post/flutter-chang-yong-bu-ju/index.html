@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Flutter 常用布局 | 七里田间的守望者</title>
+<meta name="description" content="我不在乎是悲伤的离别还是不痛快的离别，只要是离开一个地方，我总希望离开的时候自己心中有数。">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://dargonlee.github.io/favicon.ico?v=1581921563314">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://dargonlee.github.io/styles/main.css">
+
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://dargonlee.github.io">七里田间的守望者</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="/" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>Flutter 常用布局</h1>
+            <p class="article-meta">
+              2019-09-17
+              
+                <a href="https://dargonlee.github.io/tag/nXwjG0N5T/" class="badge success">
+                  Flutter
+                </a>
+              
+            </p>
+            
+            <div class="post-content">
+              <h4 id="行布局-在x轴上">行布局 （在X轴上）</h4>
+<blockquote>
+<p>Row.mainAxisAlignment 主轴排列方式</p>
+</blockquote>
+<pre><code>Row(
+  mainAxisAlignment: MainAxisAlignment.spaceAround,  // 改变这个值 可以更改排列方式 如下图
+  mainAxisSize: MainAxisSize.max,
+  children: [
+    Icon(Icons.stars, size: 50.0),
+    Icon(Icons.stars, size: 50.0),
+    Icon(Icons.stars, size: 50.0),
+], )
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://upload-images.jianshu.io/upload_images/646265-2fc1ab8a4b7f57a4.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="row.jpg" loading="lazy"></figure>
+<blockquote>
+<p>Row.crossAxisAlignment 纵轴排列方式</p>
+</blockquote>
+<pre><code>Row(
+  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  crossAxisAlignment: CrossAxisAlignment.start,  // 改变这个值 可以更改排列方式 如下图
+  children: [
+    Icon(Icons.stars, size: 50.0),
+    Icon(Icons.stars, size: 100.0),
+    Icon(Icons.stars, size: 50.0),
+], )
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://upload-images.jianshu.io/upload_images/646265-90a2530f54792a81.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></figure>
+<h4 id="列布局在y轴上">列布局（在Y轴上）</h4>
+<blockquote>
+<p>Column.mainAxisAlignment 列布局 主轴排列方式</p>
+</blockquote>
+<pre><code>Column(
+  mainAxisAlignment: MainAxisAlignment.start, // 改变这个值 可以更改排列方式 如下图
+  mainAxisSize: MainAxisSize.max,
+  children: [
+    Icon(Icons.stars, size: 50.0),
+    Icon(Icons.stars, size: 50.0),
+    Icon(Icons.stars, size: 50.0),
+], )
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="https://upload-images.jianshu.io/upload_images/646265-ef8cbc570e2abf84.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></figure>
+<blockquote>
+<p>Column.mainAxisAlignment 列布局 纵轴排列方式</p>
+</blockquote>
+<pre><code>Column(
+  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  crossAxisAlignment: CrossAxisAlignment.start, // 改变这个值 可以更改排列方式 如下图
+  children: [
+    Icon(Icons.stars, size: 50.0),
+    Icon(Icons.stars, size: 100.0),
+    Icon(Icons.stars, size: 50.0),
+], )
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="https://upload-images.jianshu.io/upload_images/646265-d03f1a32a2a66c41.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></figure>
+<h4 id="stack布局允许子widget堆叠可以叠加布局view也就是在-z-轴上">Stack布局（允许子widget堆叠，可以叠加布局View，也就是在 Z 轴上）</h4>
+<blockquote>
+<p>Stack.alignment</p>
+</blockquote>
+<pre><code>Stack(
+  alignment: AlignmentDirectional.topStart, //改变这个值 可以更改排列方式 如下面两张图
+  children:[
+    SizedBox(
+      width: 300.0,
+      height: 300.0,
+      child: Container(color: Colors.green),
+), SizedBox(
+      width: 200.0,
+      height: 200.0,
+      child: Container(color: Colors.yellow),
+), SizedBox(
+      width: 100.0,
+      height: 100.0,
+      child: Container(color: Colors.red),
+), ],
+)
+</code></pre>
+<p><img src="https://upload-images.jianshu.io/upload_images/646265-6ea3906a2a13098f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"><br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-9e0c8ba13561b3a8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></p>
+<h4 id="positioned布局">Positioned布局</h4>
+<blockquote>
+<p>Stack允许子widget堆叠，而Positioned可以给子widget定位 <code>根据Stack的四个角</code></p>
+</blockquote>
+<pre><code>Stack(
+  children: [
+    SizedBox(
+      width: 300.0,
+      height: 300.0,
+      child: Container(color: Colors.green),
+    ),
+    Positioned( // 这里的位置都是相对于 上面的SizeBox的位置的
+      left: 20.0, 
+      top: 20.0,
+      width: 100.0,
+      height: 100.0,
+      child: Container(color: Colors.indigo),
+    ),
+    Positioned( // 这里的位置都是相对于 上面的SizeBox的位置的
+      bottom: 20.0,
+      right: 20.0,
+      width: 100.0,
+      height: 100.0,
+      child: Container(color: Colors.black87),
+), ],
+)
+</code></pre>
+<figure data-type="image" tabindex="5"><img src="https://upload-images.jianshu.io/upload_images/646265-32432b7a3de5aa7b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></figure>
+<h4 id="expanded布局">Expanded布局</h4>
+<blockquote>
+<p>Expanded组件可以使Row、Column、Flex等子组件在其主轴方向上展开并填充可用空间(例如，Row在水平方向，Column在垂直方向)。如果多个子组件展开，可用空间会被其flex factor(表示扩展的速度、比例)分割。</p>
+</blockquote>
+<pre><code>Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: &lt;Widget&gt;[
+            Expanded(
+              flex: 1, //组件占据剩余空间的比例
+              child: Container(
+                color: Colors.yellow,
+                child: Center(child: Text('flex: 1'),),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Container(
+                color: Colors.orange,
+                child: Center(child: Text('flex: 2'),),
+              ),
+            ),
+            Expanded(
+              flex: 3,
+              child: Container(
+                color: Colors.cyan,
+                child: Center(child: Text('flex: 3'),),
+              ),
+            )
+          ],
+        ),
+</code></pre>
+<figure data-type="image" tabindex="6"><img src="https://upload-images.jianshu.io/upload_images/646265-072a28dbc18077cc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></figure>
+<h4 id="expanded-padding-sizedbox">Expanded + Padding + SizedBox</h4>
+<blockquote>
+<p>如何用 <code>padding</code> 和 <code>SizeBox</code> 给内容之间添加间隙</p>
+</blockquote>
+<pre><code>Container(
+        height: 200.0,
+        color: Colors.yellow,
+        padding: EdgeInsets.all(16.0),
+        child: Row(
+          children: &lt;Widget&gt;[
+            Expanded(
+              flex: 1,
+              child: Container(
+                color: Colors.green,
+                child: Center(child: Text('flex: 1'),),
+              ),
+            ),
+            SizedBox(width: 40.0,),
+            Expanded(
+              flex: 2,
+              child: Container(
+                color: Colors.orange,
+                child: Center(child: Text('flex: 2'),),
+              ),
+            )
+          ],
+        ),
+      ),
+</code></pre>
+<figure data-type="image" tabindex="7"><img src="https://upload-images.jianshu.io/upload_images/646265-105875d9a122bce3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></figure>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+            <div class="next-post">
+              <div class="next">
+                下一篇
+              </div>
+              <a href="https://dargonlee.github.io/post/git-de-chang-yong-ming-ling/">
+                <h3 class="post-title">
+                  Git的常用命令
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://dargonlee.github.io/images/avatar.png?v=1581921563314" class="no-responsive avatar">
+    <div class="text-muted">我不在乎是悲伤的离别还是不痛快的离别，只要是离开一个地方，我总希望离开的时候自己心中有数。</div>
+    <div class="social-container">
+      
+        
+          <a href="https://github.com/DargonLee" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+          <a href="https://weibo.com/u/2246752722/home?wvr=5&amp;lf=reg" target="_blank">
+            <i class="fab fa-weibo"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-kong-zhi-qi-view-jia-zai-shun-xu-xiang-xi-ban/">iOS控制器View加载顺序详细版</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-kai-fa-jiang-yi-ge-gong-cheng-tian-jia-dao-ling-yi-ge-gong-cheng-zhong/">iOS开发将一个工程添加到另一个工程中</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/jie-jue-ding-shi-qi-de-xun-huan-yin-yong/">解决定时器的循环引用</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/nslayoutanchor-shi-jian/">NSLayoutAnchor实践</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/flutter-chang-yong-bu-ju/">Flutter 常用布局</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/git-de-chang-yong-ming-ling/">Git的常用命令</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/css-bu-ju/">CSS布局</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-gei-uilabel-zeng-jia-fu-zhi-nian-tie-gong-neng/">iOS-给UILabel增加复制粘贴功能</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/xiu-gai-ios-fan-hui-an-niu-de-ji-chong-fang-shi/">修改iOS返回按钮的几种方式</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/about/">关于</a>
+            </li>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
+          iOS
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/nXwjG0N5T/" class="badge secondary">
+          Flutter
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/xkXg3f75J/" class="badge ">
+          Git
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/CucL5DqtM/" class="badge success">
+          HTMl
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/JKeKhLXWK/" class="badge warning">
+          Gridea
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/9B1ux8xCh/" class="badge secondary">
+          WebView
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/9csAFw8eL/" class="badge warning">
+          tableView
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/KlflZd7io/" class="badge ">
+          tableHeaderView
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+    Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://dargonlee.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>iOS开发将一个工程添加到另一个工程中 | 七里田间的守望者</title>
+<meta name="description" content="我不在乎是悲伤的离别还是不痛快的离别，只要是离开一个地方，我总希望离开的时候自己心中有数。">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://dargonlee.github.io/favicon.ico?v=1581921563314">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://dargonlee.github.io/styles/main.css">
+
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://dargonlee.github.io">七里田间的守望者</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="/" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>iOS开发将一个工程添加到另一个工程中</h1>
+            <p class="article-meta">
+              2019-11-16
+              
+                <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge ">
+                  iOS
+                </a>
+              
+            </p>
+            
+            <div class="post-content">
+              <blockquote>
+<p>一个项目引用另一个项目这里列举两种情况</p>
+<ul>
+<li>一个 Single View App 项目要引用另一个Single View App 项目</li>
+<li>一个 Single View App 项目要引用 动态库的项目（Cocoa Touch Framework）</li>
+</ul>
+</blockquote>
+<h4 id="先说第一种情况的做法">先说第一种情况的做法</h4>
+<ul>
+<li>先在一个文件夹下 新建两个 Single View App 项目 一个为demo1 另一个为demo2</li>
+</ul>
+<blockquote>
+<p>注意 现在的需求是 <code>demo1 要引用 demo2</code></p>
+</blockquote>
+<ul>
+<li>
+<p>然后在demo1项目中新建一个Group 命名为 <code>Frameworks</code> 创建完成如下图<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-a9bd6106264a07eb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-100047@2x.png" loading="lazy"></p>
+</li>
+<li>
+<p>然后 <code>show in finder</code> <code>Frameworks</code> 把<code>demo2</code> 拖进去 完成后如下图<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-03744768dbf8acda.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-100400@2x.png" loading="lazy"></p>
+</li>
+<li>
+<p>最后 进入到 <code>Frameworks</code>里面的 <code>demo2</code>找到 <code>demo2.xcodeproj</code> 然后把  <code>demo2.xcodeproj</code>  拖动到 <code>demo1</code>的<code>Frameworks</code>文件夹里面 操作完成如下图所示<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-20a3f6a7cdbf069b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-100707@2x.png" loading="lazy"></p>
+</li>
+<li>
+<p>下面开始操作<code>demo2</code>了</p>
+</li>
+<li>
+<p>选中 <code>Frameworks</code>里面的 <code>demo2.xcodeproj</code> 添加一个 Target 操作如图所示</p>
+</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="https://upload-images.jianshu.io/upload_images/646265-64fdf9f64b75e438.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-100943@2x.png" loading="lazy"></figure>
+<p><em><strong>创建动态库</strong></em></p>
+<figure data-type="image" tabindex="2"><img src="https://upload-images.jianshu.io/upload_images/646265-e06cc019ed28e160.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-100959@2x.png" loading="lazy"></figure>
+<blockquote>
+<p>我这里命名的target 为<code>xxx</code> 你可以按需求命名 因为到时候在 <code>demo1</code>中导入头文件的时候 就是这个名字</p>
+</blockquote>
+<ul>
+<li>在 <code>demo2</code>中创建一个 <code>Person</code>类 （这个类就是一会我们要在<code>demo1</code>中使用的） 操作完成如下图<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-11a7c5c634e49ff6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-101342@2x.png" loading="lazy"></li>
+</ul>
+<blockquote>
+<p>注意要想在 <code>demo1</code>使用的文件添加到 <code>xxx</code> 的target当中去 如下图所示 如果又想给<code>demo1</code>用又想自己用 那就两个target都勾选</p>
+</blockquote>
+<figure data-type="image" tabindex="3"><img src="https://upload-images.jianshu.io/upload_images/646265-14c3ab67d01a6f1a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></figure>
+<ul>
+<li>然后选中 刚才创建的那个 <code>xxx</code>target 进行如下图操作所示<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-e4097bda92932e75.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-101451@2x.png" loading="lazy"></li>
+</ul>
+<blockquote>
+<p>上图操作为 把<code>Project</code> 中的 <code>Person.h</code> 拖动到 <code>Public</code>中</p>
+</blockquote>
+<ul>
+<li>
+<p>然后选中 <code>demo1</code>进行如下图操作<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-6199f3ebc95efdd8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-102412@2x.png" loading="lazy"></p>
+</li>
+<li>
+<p>然后继续设置 <code>demo1</code>  在 <code>Build Settings</code>中设置<code>Header Search Paths</code> 的路径为 <code>${SRCROOT}/Frameworks/demo2</code> 如下图所示<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-1003fdf2f8b79706.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-102551@2x.png" loading="lazy"></p>
+</li>
+<li>
+<p>至此 一个项目引入另一个项目的功能就完成了 在 <code>demo1</code>中 就可以快乐的使用 <code>demo2</code>的文件了 如下图所示<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-ae52f9c5f13fe3e2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-102917@2x.png" loading="lazy"></p>
+</li>
+</ul>
+<h1 id="下面是-single-view-app-项目要引用-动态库的项目cocoa-touch-framework">下面是 Single View App 项目要引用 动态库的项目（Cocoa Touch Framework）</h1>
+<blockquote>
+<p>思路跟上面差不多</p>
+</blockquote>
+<p>这里以 <code>Demo1</code> 为例子 以下图所示 操作<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-e31ad3c0f0dec7a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></p>
+<p>然后按照下图选择创建动态库<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-e06cc019ed28e160.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-100959@2x.png" loading="lazy"><br>
+然后创建好的动态库如下图所示<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-d103b7200d550368.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></p>
+<p>我在动态库里面 新建了 一个<code>Person</code>文件，并声明了一个属性和一个方法<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-e7048f8d3422fd79.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></p>
+<p>切记箭头指向的地方 如果在 <code>UUPerson</code> 中打钩就是只在<code>UUPerson</code>动态库中用。<br>
+然后在 动态库的头文件中，配置要暴露出去的头文件 如下图所示<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-2e912de99b775b57.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></p>
+<p>接着就要配置外界能访问的头文件了 如下图所示<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-167dac6407dbb774.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></p>
+<blockquote>
+<p>把要对外的 <code>.h</code>文件都拖动到 Public的里面去</p>
+</blockquote>
+<p>然后就可以在当前项目中使用了 如下图所示<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-5035cf57f5cfad11.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></p>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+            <div class="next-post">
+              <div class="next">
+                下一篇
+              </div>
+              <a href="https://dargonlee.github.io/post/jie-jue-ding-shi-qi-de-xun-huan-yin-yong/">
+                <h3 class="post-title">
+                  解决定时器的循环引用
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://dargonlee.github.io/images/avatar.png?v=1581921563314" class="no-responsive avatar">
+    <div class="text-muted">我不在乎是悲伤的离别还是不痛快的离别，只要是离开一个地方，我总希望离开的时候自己心中有数。</div>
+    <div class="social-container">
+      
+        
+          <a href="https://github.com/DargonLee" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+          <a href="https://weibo.com/u/2246752722/home?wvr=5&amp;lf=reg" target="_blank">
+            <i class="fab fa-weibo"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-kong-zhi-qi-view-jia-zai-shun-xu-xiang-xi-ban/">iOS控制器View加载顺序详细版</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-kai-fa-jiang-yi-ge-gong-cheng-tian-jia-dao-ling-yi-ge-gong-cheng-zhong/">iOS开发将一个工程添加到另一个工程中</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/jie-jue-ding-shi-qi-de-xun-huan-yin-yong/">解决定时器的循环引用</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/nslayoutanchor-shi-jian/">NSLayoutAnchor实践</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/flutter-chang-yong-bu-ju/">Flutter 常用布局</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/git-de-chang-yong-ming-ling/">Git的常用命令</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/css-bu-ju/">CSS布局</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/ios-gei-uilabel-zeng-jia-fu-zhi-nian-tie-gong-neng/">iOS-给UILabel增加复制粘贴功能</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/xiu-gai-ios-fan-hui-an-niu-de-ji-chong-fang-shi/">修改iOS返回按钮的几种方式</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://dargonlee.github.io/post/about/">关于</a>
+            </li>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
+          iOS
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/nXwjG0N5T/" class="badge secondary">
+          Flutter
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/xkXg3f75J/" class="badge success">
+          Git
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/CucL5DqtM/" class="badge ">
+          HTMl
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/JKeKhLXWK/" class="badge secondary">
+          Gridea
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/9B1ux8xCh/" class="badge secondary">
+          WebView
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/9csAFw8eL/" class="badge success">
+          tableView
+        </a>
+      
+        <a href="https://dargonlee.github.io/tag/KlflZd7io/" class="badge success">
+          tableHeaderView
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+    Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://dargonlee.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+
+  </body>
+</html>

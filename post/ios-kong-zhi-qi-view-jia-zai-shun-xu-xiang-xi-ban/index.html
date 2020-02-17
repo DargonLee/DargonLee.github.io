@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>Hello Gridea | 七里田间的守望者</title>
+<title>iOS控制器View加载顺序详细版 | 七里田间的守望者</title>
 <meta name="description" content="我不在乎是悲伤的离别还是不痛快的离别，只要是离开一个地方，我总希望离开的时候自己心中有数。">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -81,40 +81,158 @@
       <div class="sm-12 md-8 col">
         <div class="paper">
           <article class="article">
-            <h1>Hello Gridea</h1>
+            <h1>iOS控制器View加载顺序详细版</h1>
             <p class="article-meta">
-              2018-12-12
+              2020-02-17
               
-                <a href="https://dargonlee.github.io/tag/JKeKhLXWK/" class="badge secondary">
-                  Gridea
+                <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
+                  iOS
                 </a>
               
             </p>
             
-              <img src="https://dargonlee.github.io/post-images/hello-gridea.png" alt="Hello Gridea">
-            
             <div class="post-content">
-              <p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-<!-- more -->
-<p><a href="https://github.com/getgridea/gridea">Github</a><br>
-<a href="https://gridea.dev/">Gridea 主页</a><br>
-<a href="http://fehey.com/">示例网站</a></p>
-<h2 id="特性">特性👇</h2>
-<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
-<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
-<p>🏷️  你可以对文章进行标签分组</p>
-<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
-<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
-<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
-<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
-<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
-<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
-<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
-<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
-<p>未来，它一定会成为你离不开的伙伴</p>
-<p>尽情发挥你的才华吧！</p>
-<p>😘 Enjoy~</p>
+              <p><code>控制器声明周期</code></p>
+<pre><code>//通过nib问价初始化触发
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+
+//nib文件被加载的时候，会发送一个消息到nib文件中的每一个对象
+- (void)awakeFromNib
+
+//开始加载视图控制器自带的view
+- (void)loadView
+
+//视图控制器的view被加载完成
+- (void)viewDidLoad
+
+//视图控制器的view将要显示在window上
+- (void)viewWillAppear:(BOOL)animated
+
+//视图控制器的view开始更新Autolayout
+- (void)updateViewConstraints
+
+//视图控制器的view开始更新内容视图的位置
+- (void)viewWillLayoutSubviews
+
+//视图控制器的view已经更新内容视图的位置
+- (void)viewDidLayoutSubviews
+
+//视图控制器的view已经显示到window上
+- (void)viewDidAppear:(BOOL)animated
+
+//视图控制的view将要从window上消失
+- (void)viewWillDisappear:(BOOL)animated
+
+//视图控制器的view已经从window上消失
+- (void)viewDidDisappear:(BOOL)animated
+</code></pre>
+<p>加载过程:<br>
+1 一般情况下调用 init方法或者调用initWithNibName方法实例化UIViewController, 不管调用哪个方法都为调用initWithNibName(方法定义如下)</p>
+<ul>
+<li>
+<p><code>-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil</code></p>
+</li>
+<li>
+<p>接着会调用loadView方法来生成UIViewController.view</p>
+</li>
+<li>
+<p><code>- (void)loadView</code></p>
+</li>
+<li>
+<p>下面来简单说下loadView底层</p>
+<ul>
+<li>
+<p>判断下有没有指定storyboard，如果有，就去加载storyboard描述的控制器的view</p>
+</li>
+<li>
+<p>判断下有没有指定nibName,如果有，就去加载nibName描述的控制器的view</p>
+</li>
+<li>
+<p><code>- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil</code></p>
+</li>
+<li>
+<p>如果判断有没有指定nibName,[self nibName]</p>
+</li>
+<li>
+<p>判断下nibName是否为空，如果为空，他会尝试找下有没有跟控制器同名，但是不带Controller的xib</p>
+</li>
+<li>
+<p>跟控制器同名的xib,nibName = ViewController,但是这一步有条件，前提条件你没有重写loadView</p>
+</li>
+<li>
+<p>如果都没有找到，直接创建默认控制器的view</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><code>- (void)awakeFromNib;</code></p>
+<ul>
+<li>
+<p>这个方法用的时候，outlet还没有连接起来，是view Controller刚从storyboard建的时候，没有完全建好，不过可能有一些事情要在这个方法里面完成，比如splitViewDelegate，需要在非常早期完成。然后调用 viewDidLoad方法<br>
+<code>- (void)viewDidLoad</code></p>
+</li>
+<li>
+<p>如果loadView不能生成UIViewController.view系统将会反复调用loadView及viewDidLoad方法, 并且最终调用[super loadView] 方法返回UIViewController.view<br>
+然后依次调用如下2个方法, 这2个方法也十分重要, 在UINavigationController的POP操作后有时将要显示的UIViewController中的View并没有释放(也有可能释放掉) , UIViewController将不会调用上面的三个方法(initWithNibName,loadView,viewDidLoad) 而会调用下面这2个方法</p>
+</li>
+<li>
+<p><code>- (void)viewWillAppear:(BOOL)animated;</code></p>
+</li>
+<li>
+<p><code>- (void)viewDidAppear:(BOOL)animated;</code><br>
+紧接着调用下面两个方法view中frame值布局，使子控制器的frame值更加准确</p>
+</li>
+<li>
+<p><code>- (void)viewWillLayoutSubviews</code></p>
+</li>
+<li>
+<p><code>-(void)viewDidLayoutSubviews</code></p>
+</li>
+<li>
+<p>页面消失的方法</p>
+</li>
+</ul>
+<p><code>- (void)viewWillDisappear:(BOOL)animated;</code><br>
+<code>- (void)viewDidDisappear:(BOOL)animated;</code><br>
+<code>- (void)viewWillUnload;</code>//iOS5.0添加- (void)viewDidUnload;<br>
+<code>- (void)dealloc；</code></p>
+<ul>
+<li>
+<p>控制器View一些方法的区分</p>
+<ul>
+<li>viewDidLoad其实没什么可混淆的,无论通过什么途径加载(Xcode或者IB,这里的加载属于实例化)完view后肯定会执行这个方法.</li>
+<li><code>- loadView</code>需要分两种情况.
+<ul>
+<li>当你通过Xcode实例化一个类的时候就需要自己在controller中实现这个方法.</li>
+<li>而在IB中实例化就不需要实现它.</li>
+<li><code>- initWithNibName</code>这个方法是在controller的类在IB中创建,但是通过Xcode实例化controller的时候用的.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>awakeFromNib这个方法是一个类在IB中被实例化是被调用的.</p>
+</li>
+<li>
+<p>看了帖子发现大家都推荐使用viewDidLoad而不要使用awakeFromNib,应为viewDidLoad会被多次调用,</p>
+</li>
+<li>
+<p>而awakeFromNib只会当从nib文件中unarchive的时候才会被调用一次.</p>
+</li>
+<li>
+<p>实际测试中发现,当一个类的awakeFromNib被调用的时候,那么这个类的viewDidLoad就不会被调用了,这个感觉很奇怪.</p>
+</li>
+<li>
+<p><code>- initWithCoder</code>是一个类在IB中创建但在Xcode中被实例化时被调用的.</p>
+</li>
+<li>
+<p>比如,通过IB创建一个controller的nib文件,然后在xocde中通过initWithNibName来实例化这个controller,那么这个controller的initWithCoder会被调用.</p>
+</li>
+<li>
+<p><code>- awakeFromNib</code> 当.nib文件被加载的时候，会发送一个awakeFromNib的消息到.nib文件中的每个对象，每个对象都可以定义自己的awakeFromNib函数来响应这个消息，执行一些必要的操作。也就是说通过nib文件创建view对象是执行awakeFromNib</p>
+</li>
+</ul>
+<p>viewDidLoad 当view对象被加载到内存是就会执行viewDidLoad，所以不管通过nib文件还是代码的方式创建对象都会执行viewDidLoad</p>
 
             </div>
           </article>
@@ -125,9 +243,9 @@
               <div class="next">
                 下一篇
               </div>
-              <a href="https://dargonlee.github.io/post/ios-wkwebview-tong-bu-fan-hui-zhi-gei-js/">
+              <a href="https://dargonlee.github.io/post/ios-kai-fa-jiang-yi-ge-gong-cheng-tian-jia-dao-ling-yi-ge-gong-cheng-zhong/">
                 <h3 class="post-title">
-                  iOS WKWebView 同步返回值给JS
+                  iOS开发将一个工程添加到另一个工程中
                 </h3>
               </a>
             </div>
@@ -248,7 +366,7 @@
     </div>
     <div class="row">
       
-        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge secondary">
+        <a href="https://dargonlee.github.io/tag/GLFxTPdZ4/" class="badge success">
           iOS
         </a>
       
@@ -256,7 +374,7 @@
           Flutter
         </a>
       
-        <a href="https://dargonlee.github.io/tag/xkXg3f75J/" class="badge secondary">
+        <a href="https://dargonlee.github.io/tag/xkXg3f75J/" class="badge ">
           Git
         </a>
       
@@ -264,15 +382,15 @@
           HTMl
         </a>
       
-        <a href="https://dargonlee.github.io/tag/JKeKhLXWK/" class="badge secondary">
+        <a href="https://dargonlee.github.io/tag/JKeKhLXWK/" class="badge warning">
           Gridea
         </a>
       
-        <a href="https://dargonlee.github.io/tag/9B1ux8xCh/" class="badge success">
+        <a href="https://dargonlee.github.io/tag/9B1ux8xCh/" class="badge secondary">
           WebView
         </a>
       
-        <a href="https://dargonlee.github.io/tag/9csAFw8eL/" class="badge success">
+        <a href="https://dargonlee.github.io/tag/9csAFw8eL/" class="badge secondary">
           tableView
         </a>
       

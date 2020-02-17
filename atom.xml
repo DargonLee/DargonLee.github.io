@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-02-17T06:11:12.292Z</updated>
+    <updated>2020-02-17T06:40:11.936Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
@@ -10,6 +10,254 @@
     <logo>https://dargonlee.github.io/images/avatar.png</logo>
     <icon>https://dargonlee.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 七里田间的守望者</rights>
+    <entry>
+        <title type="html"><![CDATA[iOS控制器View加载顺序详细版]]></title>
+        <id>https://dargonlee.github.io/post/ios-kong-zhi-qi-view-jia-zai-shun-xu-xiang-xi-ban/</id>
+        <link href="https://dargonlee.github.io/post/ios-kong-zhi-qi-view-jia-zai-shun-xu-xiang-xi-ban/">
+        </link>
+        <updated>2020-02-17T06:35:16.000Z</updated>
+        <content type="html"><![CDATA[<p><code>控制器声明周期</code></p>
+<pre><code>//通过nib问价初始化触发
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+
+//nib文件被加载的时候，会发送一个消息到nib文件中的每一个对象
+- (void)awakeFromNib
+
+//开始加载视图控制器自带的view
+- (void)loadView
+
+//视图控制器的view被加载完成
+- (void)viewDidLoad
+
+//视图控制器的view将要显示在window上
+- (void)viewWillAppear:(BOOL)animated
+
+//视图控制器的view开始更新Autolayout
+- (void)updateViewConstraints
+
+//视图控制器的view开始更新内容视图的位置
+- (void)viewWillLayoutSubviews
+
+//视图控制器的view已经更新内容视图的位置
+- (void)viewDidLayoutSubviews
+
+//视图控制器的view已经显示到window上
+- (void)viewDidAppear:(BOOL)animated
+
+//视图控制的view将要从window上消失
+- (void)viewWillDisappear:(BOOL)animated
+
+//视图控制器的view已经从window上消失
+- (void)viewDidDisappear:(BOOL)animated
+</code></pre>
+<p>加载过程:<br>
+1 一般情况下调用 init方法或者调用initWithNibName方法实例化UIViewController, 不管调用哪个方法都为调用initWithNibName(方法定义如下)</p>
+<ul>
+<li>
+<p><code>-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil</code></p>
+</li>
+<li>
+<p>接着会调用loadView方法来生成UIViewController.view</p>
+</li>
+<li>
+<p><code>- (void)loadView</code></p>
+</li>
+<li>
+<p>下面来简单说下loadView底层</p>
+<ul>
+<li>
+<p>判断下有没有指定storyboard，如果有，就去加载storyboard描述的控制器的view</p>
+</li>
+<li>
+<p>判断下有没有指定nibName,如果有，就去加载nibName描述的控制器的view</p>
+</li>
+<li>
+<p><code>- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil</code></p>
+</li>
+<li>
+<p>如果判断有没有指定nibName,[self nibName]</p>
+</li>
+<li>
+<p>判断下nibName是否为空，如果为空，他会尝试找下有没有跟控制器同名，但是不带Controller的xib</p>
+</li>
+<li>
+<p>跟控制器同名的xib,nibName = ViewController,但是这一步有条件，前提条件你没有重写loadView</p>
+</li>
+<li>
+<p>如果都没有找到，直接创建默认控制器的view</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><code>- (void)awakeFromNib;</code></p>
+<ul>
+<li>
+<p>这个方法用的时候，outlet还没有连接起来，是view Controller刚从storyboard建的时候，没有完全建好，不过可能有一些事情要在这个方法里面完成，比如splitViewDelegate，需要在非常早期完成。然后调用 viewDidLoad方法<br>
+<code>- (void)viewDidLoad</code></p>
+</li>
+<li>
+<p>如果loadView不能生成UIViewController.view系统将会反复调用loadView及viewDidLoad方法, 并且最终调用[super loadView] 方法返回UIViewController.view<br>
+然后依次调用如下2个方法, 这2个方法也十分重要, 在UINavigationController的POP操作后有时将要显示的UIViewController中的View并没有释放(也有可能释放掉) , UIViewController将不会调用上面的三个方法(initWithNibName,loadView,viewDidLoad) 而会调用下面这2个方法</p>
+</li>
+<li>
+<p><code>- (void)viewWillAppear:(BOOL)animated;</code></p>
+</li>
+<li>
+<p><code>- (void)viewDidAppear:(BOOL)animated;</code><br>
+紧接着调用下面两个方法view中frame值布局，使子控制器的frame值更加准确</p>
+</li>
+<li>
+<p><code>- (void)viewWillLayoutSubviews</code></p>
+</li>
+<li>
+<p><code>-(void)viewDidLayoutSubviews</code></p>
+</li>
+<li>
+<p>页面消失的方法</p>
+</li>
+</ul>
+<p><code>- (void)viewWillDisappear:(BOOL)animated;</code><br>
+<code>- (void)viewDidDisappear:(BOOL)animated;</code><br>
+<code>- (void)viewWillUnload;</code>//iOS5.0添加- (void)viewDidUnload;<br>
+<code>- (void)dealloc；</code></p>
+<ul>
+<li>
+<p>控制器View一些方法的区分</p>
+<ul>
+<li>viewDidLoad其实没什么可混淆的,无论通过什么途径加载(Xcode或者IB,这里的加载属于实例化)完view后肯定会执行这个方法.</li>
+<li><code>- loadView</code>需要分两种情况.
+<ul>
+<li>当你通过Xcode实例化一个类的时候就需要自己在controller中实现这个方法.</li>
+<li>而在IB中实例化就不需要实现它.</li>
+<li><code>- initWithNibName</code>这个方法是在controller的类在IB中创建,但是通过Xcode实例化controller的时候用的.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>awakeFromNib这个方法是一个类在IB中被实例化是被调用的.</p>
+</li>
+<li>
+<p>看了帖子发现大家都推荐使用viewDidLoad而不要使用awakeFromNib,应为viewDidLoad会被多次调用,</p>
+</li>
+<li>
+<p>而awakeFromNib只会当从nib文件中unarchive的时候才会被调用一次.</p>
+</li>
+<li>
+<p>实际测试中发现,当一个类的awakeFromNib被调用的时候,那么这个类的viewDidLoad就不会被调用了,这个感觉很奇怪.</p>
+</li>
+<li>
+<p><code>- initWithCoder</code>是一个类在IB中创建但在Xcode中被实例化时被调用的.</p>
+</li>
+<li>
+<p>比如,通过IB创建一个controller的nib文件,然后在xocde中通过initWithNibName来实例化这个controller,那么这个controller的initWithCoder会被调用.</p>
+</li>
+<li>
+<p><code>- awakeFromNib</code> 当.nib文件被加载的时候，会发送一个awakeFromNib的消息到.nib文件中的每个对象，每个对象都可以定义自己的awakeFromNib函数来响应这个消息，执行一些必要的操作。也就是说通过nib文件创建view对象是执行awakeFromNib</p>
+</li>
+</ul>
+<p>viewDidLoad 当view对象被加载到内存是就会执行viewDidLoad，所以不管通过nib文件还是代码的方式创建对象都会执行viewDidLoad</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[iOS开发将一个工程添加到另一个工程中]]></title>
+        <id>https://dargonlee.github.io/post/ios-kai-fa-jiang-yi-ge-gong-cheng-tian-jia-dao-ling-yi-ge-gong-cheng-zhong/</id>
+        <link href="https://dargonlee.github.io/post/ios-kai-fa-jiang-yi-ge-gong-cheng-tian-jia-dao-ling-yi-ge-gong-cheng-zhong/">
+        </link>
+        <updated>2019-11-16T06:38:45.000Z</updated>
+        <content type="html"><![CDATA[<blockquote>
+<p>一个项目引用另一个项目这里列举两种情况</p>
+<ul>
+<li>一个 Single View App 项目要引用另一个Single View App 项目</li>
+<li>一个 Single View App 项目要引用 动态库的项目（Cocoa Touch Framework）</li>
+</ul>
+</blockquote>
+<h4 id="先说第一种情况的做法">先说第一种情况的做法</h4>
+<ul>
+<li>先在一个文件夹下 新建两个 Single View App 项目 一个为demo1 另一个为demo2</li>
+</ul>
+<blockquote>
+<p>注意 现在的需求是 <code>demo1 要引用 demo2</code></p>
+</blockquote>
+<ul>
+<li>
+<p>然后在demo1项目中新建一个Group 命名为 <code>Frameworks</code> 创建完成如下图<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-a9bd6106264a07eb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-100047@2x.png" loading="lazy"></p>
+</li>
+<li>
+<p>然后 <code>show in finder</code> <code>Frameworks</code> 把<code>demo2</code> 拖进去 完成后如下图<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-03744768dbf8acda.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-100400@2x.png" loading="lazy"></p>
+</li>
+<li>
+<p>最后 进入到 <code>Frameworks</code>里面的 <code>demo2</code>找到 <code>demo2.xcodeproj</code> 然后把  <code>demo2.xcodeproj</code>  拖动到 <code>demo1</code>的<code>Frameworks</code>文件夹里面 操作完成如下图所示<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-20a3f6a7cdbf069b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-100707@2x.png" loading="lazy"></p>
+</li>
+<li>
+<p>下面开始操作<code>demo2</code>了</p>
+</li>
+<li>
+<p>选中 <code>Frameworks</code>里面的 <code>demo2.xcodeproj</code> 添加一个 Target 操作如图所示</p>
+</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="https://upload-images.jianshu.io/upload_images/646265-64fdf9f64b75e438.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-100943@2x.png" loading="lazy"></figure>
+<p><em><strong>创建动态库</strong></em></p>
+<figure data-type="image" tabindex="2"><img src="https://upload-images.jianshu.io/upload_images/646265-e06cc019ed28e160.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-100959@2x.png" loading="lazy"></figure>
+<blockquote>
+<p>我这里命名的target 为<code>xxx</code> 你可以按需求命名 因为到时候在 <code>demo1</code>中导入头文件的时候 就是这个名字</p>
+</blockquote>
+<ul>
+<li>在 <code>demo2</code>中创建一个 <code>Person</code>类 （这个类就是一会我们要在<code>demo1</code>中使用的） 操作完成如下图<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-11a7c5c634e49ff6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-101342@2x.png" loading="lazy"></li>
+</ul>
+<blockquote>
+<p>注意要想在 <code>demo1</code>使用的文件添加到 <code>xxx</code> 的target当中去 如下图所示 如果又想给<code>demo1</code>用又想自己用 那就两个target都勾选</p>
+</blockquote>
+<figure data-type="image" tabindex="3"><img src="https://upload-images.jianshu.io/upload_images/646265-14c3ab67d01a6f1a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></figure>
+<ul>
+<li>然后选中 刚才创建的那个 <code>xxx</code>target 进行如下图操作所示<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-e4097bda92932e75.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-101451@2x.png" loading="lazy"></li>
+</ul>
+<blockquote>
+<p>上图操作为 把<code>Project</code> 中的 <code>Person.h</code> 拖动到 <code>Public</code>中</p>
+</blockquote>
+<ul>
+<li>
+<p>然后选中 <code>demo1</code>进行如下图操作<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-6199f3ebc95efdd8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-102412@2x.png" loading="lazy"></p>
+</li>
+<li>
+<p>然后继续设置 <code>demo1</code>  在 <code>Build Settings</code>中设置<code>Header Search Paths</code> 的路径为 <code>${SRCROOT}/Frameworks/demo2</code> 如下图所示<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-1003fdf2f8b79706.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-102551@2x.png" loading="lazy"></p>
+</li>
+<li>
+<p>至此 一个项目引入另一个项目的功能就完成了 在 <code>demo1</code>中 就可以快乐的使用 <code>demo2</code>的文件了 如下图所示<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-ae52f9c5f13fe3e2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-102917@2x.png" loading="lazy"></p>
+</li>
+</ul>
+<h1 id="下面是-single-view-app-项目要引用-动态库的项目cocoa-touch-framework">下面是 Single View App 项目要引用 动态库的项目（Cocoa Touch Framework）</h1>
+<blockquote>
+<p>思路跟上面差不多</p>
+</blockquote>
+<p>这里以 <code>Demo1</code> 为例子 以下图所示 操作<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-e31ad3c0f0dec7a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></p>
+<p>然后按照下图选择创建动态库<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-e06cc019ed28e160.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190510-100959@2x.png" loading="lazy"><br>
+然后创建好的动态库如下图所示<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-d103b7200d550368.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></p>
+<p>我在动态库里面 新建了 一个<code>Person</code>文件，并声明了一个属性和一个方法<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-e7048f8d3422fd79.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></p>
+<p>切记箭头指向的地方 如果在 <code>UUPerson</code> 中打钩就是只在<code>UUPerson</code>动态库中用。<br>
+然后在 动态库的头文件中，配置要暴露出去的头文件 如下图所示<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-2e912de99b775b57.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></p>
+<p>接着就要配置外界能访问的头文件了 如下图所示<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-167dac6407dbb774.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></p>
+<blockquote>
+<p>把要对外的 <code>.h</code>文件都拖动到 Public的里面去</p>
+</blockquote>
+<p>然后就可以在当前项目中使用了 如下图所示<br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-5035cf57f5cfad11.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[解决定时器的循环引用]]></title>
         <id>https://dargonlee.github.io/post/jie-jue-ding-shi-qi-de-xun-huan-yin-yong/</id>
@@ -136,6 +384,313 @@
     }];
 </code></pre>
 <p>这种block的方法也可以解决循环引用</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[NSLayoutAnchor实践]]></title>
+        <id>https://dargonlee.github.io/post/nslayoutanchor-shi-jian/</id>
+        <link href="https://dargonlee.github.io/post/nslayoutanchor-shi-jian/">
+        </link>
+        <updated>2019-11-14T06:37:44.000Z</updated>
+        <content type="html"><![CDATA[<blockquote>
+<p>iOS如果项目中不用xib或者storyboard的话，给view做约束一般都是用第三方库<code>Masonry</code>，为什么不用系统提供的AutoLayout呢？<code>因为代码太多不好用</code></p>
+</blockquote>
+<ul>
+<li>今天给大家介绍一个苹果iOS9后更新的一个布局的好用的类 <code>NSLayoutAnchor</code></li>
+</ul>
+<hr>
+<h4 id="分别用-nslayoutconstraint-nslayoutanchor-和-masonry来进行如下图所示的布局">分别用 <code>NSLayoutConstraint</code> <code>NSLayoutAnchor</code> 和 <code>Masonry</code>来进行如下图所示的布局</h4>
+<blockquote>
+<p>在进行布局的时候，我会分别讲解下系统 <code>NSLayoutConstraint</code> <code>NSLayoutAnchor</code>两种布局的方法使用和参数说明<br>
+至于<code>Masonry</code>的使用 我就不做多介绍了（官方介绍的很清楚，网上资料也不少）</p>
+</blockquote>
+<figure data-type="image" tabindex="1"><img src="https://upload-images.jianshu.io/upload_images/646265-8b480a3ee6085ef6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190509-105625@2x.png" loading="lazy"></figure>
+<h3 id="第一种-nslayoutconstraint">第一种 <code>NSLayoutConstraint</code></h3>
+<pre><code># NSLayoutConstraint 的核心布局方法
+[NSLayoutConstraint constraintWithItem:self.redView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
+
+</code></pre>
+<p>上面代码的白话文就是<br>
+<code>红色view 的 centerX 等于 self.view 的 centerX 1.0倍 加 0</code><br>
+如果还不是很明白的话 看下图就一目了然了</p>
+<figure data-type="image" tabindex="2"><img src="https://upload-images.jianshu.io/upload_images/646265-b155f2e0c3eaa558.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190509-110720@2x.png" loading="lazy"></figure>
+<h4 id="接下来我们来讲一下初始化方法中各个参数的意义">接下来我们来讲一下初始化方法中各个参数的意义：</h4>
+<pre><code>item:        要布局的view
+
+attribute: 是一个NSLayoutAttribute枚举，可以看到他的枚举值有 left、right、bottom、top 等
+
+relatedBy:  是一个NSLayoutRelation枚举，他的枚举值有 lessThanOrEqual（小于等于）、equal（等于）、greaterThanOrEqual（大于等于）， 指定 view1和接下来那个参数 view2两个视图之
+间的约束关系的
+
+toItem:     第一个view的参照view 你要参照哪个view 这个就是哪个view（本例中的是self.view控制器view）
+
+attribute:  和第二个参数一样，是来表示第一个视图对第二个视图的
+参考位置 ，上下左右 还是 center等
+
+multiplier: 是来计算两个视图之间约束的倍数关系
+
+constant:  是来计算两个视图之间约束的倍数关系的基础上再加一些常量
+
+</code></pre>
+<h4 id="下面看约束代码">下面看约束代码</h4>
+<pre><code>// 布局redView
+    NSLayoutConstraint *centerX = [NSLayoutConstraint constraintWithItem:self.redView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
+    NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.redView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTopMargin multiplier:1.0 constant:10];
+    
+    NSLayoutConstraint *width = [NSLayoutConstraint constraintWithItem:self.redView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:200];
+    NSLayoutConstraint *heith = [NSLayoutConstraint constraintWithItem:self.redView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:200];
+    
+    //可以单个添加约束
+    [self.view addConstraint:centerX];
+    [self.view addConstraint:top];
+    
+    //也可以添加约束多个约束
+    [self.redView addConstraints:@[width, heith]];
+    
+    
+    
+    // 布局blueView
+    NSLayoutConstraint *centerX1 = [NSLayoutConstraint constraintWithItem:self.blueView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.redView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
+    NSLayoutConstraint *top1 = [NSLayoutConstraint constraintWithItem:self.blueView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.redView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:20];
+    
+    NSLayoutConstraint *width1 = [NSLayoutConstraint constraintWithItem:self.blueView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.redView attribute:NSLayoutAttributeWidth multiplier:1.5 constant:0];
+    NSLayoutConstraint *heith1 = [NSLayoutConstraint constraintWithItem:self.blueView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.redView attribute:NSLayoutAttributeWidth multiplier:1.5 constant:0];
+    
+    //iOS8 以后 NSLayoutConstraint 的类方法 也可以把约束添加到视图上，而且省掉了判断添加到那个视图上的问题，避免了上面例子中因为视图添加错误而导致的崩溃
+    [NSLayoutConstraint activateConstraints:@[centerX1,top1, width1, heith1]];
+</code></pre>
+<h5 id="nslayoutconstraint添加约束注意事项"><code>NSLayoutConstraint</code>添加约束注意事项</h5>
+<p>1.如果两个视图（也就是参数 item 和 toItem）是父子关系，设置子控件的约束，约束添加到父控件上<br>
+2.如果两个视图（也就是参数 item 和 toItem）是兄弟关系，设置两兄弟的约束，约束会添加到第一个共同的父控件上<br>
+3.如果两个视图（也就是参数 item 和 toItem）是同一个视图，约束会添加到自己上(一般给自己添加约束toItem为nil attribute为NSLayoutAttributeNotAnAttribute)<br>
+4.要给添加约束的view要设置<code>translatesAutoresizingMaskIntoConstraints</code>为NO 否则约束不生效</p>
+<pre><code>    UIView *redView = [[UIView alloc]init];
+    redView.backgroundColor = [UIColor redColor];
+    // 要禁止 autoresize 意思就是遵循autoLayout抛弃原有设置的高度宽度等
+    // 使用autolayout的视图必须要设置该属性
+    redView.translatesAutoresizingMaskIntoConstraints = NO;
+</code></pre>
+<h3 id="第二种-nslayoutanchor-ios9以后">第二种 <code>NSLayoutAnchor</code> ios9以后</h3>
+<pre><code>- (NSLayoutConstraint *)constraintEqualToAnchor:(NSLayoutAnchor&lt;AnchorType&gt; *)anchor;
+- (NSLayoutConstraint *)constraintGreaterThanOrEqualToAnchor:(NSLayoutAnchor&lt;AnchorType&gt; *)anchor;
+- (NSLayoutConstraint *)constraintLessThanOrEqualToAnchor:(NSLayoutAnchor&lt;AnchorType&gt; *)anchor;
+
+/* These methods return an inactive constraint of the form thisAnchor = otherAnchor + constant.
+ */
+- (NSLayoutConstraint *)constraintEqualToAnchor:(NSLayoutAnchor&lt;AnchorType&gt; *)anchor constant:(CGFloat)c;
+- (NSLayoutConstraint *)constraintGreaterThanOrEqualToAnchor:(NSLayoutAnchor&lt;AnchorType&gt; *)anchor constant:(CGFloat)c;
+- (NSLayoutConstraint *)constraintLessThanOrEqualToAnchor:(NSLayoutAnchor&lt;AnchorType&gt; *)anchor constant:(CGFloat)c;
+
+</code></pre>
+<h4 id="接下来我们来讲一下使用方法">接下来我们来讲一下使用方法</h4>
+<p>比如要给redView设置一个约束，如下</p>
+<pre><code>[self.redView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor];
+</code></pre>
+<p>上面代码的意思为 <code>红色的view的centerX和self.view的centerX相等</code></p>
+<h4 id="下面看使用nslayoutanchor写的约束代码">下面看使用<code>NSLayoutAnchor</code>写的约束代码</h4>
+<pre><code>    [self.redView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
+    [self.redView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:20].active = YES;
+    [self.redView.widthAnchor constraintEqualToConstant:200].active = YES;
+    [self.redView.heightAnchor constraintEqualToConstant:200].active = YES;
+    
+    [self.blueView.centerXAnchor constraintEqualToAnchor:self.redView.centerXAnchor].active = YES;
+    [self.blueView.topAnchor constraintEqualToAnchor:self.redView.bottomAnchor constant:20].active = YES;
+    [self.blueView.widthAnchor constraintEqualToAnchor:self.redView.widthAnchor multiplier:1.5].active = YES;
+    [self.blueView.heightAnchor constraintEqualToAnchor:self.redView.heightAnchor multiplier:1.5].active = YES;
+</code></pre>
+<h5 id="nslayoutanchor添加约束注意事项"><code>NSLayoutAnchor</code>添加约束注意事项</h5>
+<p>1.要给添加约束的view要设置<code>translatesAutoresizingMaskIntoConstraints</code>为NO 否则约束不生效 <code>自定义view的时候也要给子view设置此属性，总之你要给哪个view设置Layout就要给哪个view设置此属性为NO</code><br>
+2.<code>active</code>要设置为YES 这个是控制约束是否真正添加的开关 设置为NO的时候 约束失效</p>
+<h3 id="第三种-masonry">第三种 <code>Masonry</code></h3>
+<h4 id="直接上代码了">直接上代码了</h4>
+<pre><code>    [self.redView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_topMargin).with.offset(20);
+        make.centerX.equalTo(self.view.mas_centerX);
+        make.width.height.equalTo(@200);
+    }];
+    
+    [self.blueView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.redView.mas_bottom).offset(20);
+        make.centerX.equalTo(self.redView.mas_centerX);
+        make.width.height.equalTo(self.redView).multipliedBy(1.5);
+    }];
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Flutter 常用布局]]></title>
+        <id>https://dargonlee.github.io/post/flutter-chang-yong-bu-ju/</id>
+        <link href="https://dargonlee.github.io/post/flutter-chang-yong-bu-ju/">
+        </link>
+        <updated>2019-09-17T06:33:37.000Z</updated>
+        <content type="html"><![CDATA[<h4 id="行布局-在x轴上">行布局 （在X轴上）</h4>
+<blockquote>
+<p>Row.mainAxisAlignment 主轴排列方式</p>
+</blockquote>
+<pre><code>Row(
+  mainAxisAlignment: MainAxisAlignment.spaceAround,  // 改变这个值 可以更改排列方式 如下图
+  mainAxisSize: MainAxisSize.max,
+  children: [
+    Icon(Icons.stars, size: 50.0),
+    Icon(Icons.stars, size: 50.0),
+    Icon(Icons.stars, size: 50.0),
+], )
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://upload-images.jianshu.io/upload_images/646265-2fc1ab8a4b7f57a4.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="row.jpg" loading="lazy"></figure>
+<blockquote>
+<p>Row.crossAxisAlignment 纵轴排列方式</p>
+</blockquote>
+<pre><code>Row(
+  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  crossAxisAlignment: CrossAxisAlignment.start,  // 改变这个值 可以更改排列方式 如下图
+  children: [
+    Icon(Icons.stars, size: 50.0),
+    Icon(Icons.stars, size: 100.0),
+    Icon(Icons.stars, size: 50.0),
+], )
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://upload-images.jianshu.io/upload_images/646265-90a2530f54792a81.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></figure>
+<h4 id="列布局在y轴上">列布局（在Y轴上）</h4>
+<blockquote>
+<p>Column.mainAxisAlignment 列布局 主轴排列方式</p>
+</blockquote>
+<pre><code>Column(
+  mainAxisAlignment: MainAxisAlignment.start, // 改变这个值 可以更改排列方式 如下图
+  mainAxisSize: MainAxisSize.max,
+  children: [
+    Icon(Icons.stars, size: 50.0),
+    Icon(Icons.stars, size: 50.0),
+    Icon(Icons.stars, size: 50.0),
+], )
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="https://upload-images.jianshu.io/upload_images/646265-ef8cbc570e2abf84.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></figure>
+<blockquote>
+<p>Column.mainAxisAlignment 列布局 纵轴排列方式</p>
+</blockquote>
+<pre><code>Column(
+  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  crossAxisAlignment: CrossAxisAlignment.start, // 改变这个值 可以更改排列方式 如下图
+  children: [
+    Icon(Icons.stars, size: 50.0),
+    Icon(Icons.stars, size: 100.0),
+    Icon(Icons.stars, size: 50.0),
+], )
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="https://upload-images.jianshu.io/upload_images/646265-d03f1a32a2a66c41.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></figure>
+<h4 id="stack布局允许子widget堆叠可以叠加布局view也就是在-z-轴上">Stack布局（允许子widget堆叠，可以叠加布局View，也就是在 Z 轴上）</h4>
+<blockquote>
+<p>Stack.alignment</p>
+</blockquote>
+<pre><code>Stack(
+  alignment: AlignmentDirectional.topStart, //改变这个值 可以更改排列方式 如下面两张图
+  children:[
+    SizedBox(
+      width: 300.0,
+      height: 300.0,
+      child: Container(color: Colors.green),
+), SizedBox(
+      width: 200.0,
+      height: 200.0,
+      child: Container(color: Colors.yellow),
+), SizedBox(
+      width: 100.0,
+      height: 100.0,
+      child: Container(color: Colors.red),
+), ],
+)
+</code></pre>
+<p><img src="https://upload-images.jianshu.io/upload_images/646265-6ea3906a2a13098f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"><br>
+<img src="https://upload-images.jianshu.io/upload_images/646265-9e0c8ba13561b3a8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></p>
+<h4 id="positioned布局">Positioned布局</h4>
+<blockquote>
+<p>Stack允许子widget堆叠，而Positioned可以给子widget定位 <code>根据Stack的四个角</code></p>
+</blockquote>
+<pre><code>Stack(
+  children: [
+    SizedBox(
+      width: 300.0,
+      height: 300.0,
+      child: Container(color: Colors.green),
+    ),
+    Positioned( // 这里的位置都是相对于 上面的SizeBox的位置的
+      left: 20.0, 
+      top: 20.0,
+      width: 100.0,
+      height: 100.0,
+      child: Container(color: Colors.indigo),
+    ),
+    Positioned( // 这里的位置都是相对于 上面的SizeBox的位置的
+      bottom: 20.0,
+      right: 20.0,
+      width: 100.0,
+      height: 100.0,
+      child: Container(color: Colors.black87),
+), ],
+)
+</code></pre>
+<figure data-type="image" tabindex="5"><img src="https://upload-images.jianshu.io/upload_images/646265-32432b7a3de5aa7b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></figure>
+<h4 id="expanded布局">Expanded布局</h4>
+<blockquote>
+<p>Expanded组件可以使Row、Column、Flex等子组件在其主轴方向上展开并填充可用空间(例如，Row在水平方向，Column在垂直方向)。如果多个子组件展开，可用空间会被其flex factor(表示扩展的速度、比例)分割。</p>
+</blockquote>
+<pre><code>Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: &lt;Widget&gt;[
+            Expanded(
+              flex: 1, //组件占据剩余空间的比例
+              child: Container(
+                color: Colors.yellow,
+                child: Center(child: Text('flex: 1'),),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Container(
+                color: Colors.orange,
+                child: Center(child: Text('flex: 2'),),
+              ),
+            ),
+            Expanded(
+              flex: 3,
+              child: Container(
+                color: Colors.cyan,
+                child: Center(child: Text('flex: 3'),),
+              ),
+            )
+          ],
+        ),
+</code></pre>
+<figure data-type="image" tabindex="6"><img src="https://upload-images.jianshu.io/upload_images/646265-072a28dbc18077cc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></figure>
+<h4 id="expanded-padding-sizedbox">Expanded + Padding + SizedBox</h4>
+<blockquote>
+<p>如何用 <code>padding</code> 和 <code>SizeBox</code> 给内容之间添加间隙</p>
+</blockquote>
+<pre><code>Container(
+        height: 200.0,
+        color: Colors.yellow,
+        padding: EdgeInsets.all(16.0),
+        child: Row(
+          children: &lt;Widget&gt;[
+            Expanded(
+              flex: 1,
+              child: Container(
+                color: Colors.green,
+                child: Center(child: Text('flex: 1'),),
+              ),
+            ),
+            SizedBox(width: 40.0,),
+            Expanded(
+              flex: 2,
+              child: Container(
+                color: Colors.orange,
+                child: Center(child: Text('flex: 2'),),
+              ),
+            )
+          ],
+        ),
+      ),
+</code></pre>
+<figure data-type="image" tabindex="7"><img src="https://upload-images.jianshu.io/upload_images/646265-105875d9a122bce3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></figure>
 ]]></content>
     </entry>
     <entry>
@@ -797,556 +1352,6 @@ self.navigationItem.backBarButtonItem = backItem;
 <p>未来，它一定会成为你离不开的伙伴</p>
 <p>尽情发挥你的才华吧！</p>
 <p>😘 Enjoy~</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[iOS WKWebView 同步返回值给JS]]></title>
-        <id>https://dargonlee.github.io/post/ios-wkwebview-tong-bu-fan-hui-zhi-gei-js/</id>
-        <link href="https://dargonlee.github.io/post/ios-wkwebview-tong-bu-fan-hui-zhi-gei-js/">
-        </link>
-        <updated>2018-10-23T05:49:38.000Z</updated>
-        <summary type="html"><![CDATA[<blockquote>
-<p>我们都知道iOS WKWebView 跟JS通信的时候 由于JS Call OC 同步返回我这里采用了不同于异步messageHandler的通信方式，因此同步返回要单独进行设计</p>
-<p>在我发现下面方法的时候 一般我们处理 与JS交互的时候都是 JS调用我们 然后我们再去调用JS方法 并不能同步给JS返回值</p>
-</blockquote>
-]]></summary>
-        <content type="html"><![CDATA[<blockquote>
-<p>我们都知道iOS WKWebView 跟JS通信的时候 由于JS Call OC 同步返回我这里采用了不同于异步messageHandler的通信方式，因此同步返回要单独进行设计</p>
-<p>在我发现下面方法的时候 一般我们处理 与JS交互的时候都是 JS调用我们 然后我们再去调用JS方法 并不能同步给JS返回值</p>
-</blockquote>
-<!--more-->
-<h3 id="代理方法分析">代理方法分析</h3>
-<p>在我们写WKWebView的时候需要遵守<code>WKUIDelegate</code>协议 其中里面有这几个方法</p>
-<pre><code class="language-objectivec">// 获取js 里面的提示
--(void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler
-{
-
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@&quot;提示&quot; message:message preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@&quot;确定&quot; style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        completionHandler();
-    }]];
-
-    [self presentViewController:alert animated:YES completion:NULL];
-}
-
-// js 信息的交流
--(void)webView:(WKWebView *)webView runJavaScriptConfirmPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(BOOL))completionHandler
-{
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@&quot;提示&quot; message:message preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@&quot;确定&quot; style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        completionHandler(YES);
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@&quot;取消&quot; style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        completionHandler(NO);
-    }]];
-    [self presentViewController:alert animated:YES completion:NULL];
-}
-
-// 交互。可输入的文本。
--(void)webView:(WKWebView *)webView runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt defaultText:(NSString *)defaultText initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSString * _Nullable))completionHandler
-{
-
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@&quot;textinput&quot; message:@&quot;JS调用输入框&quot; preferredStyle:UIAlertControllerStyleAlert];
-    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.textColor = [UIColor redColor];
-    }];
-    [alert addAction:[UIAlertAction actionWithTitle:@&quot;确定&quot; style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        completionHandler([[alert.textFields lastObject] text]);
-    }]];
-
-    [self presentViewController:alert animated:YES completion:NULL];
-
-}
-</code></pre>
-<p>以上三个方法都是在js调用alert confirm prompt 的时候 进行拦截 然后弹出系统样式的界面</p>
-<ul>
-<li><code>runJavaScriptConfirmPanelWithMessage</code>这个代理方法是在JS 调用 <code>alert('xxx')</code>的时候会调用  且回调函数参数为空</li>
-<li><code>runJavaScriptConfirmPanelWithMessage</code>这个代理方法是在JS调用confirm函数的时候会进行拦截调用 且回调函数参数为Bool值 同步告诉JS 当前用户点击了确定按钮还是取消按钮</li>
-<li><code>runJavaScriptTextInputPanelWithPrompt</code> 这个代理方法是在JS调用prompt函数的时候进行拦截调用的 且回调函数的参数为<code>NSString</code>类型</li>
-</ul>
-<h3 id="解决方法">解决方法</h3>
-<p>细心的同学可能就已经明白了 在这个<code>runJavaScriptTextInputPanelWithPrompt</code> 代理方法中 可以回调字符串 也就意味着可以给JS返回值<br>
-可能有同学会问 我不需要那个弹出窗怎么办  其实你不需要的话 直接在代理方法中写<br>
-<code>completionHandler(&quot;xxxx&quot;);</code>就行 不需要写<code>UIAlertController</code>那一大堆</p>
-<h3 id="下面给出相应的具体代码">下面给出相应的具体代码</h3>
-<ul>
-<li>
-<p>JS部分 在需要跟原生交互的地方写下面的方法</p>
-<pre><code>window.prompt(text,defaultText);
-</code></pre>
-<p><code>text</code>可选。要在对话框中显示的提示信息（纯文本）</p>
-<p><code>defaultText</code>可选。默认的输入文本。</p>
-<p>一般只需要写text就行 defaultText 为空字符就可以</p>
-</li>
-<li>
-<p>OC部分 在js调用prompt方法后会来到相应的代理方法中</p>
-<pre><code class="language-objectivec">// 交互。可输入的文本。
--(void)webView:(WKWebView *)webView runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt defaultText:(NSString *)defaultText initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSString * _Nullable))completionHandler
-{
-  NSLog(@&quot;%@---%@&quot;,prompt,defaultText);
-  completionHandler(@&quot;xxxxx&quot;);//这里就是要返回给JS的返回值
-}
-</code></pre>
-<p><code>prompt</code> 就是上面JS <code>text</code>参数</p>
-<p><code>defaultText</code> 就是上面JS <code>defaultText</code>参数</p>
-</li>
-</ul>
-<p>如果你需要做参数区分的话 可以灵活的运用这两个方法 去返回给JS不同的返回值<br>
-<code>提示</code> 如果要一次返回多个参数值 你可以把参数以逗号拼接为一个字符串 返回给JS 然后JS接收到参数的时候 再进行分割解析运用 这里只是给出一些想法 更多的就要靠同学们自己灵活运用了</p>
-<h3 id="完毕">完毕</h3>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[iOS富文本]]></title>
-        <id>https://dargonlee.github.io/post/ios-fu-wen-ben/</id>
-        <link href="https://dargonlee.github.io/post/ios-fu-wen-ben/">
-        </link>
-        <updated>2018-09-13T05:45:37.000Z</updated>
-        <summary type="html"><![CDATA[<p>在iOS上能进行文本显示的控件有UILable，UITextField，UITextView。然而这些控件本身对文本的展现方式很单一，通常仅仅能够控制字体样式、大小、颜色、加粗、斜体等等，而对于行距控制，字距控制，段落控制等高级功能却无能为力。</p>
-<p>而iOS7的发布，苹果又引入了TextKit,TextKit是一个快速而又现代化的文字排版和渲染引擎。</p>
-<p>TextKit并没有新增类，只是在原有的文本显示控件上进行了封装，可以在平时我们最喜欢使用的UILabel，UITextField，UITextView等控件里面使用，其最主要的作用就是为程序提供文字排版和渲染的功能</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>在iOS上能进行文本显示的控件有UILable，UITextField，UITextView。然而这些控件本身对文本的展现方式很单一，通常仅仅能够控制字体样式、大小、颜色、加粗、斜体等等，而对于行距控制，字距控制，段落控制等高级功能却无能为力。</p>
-<p>而iOS7的发布，苹果又引入了TextKit,TextKit是一个快速而又现代化的文字排版和渲染引擎。</p>
-<p>TextKit并没有新增类，只是在原有的文本显示控件上进行了封装，可以在平时我们最喜欢使用的UILabel，UITextField，UITextView等控件里面使用，其最主要的作用就是为程序提供文字排版和渲染的功能</p>
-<!--more-->
-<h2 id="1-nsmutableattributedstring的基本使用">1、NSMutableAttributedString的基本使用</h2>
-<p>富文本注意：<br>
-先设置的先显示，后设置的，如果和先设置的样式不一致，是会覆盖的，富文本的设置具有先后顺序。<br>
-不要忽略了空格也是一个字符。<br>
-建议使用灵活的好用的NSMutableAttributedString，不要使用NSAttributedString。<br>
-富文本基本使用方法的思路概要</p>
-<p>1、创建一个NSMutableAttributedString富文本对象(一般不用NSAttributedString)<br>
-2、设置addAttribute属性<br>
-(1) addAttribute: 一个属性<br>
-(2) addAttributes: 一个存储多个属性的属性字典，比如这个字典可以是：</p>
-<pre><code class="language-objectivec"> NSDictionary *attrDic = @{ 
-   NSFontAttributeName: [UIFont fontWithName: @&quot;Zapfino&quot; size: 15],                               
-   NSForegroundColorAttributeName: [UIColor blueColor] 
-};
-</code></pre>
-<p>3、控件.attributedText = 富文本对象(和控件.txt = NSString文本对象不一样的)</p>
-<pre><code class="language-objectivec">
-    //添加富文本对象
-    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc]initWithString:str];
-    //设置字体颜色为红色
-    [attr addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(4, 5)];
-    //设置字体大小
-    [attr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:28] range:NSMakeRange(4, 5)];
-
-    self.label.attributedText = attr;
-</code></pre>
-<figure data-type="image" tabindex="1"><img src="http://upload-images.jianshu.io/upload_images/646265-b146d2754a533bd3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" loading="lazy"></figure>
-<p>###NSMutableAttributedString可以设置的属性有：</p>
-<pre><code class="language-objectivec">NSFontAttributeName                设置字体属性，默认值：字体：Helvetica(Neue) 字号：12
-NSForegroundColorAttributeNam      设置字体颜色，取值为 UIColor对象，默认值为黑色
-NSBackgroundColorAttributeName     设置字体所在区域背景颜色，取值为 UIColor对象，默认值为nil, 透明色
-NSLigatureAttributeName            设置连体属性，取值为NSNumber 对象(整数)，0 表示没有连体字符，1 表示使用默认的连体字符
-NSKernAttributeName                设定字符间距，取值为 NSNumber 对象（整数），正值间距加宽，负值间距变窄
-NSStrikethroughStyleAttributeName  设置删除线，取值为 NSNumber 对象（整数）
-NSStrikethroughColorAttributeName  设置删除线颜色，取值为 UIColor 对象，默认值为黑色
-NSUnderlineStyleAttributeName      设置下划线，取值为 NSNumber 对象（整数），枚举常量 NSUnderlineStyle中的值，与删除线类似
-NSUnderlineColorAttributeName      设置下划线颜色，取值为 UIColor 对象，默认值为黑色
-NSStrokeWidthAttributeName         设置笔画宽度，取值为 NSNumber 对象（整数），负值填充效果，正值中空效果
-NSStrokeColorAttributeName         填充部分颜色，不是字体颜色，取值为 UIColor 对象
-NSShadowAttributeName              设置阴影属性，取值为 NSShadow 对象
-NSTextEffectAttributeName          设置文本特殊效果，取值为 NSString 对象，目前只有图版印刷效果可用：
-NSBaselineOffsetAttributeName      设置基线偏移值，取值为 NSNumber （float）,正值上偏，负值下偏
-NSObliquenessAttributeName         设置字形倾斜度，取值为 NSNumber （float）,正值右倾，负值左倾
-NSExpansionAttributeName           设置文本横向拉伸属性，取值为 NSNumber （float）,正值横向拉伸文本，负值横向压缩文本
-NSWritingDirectionAttributeName    设置文字书写方向，从左向右书写或者从右向左书写
-NSVerticalGlyphFormAttributeName   设置文字排版方向，取值为 NSNumber 对象(整数)，0 表示横排文本，1 表示竖排文本
-NSLinkAttributeName                设置链接属性，点击后调用浏览器打开指定URL地址
-NSAttachmentAttributeName          设置文本附件,取值为NSTextAttachment对象,常用于文字图片混排
-NSParagraphStyleAttributeName      设置文本段落排版格式，取值为 NSParagraphStyle 对象
-</code></pre>
-<h3 id="2nstextattachment图文混排简单应用">2.NSTextAttachment图文混排简单应用</h3>
-<pre><code class="language-objectivec">
-    //设置图片
-    NSTextAttachment * attachment = [[NSTextAttachment alloc]init];
-    //设置图片属性
-    attachment.image = [UIImage imageNamed:@&quot;selected&quot;];
-    //设置图片的bounds
-    attachment.bounds = CGRectMake(0, 0, self.view.bounds.size.width, 180);
-    //将attachment转换成字符串属性
-    NSMutableAttributedString *attachmentString = (NSMutableAttributedString *)[NSAttributedString attributedStringWithAttachment:attachment];
-    //把图片插入到文本中
-    [self.textView.textStorage insertAttributedString:attachmentString atIndex:0];
-
-//也可以拼接到文本后面
-//    [self.textView.textStorage appendAttributedString:attachmentString];
-</code></pre>
-<figure data-type="image" tabindex="2"><img src="http://upload-images.jianshu.io/upload_images/646265-1ff7c031aef05e6f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png" loading="lazy"></figure>
-<p>###textview的实际使用</p>
-<ul>
-<li>
-<p>实现的过程如下:</p>
-<p>storage --&gt; layoutManager --&gt; textContainer --&gt; textView</p>
-</li>
-</ul>
-<pre><code class="language-objectivec">
-    // 装载内容的容器
-    NSTextStorage *storage = [NSTextStorage new];
-    [storage replaceCharactersInRange:NSMakeRange(0, 0)
-                           withString:
-     @&quot;未选择的路-弗罗斯特\n\n黄色的树林里分出两条路，\n可惜我不能同时去涉足，\n我在那路口久久伫立，\n我向着一条路极目望去，\n直到它消失在丛林深处。\n但我却选了另外一条路，\n它荒草萋萋，十分幽寂，\n显得更诱人、更美丽，\n虽然在这两条小路上，\n都很少留下旅人的足迹，\n虽然那天清晨落叶满地，\n两条路都未经脚印污染。\n啊，留下一条路等改日再见！\n但我知道路径延绵无尽头，\n恐怕我难以再回返。\n也许多少年后在某个地方，\n我将轻声叹息把往事回顾，\n一片树林里分出两条路，\n而我选了人迹更少的一条，\n从此决定了我一生的道路。&quot;];
-
-    // 给内容容器添加布局(可以添加多个)
-    NSLayoutManager *layoutManager = [NSLayoutManager new];
-    [storage addLayoutManager:layoutManager];
-
-    // 带有内容和布局的容器
-    NSTextContainer *textContainer = [NSTextContainer new];
-    [layoutManager addTextContainer:textContainer];
-
-    // 给TextView添加带有内容和布局的容器
-    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(10, 20, 300, 400)
-                                               textContainer:textContainer];
-    textView.layer.borderWidth = 1;
-    textView.scrollEnabled = NO;
-    textView.editable      = NO;
-    [self.view addSubview:textView];
-</code></pre>
-<p>制作富文本，你可能会有一些定制的需求，比如图片的高度不想每个都要设置一边，你可以写一个继承，然后将下面方法重写</p>
-<pre><code class="language-objectivec">
--(CGRect)attachmentBoundsForTextContainer:(NSTextContainer *)textContainer proposedLineFragment:(CGRect)lineFrag glyphPosition:(CGPoint)position characterIndex:(NSUInteger)charIndex
-{
-  return CGRectMake( 0 , 0 , lineFrag.size.height , lineFrag.size.height);
-}
-</code></pre>
-<p>替换文本内容里面的字符为图片</p>
-<pre><code class="language-objectivec">
-    //添加富文本对象
-    NSMutableAttributedString * attachmentString = [[NSMutableAttributedString alloc]initWithString:str];
-    //设置图片
-    NSTextAttachment * attachment = [[NSTextAttachment alloc]init];
-    //设置图片属性
-    attachment.image = [UIImage imageNamed:@&quot;selected&quot;];
-    //设置图片的bounds
-    attachment.bounds = CGRectMake(0, 0, self.view.bounds.size.width, 180);
-
-    NSAttributedString * text = [NSAttributedString attributedStringWithAttachment:attachment];
-
-    NSRange range = [[attachmentString string] rangeOfString:@&quot;icon&quot;];
-
-    [attachmentString replaceCharactersInRange:range withAttributedString:text];
-
-    self.label.attributedText = attachmentString;
-
-1.为某一范围内文字设置多个属性
-- (void)setAttributes:(NSDictionary *)attrs range:(NSRange)range;
-为某一范围内文字添加某个属性
-- (void)addAttribute:(NSString *)name value:(id)value range:(NSRange)range;
-
-为某一范围内文字添加多个属性
-- (void)addAttributes:(NSDictionary *)attrs range:(NSRange)range;
-移除某范围内的某个属性
-- (void)removeAttribute:(NSString *)name range:(NSRange)range;
-</code></pre>
-<pre><code class="language-objectivec">label.lineBreakMode = NSLineBreakByCharWrapping;以字符为显示单位显示，后面部分省略不显示。
-label.lineBreakMode = NSLineBreakByClipping;剪切与文本宽度相同的内容长度，后半部分被删除。
-label.lineBreakMode = NSLineBreakByTruncatingHead;前面部分文字以……方式省略，显示尾部文字内容。
-label.lineBreakMode = NSLineBreakByTruncatingMiddle;中间的内容以……方式省略，显示头尾的文字内容。
-label.lineBreakMode = NSLineBreakByTruncatingTail;结尾部分的内容以……方式省略，显示头的文字内容。
-label.lineBreakMode = NSLineBreakByWordWrapping;以单词为显示单位显示，后面部分省略不显示。
-</code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[iOS tableHeaderView的那些坑]]></title>
-        <id>https://dargonlee.github.io/post/ios-tableheaderview-de-na-xie-keng/</id>
-        <link href="https://dargonlee.github.io/post/ios-tableheaderview-de-na-xie-keng/">
-        </link>
-        <updated>2018-09-10T05:43:41.000Z</updated>
-        <summary type="html"><![CDATA[<h1 id="ios-tableheaderview的那些坑">iOS tableHeaderView的那些坑</h1>
-<h3 id="前言">前言:</h3>
-<blockquote>
-<p>tableView 有个属性叫tableHeaderView 用它我们可以做很多事情<br>
-在tableView的头部加上自定义的view 随着tableView一起滚动</p>
-</blockquote>
-<p><code>常用的就是轮播图比如这样</code></p>
-<figure data-type="image" tabindex="1"><img src="http://upload-images.jianshu.io/upload_images/646265-c073e8a0513156ac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="DAD90DE4-84E9-4194-9554-40956AD01E32.png" loading="lazy"></figure>
-<p>tableView 的tableHeaderView 有两种创建方式一中是代码创建另外一种是用xib创建</p>
-]]></summary>
-        <content type="html"><![CDATA[<h1 id="ios-tableheaderview的那些坑">iOS tableHeaderView的那些坑</h1>
-<h3 id="前言">前言:</h3>
-<blockquote>
-<p>tableView 有个属性叫tableHeaderView 用它我们可以做很多事情<br>
-在tableView的头部加上自定义的view 随着tableView一起滚动</p>
-</blockquote>
-<p><code>常用的就是轮播图比如这样</code></p>
-<figure data-type="image" tabindex="1"><img src="http://upload-images.jianshu.io/upload_images/646265-c073e8a0513156ac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="DAD90DE4-84E9-4194-9554-40956AD01E32.png" loading="lazy"></figure>
-<p>tableView 的tableHeaderView 有两种创建方式一中是代码创建另外一种是用xib创建</p>
-<!--more-->
-<p>###用代码创建</p>
-<pre><code class="language-objectivec">  UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 200)];
-    // 设置header
-  self.tableView.tableHeaderView = header;
-</code></pre>
-<ul>
-<li>因为 self.tableView.tableHeaderView的高度是没有办法设置的,所以必须设置自定义View的高度 来达到设置 self.tableView.tableHeaderView的高度</li>
-</ul>
-<p>###用xib创建</p>
-<pre><code class="language-objectivec">BBSTableHeaderView * cell = [BBSTableHeaderView tableHeaderView];
-cell = 291;
-self.tableView.tableHeaderView = header;
-</code></pre>
-<ul>
-<li>按理来说这样设置肯定是没有问题的 但是这时候你设置的高度是不准确的 而且是没有办法适配机型的</li>
-<li>所以这样的设置发放不可行</li>
-<li>然后这里有个小tips  很简单  但是如果你想不到的话 你可能在这个高度问题上调试一整天 比如说我</li>
-</ul>
-<h4 id="-解决方案">- 解决方案</h4>
-<pre><code class="language-objectivec">    UIView * header = [[UIView alloc]init];
-    header.backgroundColor = [UIColor whiteColor];
-    BBSTableHeaderView * cell = [BBSTableHeaderView tableHeaderView];
-    cell.backgroundColor = [UIColor clearColor];
-    [header addSubview:cell];
-    header.height = 291;//注意这里不要进行比例缩放
-    self.tableView.tableHeaderView = header;
-</code></pre>
-<ul>
-<li>原理 就是在xib View下面在加一层View (代码创建的) 这样才能保证你设置的高度是准确的 因为Xib高度 准确 必须再加一层代码创建的view才能保证你的View的高度是准确的 而且是适配各种机型的</li>
-</ul>
-<p>###其他</p>
-<ul>
-<li>tableView 的顶部会由于设置tableHeaderView而变得 有一片空白</li>
-</ul>
-<p>解决方案如下:</p>
-<pre><code class="language-objectivec">//在控制器里面viewDidLoad 写下这句代码应该就可以了
-
-self.automaticallyAdjustsScrollViewInsets = NO;
-
-/*
-* 坐标：以屏幕左上角为原点（iOS7以前在状态栏或者导航条下）
-2.UIScrollView（包括其子类，比如UITableView）:会自动在顶部和底部预留一些空白（因为滚动经过半透明导航条或者tabbar下面，需要能隐约看到的效果），是否预留空白可以由UIViewController的
-automaticallyAdjustsScrollViewInsets的这个属性控制（默认YES,表示预留空白）。
-上面这些只要你用iOS开发，就能发现。
-
-一个控制器中，出现UIScrollView（包括其子类），必须是第一个添加到控制器的视图上才会预留空白，这里的第一个是相对于所有的子视图，不仅仅是其他UIScrollView（包括其子类）。
-
-那么我遇到的问题如何解决呢，还是这个属性automaticallyAdjustsScrollViewInsets，仔细看它的文档说明，它说了，如果一个控制器中出现两个以上的UIScrollView（包括其子类），这个属性需要设置为NO.即不会预留空白，那么这个控制器中所有的UIScrollView（包括其子类）都需要重新设置坐标
-*/
-</code></pre>
-<ul>
-<li>
-<p>有的时候上面这种方法设置是没有用的 所以如果上面这种方法没有用很有可能是创建tableView的时候用的分组样式,</p>
-<p>解决方法如下</p>
-<p>注意:不要写0 要写一个比较小的数字 别问为什么  因为设置0 没有效果</p>
-</li>
-</ul>
-<pre><code class="language-objectivec">- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 0.01;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 0.01;
-}
-</code></pre>
-<ul>
-<li>如果你还有其他的需求比如怎么隐藏 self.tableView.tableHeaderView 或者比如怎么改变self.tableView.tableHeaderView的高度看下面</li>
-</ul>
-<pre><code class="language-objectivec">//显示headerView
-[self.tableView.tableHeaderView setHidden:NO];
-
-//隐藏headerView
- [self.tableView.tableHeaderView setHidden:YES];
-</code></pre>
-<pre><code class="language-objectivec">//这样设置是没有用的 不信你可以试试 始终为0
-self.tableView.tableHeaderView.height = xxx;
-
-//应该这么设置
-UIView *tableHeaderView = _tableView.tableHeaderView;
-tableHeaderView.height = 0.01;
-[_tableView setTableHeaderView:tableHeaderView];
-//如果你要设置
-tableHeaderView.height = 0;//这样是没有效果的 而且tableView的顶部又会多处一片空白  一定要设置一个比较小的值 当然这个值并不是0;
-</code></pre>
-<p>#写在末尾<br>
-以上内容是自己在开发中遇到过得问题 以及自己的解决方案 写在这里 是想让更多人知道这里的坑  以免在这个小问题上耽误大家的时间.</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[tableView的多选和单选]]></title>
-        <id>https://dargonlee.github.io/post/tableview-de-duo-xuan-he-dan-xuan/</id>
-        <link href="https://dargonlee.github.io/post/tableview-de-duo-xuan-he-dan-xuan/">
-        </link>
-        <updated>2018-07-31T05:47:26.000Z</updated>
-        <summary type="html"><![CDATA[<h3 id="系统自带的多选">系统自带的多选</h3>
-<figure data-type="image" tabindex="1"><img src="http://upload-images.jianshu.io/upload_images/646265-0171d1fe767ed431.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Snip20170605_1.png" loading="lazy"></figure>
-]]></summary>
-        <content type="html"><![CDATA[<h3 id="系统自带的多选">系统自带的多选</h3>
-<figure data-type="image" tabindex="1"><img src="http://upload-images.jianshu.io/upload_images/646265-0171d1fe767ed431.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Snip20170605_1.png" loading="lazy"></figure>
-<!--more-->
-<ul>
-<li>
-<p>首先让tableView允许多选操作</p>
-<pre><code class="language-objectivec">// 允许在编辑模式进行多选操作
-self.tableView.allowsMultipleSelectionDuringEditing = YES;
-</code></pre>
-</li>
-<li>
-<p>当点击编辑的时候设置tableView的编辑模式</p>
-<pre><code class="language-objectivec">[self.tableView setEditing:YES animated:YES];
-</code></pre>
-</li>
-<li>
-<p>如果你想让一个按钮来控制tableView的编辑和不编辑的状态可以这么写</p>
-<pre><code class="language-objectivec">[self.tableView setEditing:!self.tableView.isEditing animated:YES];
-</code></pre>
-</li>
-<li>
-<p>完成以上几步就可以选择想要删除的cell了</p>
-</li>
-<li>
-<p>但是如果你想删除选中的数据要实现下面的方法</p>
-</li>
-</ul>
-<pre><code class="language-objectivec">- (void)remove
-{
-    // 获得所有被选中的行
-    NSArray *indexPaths = [self.tableView indexPathsForSelectedRows];
-
-
-    // 便利所有的行号
-    NSMutableArray *deletedDeals = [NSMutableArray array];
-    for (NSIndexPath *path in indexPaths) {
-        [deletedDeals addObject:self.deals[path.row]];
-    }
-
-    // 删除模型数据
-    [self.deals removeObjectsInArray:deletedDeals];
-
-   // 刷新表格  一定要刷新数据
-    [self.tableView reloadData];
-}
-# 说明:self.deals 是存放模型的数组
-</code></pre>
-<h3 id="自定义cell多选">自定义cell多选</h3>
-<figure data-type="image" tabindex="2"><img src="http://upload-images.jianshu.io/upload_images/646265-a38436d429f4f56f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Snip20170605_2.png" loading="lazy"></figure>
-<ul>
-<li>首先开发模式是MVC思想(如果不是MVC思想往后看)
-<ul>
-<li>给模型增加一个属性</li>
-<li>这个属性是用来显示或者隐藏 打钩 的图片的</li>
-</ul>
-</li>
-</ul>
-<pre><code class="language-objectivec">/** 状态量标识有无被打钩 */
-@property (assign, nonatomic, getter=isChecked) BOOL checked;
-</code></pre>
-<ul>
-<li>然后再给cell赋值的时候判断cell子控件打钩图片的显示隐藏</li>
-</ul>
-<pre><code class="language-objectivec">// 设置打钩控件的显示和隐藏
-self.checkView.hidden = !deal.isChecked;
-</code></pre>
-<ul>
-<li>最后一步就是 给模型的checked属性赋值
-<ul>
-<li>在tableView的点击方法中实现下面代码</li>
-<li>(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath</li>
-</ul>
-</li>
-</ul>
-<pre><code class="language-objectivec">// 取消选中这一行
-[tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-// 模型的打钩属性取反
-Deal *deal = self.deals[indexPath.row];
-deal.checked = !deal.isChecked;
-
-// 刷新表格
-[tableView reloadData];
-
-# 说明:Deal 是模型数据    self.deals是存放模型数据的数组
-</code></pre>
-<h3 id="自定义cell多选不是mvc开发模式">自定义cell多选(不是MVC开发模式)</h3>
-<ul>
-<li>首先声明一个可变数组用来存放点击cell的indexPath</li>
-</ul>
-<pre><code class="language-objectivec">@property (nonatomic, strong) NSMutableArray *indexPaths;
-
-# 并且进行懒加载
-- (NSMutableArray *)indexPaths
-{
-    if (!_indexPaths) {
-        _indexPaths = [NSMutableArray array];
-    }
-    return _indexPaths;
-}
-</code></pre>
-<ul>
-<li>然后再给你cell赋值的地方写下面代码</li>
-</ul>
-<pre><code class="language-objectivec">//mr_tb 未选中图片  xz_tb选中图片
-#默认是没有任何选中的cell的
-cell.imageView.image = [UIImage imageNamed:@&quot;mr_tb&quot;];
-//多选
-for (NSIndexPath * index in self.indexPaths) 
-{//遍历数组里面的索引 和 当前索引是否一致
-     if (index == indexPath)
-     {//改变在选择的数组里面的记录
-          cell.imageView.image = [UIImage imageNamed:@&quot;xz_tb&quot;];//选中
-          break;
-     }
-}
-</code></pre>
-<ul>
-<li>在tableView的点击代理方法中实现下面方法</li>
-</ul>
-<pre><code class="language-objectivec">//取出当前cell
-UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
-UIImage * image = [UIImage imageNamed:@&quot;xz_tb&quot;];
-if ([cell.imageView.image isEqual:image]) 
-{//如果为选中 变成未选中
-     cell.imageView.image = [UIImage imageNamed:@&quot;mr_tb&quot;];
-     [self.indexPaths removeObject:indexPath];
-}else{//如果为未选中 变成选中
-      cell.imageView.image = [UIImage imageNamed:@&quot;xz_tb&quot;];
-      [self.indexPaths addObject:indexPath];
-}
-</code></pre>
-<ul>
-<li>如果你想控制多选的个数的话 你可以这么写</li>
-</ul>
-<pre><code class="language-objectivec"> UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
-UIImage * image = [UIImage imageNamed:@&quot;xz_tb&quot;];
-if ([cell.imageView.image isEqual:image])
- {//如果为选中
-       cell.imageView.image = [UIImage imageNamed:@&quot;mr_tb&quot;];
-       [self.indexPaths removeObject:indexPath];
-}else{
-       if (self.indexPaths.count &gt;= 2)
-       {//如果当前数组存储的索引超过两个直接返回
-        [self showMessage:@&quot;最多只能选择两个&quot;];
-         return;
-        }else{
-                cell.imageView.image = [UIImage imageNamed:@&quot;xz_tb&quot;];
-                [self.indexPaths addObject:indexPath];
-            }
-
-        }
-</code></pre>
-<ul>
-<li>整体的思想就是当你选中某一个cell的时候取出当前cell的图片 和 选中图片进行对比 如果一样 就把当前cell的iamge变成另外一个图片 (当变成未选中的时候 要把在数组里面的indexPath移除,当变成选中的时候设置选中的图片 并且把当前选中的indexPath保存在数组中)</li>
-</ul>
-<h3 id="自定义cell单选">自定义cell单选</h3>
-<ul>
-<li>在tableView的点击dialing方法中写下下面代码</li>
-</ul>
-<pre><code class="language-objectivec">for (int i = 0; i &lt; self.deals.count; i++) {
-        Deal *deal = self.deals[i];
-        if (i != indexPath.row) {
-            deal.checked = YES;
-        }else{
-            deal.checked = NO;
-        }
-    }
-# Deal 是数据模型   self.deals 是存放数据模型的数组
-</code></pre>
 ]]></content>
     </entry>
 </feed>
