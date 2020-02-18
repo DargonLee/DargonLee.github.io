@@ -55,7 +55,7 @@
         </h1>
         
         <div class="mb-8 flex flex-wrap">
-          <div class="text-gray-400 text-sm mr-4">2018-10-23 · 4 min read</div>
+          <div class="text-gray-400 text-sm mr-4">2018-10-23 · 6 min read</div>
           
             <a href="https://dargonlee.github.io/tag/9B1ux8xCh/" class="text-gray-700 text-sm border-b-2 border-dotted border-gray-200 hover:border-gray-600 transition-all duration-100 inline-flex mr-2">
               <i class="ri-hashtag"></i>
@@ -152,6 +152,59 @@
 </ul>
 <p>如果你需要做参数区分的话 可以灵活的运用这两个方法 去返回给JS不同的返回值<br>
 <code>提示</code> 如果要一次返回多个参数值 你可以把参数以逗号拼接为一个字符串 返回给JS 然后JS接收到参数的时候 再进行分割解析运用 这里只是给出一些想法 更多的就要靠同学们自己灵活运用了</p>
+<h4 id="使用-wkwebview-进行身份验证">使用 WKWebView 进行身份验证</h4>
+<p>当 WKWebView 中的 URL 需要用户授权时，您需要实现以下方法：</p>
+<pre><code class="language-swift">func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -&gt; Void) {
+        
+        let authenticationMethod = challenge.protectionSpace.authenticationMethod
+        if authenticationMethod == NSURLAuthenticationMethodDefault || authenticationMethod == NSURLAuthenticationMethodHTTPBasic || authenticationMethod == NSURLAuthenticationMethodHTTPDigest {
+            //Do you stuff
+        }
+        completionHandler(NSURLSessionAuthChallengeDisposition.UseCredential, credential)
+}
+</code></pre>
+<h4 id="多个-wkwebview-共享-cookie">多个 WKWebView 共享 Cookie</h4>
+<p>当 WKWebView 中的 URL 需要用户授权时，您需要实现以下方法：</p>
+<pre><code class="language-swift">let cookies = HTTPCookieStorage.shared.cookies ?? []
+for (cookie) in cookies {
+   webView.configuration.websiteDataStore.httpCookieStore.setCookie(cookie)
+}
+</code></pre>
+<h4 id="配置url操作">配置URL操作</h4>
+<p>使用 decisionPolicyFor 函数，您不仅可以通过电话，facetime 和邮件等操作来控制外部导航，还可以选择限制某些 URL 的打开。以下代码展示了每种情况：</p>
+<pre><code class="language-swift">func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -&gt; Void) {
+
+guard let url = navigationAction.request.url else {
+            decisionHandler(.allow)
+            return
+        }
+
+ if [&quot;tel&quot;, &quot;sms&quot;, &quot;mailto&quot;].contains(url.scheme) &amp;&amp; UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            decisionHandler(.cancel)
+        } else {
+            if let host = navigationAction.request.url?.host {
+               if host == &quot;www.notsafeforwork.com&quot; {
+                  decisionHandler(.cancel)
+               }
+               else{
+                   decisionHandler(.allow)
+               }
+            }
+        }
+  }
+}
+</code></pre>
+<h4 id="截获-web-url">截获 Web URL</h4>
+<p>通过实现 WKNavigationDelegate 协议的 definePolicyFor 函数，我们可以在导航期间截获 URL。以下代码段显示了如何完成此操作：</p>
+<pre><code class="language-swift">func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -&gt; Void) {
+  let urlString = navigationAction.request.url?.absoluteString ?? &quot;&quot;
+  let pattern = &quot;interceptSomeUrlPattern&quot;
+  if urlString.contains(pattern){
+     var splitPath = urlString.components(separatedBy: pattern)
+  }
+}
+</code></pre>
 <h3 id="完毕">完毕</h3>
 
         </div>
@@ -218,7 +271,14 @@
 <ul>
 <li><a href="#%E4%BB%A3%E7%90%86%E6%96%B9%E6%B3%95%E5%88%86%E6%9E%90">代理方法分析</a></li>
 <li><a href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95">解决方法</a></li>
-<li><a href="#%E4%B8%8B%E9%9D%A2%E7%BB%99%E5%87%BA%E7%9B%B8%E5%BA%94%E7%9A%84%E5%85%B7%E4%BD%93%E4%BB%A3%E7%A0%81">下面给出相应的具体代码</a></li>
+<li><a href="#%E4%B8%8B%E9%9D%A2%E7%BB%99%E5%87%BA%E7%9B%B8%E5%BA%94%E7%9A%84%E5%85%B7%E4%BD%93%E4%BB%A3%E7%A0%81">下面给出相应的具体代码</a>
+<ul>
+<li><a href="#%E4%BD%BF%E7%94%A8-wkwebview-%E8%BF%9B%E8%A1%8C%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81">使用 WKWebView 进行身份验证</a></li>
+<li><a href="#%E5%A4%9A%E4%B8%AA-wkwebview-%E5%85%B1%E4%BA%AB-cookie">多个 WKWebView 共享 Cookie</a></li>
+<li><a href="#%E9%85%8D%E7%BD%AEurl%E6%93%8D%E4%BD%9C">配置URL操作</a></li>
+<li><a href="#%E6%88%AA%E8%8E%B7-web-url">截获 Web URL</a></li>
+</ul>
+</li>
 <li><a href="#%E5%AE%8C%E6%AF%95">完毕</a></li>
 </ul>
 </li>
