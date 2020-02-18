@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-02-18T02:54:03.200Z</updated>
+    <updated>2020-02-18T11:52:25.711Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
@@ -10,6 +10,194 @@
     <logo>https://dargonlee.github.io/images/avatar.png</logo>
     <icon>https://dargonlee.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 七里田间的守望者</rights>
+    <entry>
+        <title type="html"><![CDATA[Dart语法入门]]></title>
+        <id>https://dargonlee.github.io/post/dart-yu-fa-ru-men/</id>
+        <link href="https://dargonlee.github.io/post/dart-yu-fa-ru-men/">
+        </link>
+        <updated>2020-02-18T11:51:21.000Z</updated>
+        <content type="html"><![CDATA[<blockquote>
+<p>跟Java等很多语言不同的是，Dart没有public protected private等关键字，如果某个变量以下划线 _ 开头，代表这个变量在库中是私有的。Dart中变量可以以字母或下划线开头，后面跟着任意组合的字符或数字</p>
+</blockquote>
+<p>比如下面代码</p>
+<pre><code class="language-dart">main() {   String _name = '';//private变量   String name = ''//public变量}
+</code></pre>
+<h3 id="变量">变量</h3>
+<h4 id="变量的定义">变量的定义</h4>
+<pre><code class="language-dart">main() {    var a = 1;    int b = 10;     String s = &quot;hello&quot;;    dynamic c = 0.5;}
+</code></pre>
+<blockquote>
+<p>你可以自己定义你数据类型比如<code>String</code>  <code>int</code> 当然也可以用<code>var</code>  <code>dynamic</code>定义变量，dart会自动推断其数据类型。</p>
+</blockquote>
+<h4 id="final和const">final和const</h4>
+<p>如果你定义一个变量后就不想改变其值的话，使用<code>final</code>和<code>const</code>去定义。不要使用<code>var</code>或者其他类型去定义。</p>
+<p>用<code>final</code>定义的变量只能赋值一次，用<code>const</code>定义的变量是一个编译时的常量。</p>
+<p>（可以理解为：final修饰的变量是不可改变的，而const修饰的表示一个常量。）</p>
+<blockquote>
+<p><em>注意：实例变量可以是final的但不能是const的</em></p>
+</blockquote>
+<pre><code class="language-dart">var count = 10;final Num = count;// final 只能赋值一次const Num1 = 10;// const赋值必须是编译时常量
+</code></pre>
+<h4 id="final和const的区别">final和const的区别</h4>
+<ul>
+<li>
+<p><code>final</code>定义的变量只能初始化一次，二次赋值就会报错，赋的值可以是常量也可以不是常量。</p>
+</li>
+<li>
+<p><code>final</code>是懒加载初始化，即程序运行也不一定初始化，只有真正用到的时候才会初始化。</p>
+</li>
+</ul>
+<h3 id="dart的内建数据类型">Dart的内建数据类型</h3>
+<p>有如下几种内建的数据类型</p>
+<ul>
+<li>
+<p><code>numbers</code></p>
+</li>
+<li>
+<p><code>strings</code></p>
+</li>
+<li>
+<p><code>booleans</code></p>
+</li>
+<li>
+<p><code>lists</code></p>
+</li>
+<li>
+<p><code>maps</code></p>
+</li>
+<li>
+<p><code>runes</code>UTF-32字符集的字符 符号文字</p>
+</li>
+<li>
+<p><code>symbols</code></p>
+</li>
+</ul>
+<p>下面用一段代码来演示以上各类数据类型：</p>
+<pre><code class="language-dart">// numbersvar a = 0;int b = 1;double c = 0.1;// stringsvar s1 = 'hello';String s2 = 'world';// booleansvar real = true;bool isReal = false;// listsvar array = [1, 2, 3, 4, 5];List array1 = ['hello','world','!!!'];List array = [1, true, 'haha', 1.0];# 这里的 `dynamic` 是泛型// mapsvar map = new Map();map['name'] = 'zhangsan';map['age'] = 10;Map m = new Map();m['a'] = 'a';// charsvar clapping = '\u{1f44f}';print(clapping); // 打印的是拍手emoji的表情// Symbol对象表示在Dart程序中声明的运算符或标识符(不常用)print(#s == new Symbol(&quot;s&quot;)); // true
+
+</code></pre>
+<h3 id="函数">函数</h3>
+<h4 id="函数的一般声明形式">函数的一般声明形式</h4>
+<pre><code class="language-dart">int add(int a, int b) {  return a + b;}
+</code></pre>
+<p><code>int</code>为返回值类型，<code>add</code>为函数名称， <code>()</code>里面的为参数</p>
+<h4 id="函数的返回值">函数的返回值</h4>
+<p>Dart是一个面向对象的编程语言，所以即使函数也是一个对象，也有一种类型<code>Function</code>，这就意味着可以赋值给某个变量或者当作参数传给另一个函数。</p>
+<p>虽然Dart推荐给函数加上返回值，但是不加也能正常工作。另外你可以用<code>=&gt;</code>代替return语法，例如下面的例子</p>
+<pre><code class="language-dart">// 带返回值int add(int a, int b) {    return a + b;    }// 不带返回值add2(int a, int b) {    return a + b;    }// 不带返回值的官方写法（一般都用上面的写法）void add3(int a, int b) {    return a + b;    }// 简写形式add3(int a, int b) =&gt; a + b;main() {  print(add(1, 2)); // 3  print(add2(2, 3)); // 5  print(add3(1, 2)); // 3}
+</code></pre>
+<p>所有的函数都有返回值，如果没有指定return语句，那么该函数的返回值为null。</p>
+<h4 id="命名参数">命名参数</h4>
+<pre><code class="language-dart">// 写法一sayHello({String name}) {    print(&quot;my name is $name&quot;);    }// 写法二sayHello1({name: String}) { // 不建议使用    print(&quot;my name is $name&quot;);}// 写法三sayHello2(String name) {    print(&quot;my name is $name&quot;);  }// 写发四sayHello3({String name, @required String ids}) {    print(&quot;my name is $name and $ids&quot;);}main() {  // 打印 my name is zhangsan  sayHello(name: 'zhangsan');  // 打印 my name is wangwu  sayHello1(name: 'wangwu');}
+</code></pre>
+<p>从上可以看出函数参数的形式有三种，<code>写法三</code>和<code>写法一二</code>不同，因为它没有带大括号，这里说明下，<code>写法三</code>的形式为必需参数，而<code>写发一二</code>参数是可选的，即你不传参数也是可以调用成功的。如果你想在<code>写法一二</code>声明必选参数，需要在声明的参数前面加上<code>@required</code>关键字。例<code>写法四</code></p>
+<h4 id="位置参数">位置参数</h4>
+<p>使用中括号<code>[]</code>括起来的参数是函数的位置参数，代表该参数可传可不传，位置参数只能放在函数的参数列表的最后面，如下代码所示：</p>
+<pre><code class="language-dart">sayHello(String name, int age, [String body]) { // 位置参数可以有多个，比如[String a, int b]  StringBuffer sb = new StringBuffer();  sb.write(&quot;hello, this is $name and I am $age years old&quot;);  if (hobby != null) {    sb.write(&quot;, my hobby is $hobby&quot;);  }  print(sb.toString());    }main() {  // hello, this is zhangsan and I am 20 years old  sayHello(&quot;zhangsan&quot;, 20);  // hello, this is zhangsan and I am 20 years old, my hobby is play football  sayHello(&quot;zhangsan&quot;, 20, &quot;play football&quot;);}
+</code></pre>
+<h4 id="参数默认值">参数默认值</h4>
+<p>你可以为命名参数或者位置参数设置默认值，如下代码所示</p>
+<pre><code class="language-dart">// 命名参数的默认值int add({int a, int b = 3}) { // 不能写成：int add({a: int, b: int = 3})  return a + b;}// 位置参数的默认值int sum(int a, int b, [int c = 3]) {  return a + b + c;}
+</code></pre>
+<h4 id="main函数">main()函数</h4>
+<p>不论在Dart还是Flutter中，必须都需要一个顶层的main()函数，它是整个应用的入口函数，main()函数的返回值是void，还有一个可选的参数，参数类型是List<String>。</p>
+<h4 id="函数作为一类对象">函数作为一类对象</h4>
+<p>你可以将一个函数作为参数传给另一个函数，比如下面的代码：</p>
+<pre><code class="language-dart">printNum(int a) {    print(&quot;$a&quot;);    }main() {  //  依次打印：  //  1  //  2  //  3  var arr = [1, 2, 3];  arr.forEach(printNum);}
+</code></pre>
+<p>你也可以将一个函数赋值给某个变量，比如下面的代码：</p>
+<pre><code class="language-dart">printNum(int a) {  print(&quot;$a&quot;);}main() {    var f1 = printNum;    Function f2 = printNum;    var f3 = (int a) =&gt; print(&quot;a = $a&quot;);    f1(1);    f2(2);    f3(6);}
+</code></pre>
+<h4 id="匿名函数">匿名函数</h4>
+<p>大多数函数都是有名称的，比如main() printName()等，但是你也可以写匿名函数，如果你对Java比较熟悉，那下面的Dart代码你肯定也不会陌生：</p>
+<pre><code class="language-dart">test(Function callback) {    callback(&quot;hello&quot;);    }main() {  test((param) {    // 打印hello    print(param);  });}
+</code></pre>
+<p>匿名函数类似于Java中的接口，往往在某个函数的参数为函数时使用到。</p>
+<h4 id="运算符">运算符</h4>
+<pre><code class="language-dart">main() {  // 与Java相同的运算符操作  int a = 1;  ++a;  a++;  var b = 1;  print(a == b);  // false  print(a * b); // 3  bool real = false;  real ? print('real') : print('not real'); // not real  print(real &amp;&amp; a == b); // false  print(real || a == 3); // true  print(a != 2); // true  print(a &lt;= b); // false  var c = 9;  c += 10;  print(&quot;c = $c&quot;); // c = 19  print(1&lt;&lt;2); // 4  // 与Java不太一样的运算符操作  // is运算符用于判断一个变量是不是某个类型的数据  // is!则是判断变量不是某个类型的数据  var s = &quot;hello&quot;;  print(s is String); // true  var num = 6;  print(num is! String); // true  // ~/才是取整运算符，如果使用/则是除法运算，不取整  int k = 1;  int j = 2;  print(k / j); // 0.5  print(k ~/ j); // 0  // as运算符类似于Java中的cast操作，将一个对象强制类型转换  (emp as Person).teach();  // ??=运算符 如果 ??= 运算符前面的变量为null，则赋值，否则不赋值  var param1 = &quot;hello&quot;, param2 = null;  param1 ??= &quot;world&quot;;  param2 ??= &quot;world&quot;;  print(&quot;param1 = $param1&quot;); // param1 = hello  print(&quot;param2 = $param2&quot;); // param2 = world    // ?.运算符  var str1 = &quot;hello world&quot;;  var str2 = null;  print(str1?.length); // 11  print(str2?.length); // null   print(str2.length); // 报错}
+</code></pre>
+<h4 id="运算符级联操作">…运算符（级联操作）</h4>
+<pre><code class="language-dart">class Person {  eat() {    print(&quot;I am eating...&quot;);  }  sleep() {    print(&quot;I am sleeping...&quot;);  }  study() {    print(&quot;I am studying...&quot;);  }}main() {  // 依次打印  //  I am eating...  //  I am sleeping...  //  I am studying...  new Person()..eat()      ..sleep()      ..study();}
+</code></pre>
+<p>可以看到，使用…调用某个对象的方法（或者成员变量）时，返回值是这个对象本身，所以你可以接着使用…调用这个对象的其他方法.</p>
+<h4 id="控制流程">控制流程</h4>
+<pre><code class="language-dart">main() {  // if else语句  int score = 80;  if (score &lt; 60) {    print(&quot;so bad!&quot;);  } else if (score &gt;= 60 &amp;&amp; score &lt; 80) {    print(&quot;just so so!&quot;);  } else if (score &gt;= 80) {    print(&quot;good job!&quot;);  }  // switch语句  String a = &quot;hello&quot;;  // case语句中的数据类型必须是跟switch中的类型一致  switch (a) {    case &quot;hello&quot;:      print(&quot;haha&quot;);      break;    case &quot;world&quot;:      print(&quot;heihei&quot;);      break;    default:      print(&quot;WTF&quot;);  }  // for语句  List list = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;];  for (int i = 0; i &lt; list.length; i++) {    print(list[i]);  }  for (var i in list) {    print(i);  }  // 这里的箭头函数参数必须用圆括号扩起来  list.forEach((item) =&gt; print(item));  // while语句  int start = 1;  int sum = 0;  while (start &lt;= 100) {    sum += start;    start++;  }  print(sum);  // try catch语句  try {    print(1 ~/ 0);  } catch (e) {    // IntegerDivisionByZeroException    print(e);  }  try {    1 ~/ 0;  } on IntegerDivisionByZeroException { // 捕获指定类型的异常    print(&quot;error&quot;); // 打印出error  } finally {    print(&quot;over&quot;); // 打印出over  }}
+</code></pre>
+<h3 id="类class">类（Class）</h3>
+<h4 id="类的定义与构造方法">类的定义与构造方法</h4>
+<p>Dart中的类没有访问控制，所以你不需要用private, protected, public等修饰成员变量或成员函数，一个简单的类如下代码所示：</p>
+<pre><code class="language-dart">class Person {    String name;    int age;    String gender;    // 构造函数    Person(this.name, this.age, this.gender);    // public方法    sayHello() {      print(&quot;hello, this is $name, I am $age years old, I am a $gender&quot;);     }    // private方法     _sayHello() {       print(&quot;&quot;);     }}
+</code></pre>
+<p>上面的构造函数等同于下面的写法</p>
+<pre><code class="language-dart">Person(String name, int age, String gender) {    this.name = name;    this.age = age;    this.gender = gender;}
+</code></pre>
+<p>要调用Person类的成员变量或成员方法，可以用下面的代码：</p>
+<pre><code class="language-dart">var p = new Person(&quot;zhangsan&quot;, 20, &quot;male&quot;);p.sayHello(); // hello, this is zhangsan, I am 20 years old, I am a malep.age = 50;p.gender = &quot;female&quot;;p.sayHello();
+</code></pre>
+<p>类除了有跟类名相同的构造方法外，还可以添加命名的构造方法，如下代码所示</p>
+<pre><code class="language-dart">class Point {    num x, y;    Point(this.x, this.y);    //类的命名构造方法    Point.origin() {        x = 0;        y = 0;    }}main() {    // 调用Point类的命名构造方法origin()    var }
+</code></pre>
+<p>Dart中使用extends关键字做类的继承，如果一个类只有命名的构造方法，在继承时需要注意，如下代码：</p>
+<pre><code class="language-dart">class Human {    String name;    Human.fromJson(Map data) {        print(&quot;Human's fromJson constructor&quot;);    }}class Man extend Human {    Man.fromJson(Map data) : super.fromJson(data) {        print(&quot;Man's fromJson constructor&quot;);    }}
+</code></pre>
+<p>由于Human类没有默认构造方法，只有一个命名构造方法fromJson，所以在Man类继承Human类时，需要调用父类的fromJson方法做初始化，而且必须使用Man.fromJson(Map data) : super.fromJson(data)这种写法，而不是像Java那样将super写到花括号中。</p>
+<p>有时候你仅仅只是在某个类的构造方法中，调用这个类的另一个构造方法，你可以这么写：</p>
+<pre><code class="language-dart">class Point {  num x, y;  Point(this.x, this.y);  // 命名构造方法调用了默认的构造方法  Point.alongXAxis(num x) : this(x, 0);}
+</code></pre>
+<h4 id="类的成员方法">类的成员方法</h4>
+<p>一个类的成员方法是一个函数，为这个类提供某些行为。上面的代码中已经有了一些类的成员方法的定义，这些定义方式跟Java很类似，你可以为某个类的成员变量提供getter/setter方法，如下代码：</p>
+<pre><code class="language-dart">class Rectangle {  num left, top, width, height;    // 构造方法传入left, top, width, height几个参数  Rectangle(this.left, this.top, this.width, this.height);  // right, bottom两个成员变量提供getter/setter方法  num get right =&gt; left + width;  set right(num value) =&gt; left = value - width;    num get bottom =&gt; top + height;  set bottom(num value) =&gt; top = value - height;}
+</code></pre>
+<h4 id="抽象类和抽象方法">抽象类和抽象方法</h4>
+<p>使用abstract修饰一个类，则这个类是抽象类，抽象类中可以有抽象方法和非抽象方法，抽象方法没有方法体，需要子类去实现，如下代码：</p>
+<pre><code class="language-dart">abstract class Doer {  // 抽象方法，没有方法体，需要子类去实现  void doSomething();  // 普通的方法  void greet() {    print(&quot;hello world!&quot;);  }}class EffectiveDoer extends Doer {  // 实现了父类的抽象方法  void doSomething() {    print(&quot;I'm doing something...&quot;);  }}
+</code></pre>
+<h4 id="枚举类">枚举类</h4>
+<p>使用enum关键字定义一个枚举类，这个语法跟Java类似，如下代码：</p>
+<pre><code class="language-dart">enum Color { red, green, blue }
+</code></pre>
+<p>要获取枚举中所有值的列表，请使用enum的values 常量。</p>
+<pre><code class="language-dart">List colors = Color.values;assert(colors[2] == Color.blue);
+</code></pre>
+<p>您可以在switch语句中使用enum，如果switch的case不处理enum的所有值，将会报一个警告消息:</p>
+<pre><code class="language-dart">var aColor = Color.blue;switch (aColor) {  case Color.red:    print('Red as roses!');    break;  case Color.green:    print('Green as grass!');    break;  default: // Without this, you see a WARNING.    print(aColor); // 'Color.blue'}
+</code></pre>
+<h4 id="mixins">mixins</h4>
+<p>mixins是一个重复使用类中代码的方式，比如下面的代码：</p>
+<pre><code class="language-dart">class A {  a() {    print(&quot;A's a()&quot;);  }}class B {  b() {    print(&quot;B's b()&quot;);  }}// 使用with关键字，表示类C是由类A和类B混合而构成class C = A with B;main() {  C c = new C();  c.a(); // A's a()  c.b(); // B's b()}
+</code></pre>
+<h4 id="静态成员变量和静态成员方法">静态成员变量和静态成员方法</h4>
+<pre><code class="language-dart">// 类的静态成员变量和静态成员方法class Cons {  static const name = &quot;zhangsan&quot;;  static sayHello() {    print(&quot;hello, this is ${Cons.name}&quot;);  }}main() {  Cons.sayHello(); // hello, this is zhangsan  print(Cons.name); // zhangsan}
+</code></pre>
+<h4 id="dart库libraries">Dart库（Libraries）</h4>
+<p>Dart目前已经有很多的库提供给开发者，许多功能不需要开发者自己去实现，只需要导入对应的包即可，使用import语句来导入某个包，比如下面的代码</p>
+<pre><code class="language-dart">import 'dart:html';
+</code></pre>
+<p>如果你想导入自己写的某个代码文件，使用相对路径即可，例如当前有一个demo.dart文件，跟该文件同级目录下有个util.dart文件，文件代码如下：</p>
+<pre><code class="language-dart">// util.dart文件内容int add(int a, int b) {  return a + b;}
+</code></pre>
+<p>在demo.dart文件中如果要引用util.dart文件，使用下面的方式导入：</p>
+<pre><code class="language-dart">// demo.dartimport './util.dart';main() {  print(add(1, 2));}
+</code></pre>
+<p>你可以使用as关键字为导入的某个包设置一个前缀，或者说别名，比如下面的代码：</p>
+<pre><code class="language-dart">import 'package:lib1/lib1.dart';import 'package:lib2/lib2.dart' as lib2;// Uses Element from lib1.Element element1 = Element();// Uses Element from lib2.lib2.Element element2 = lib2.Element();
+</code></pre>
+<p>你也可以在导入包时使用show hide关键字来导入某个包中的部分功能，比如下面的代码：</p>
+<pre><code class="language-dart">// 只导入fooimport 'package:lib1/lib1.dart' show foo;// 导入除了foo的所有其他部分import 'package:lib2/lib2.dart' hide foo;
+</code></pre>
+<p>导入包时使用deferred as可以让这个包懒加载，懒加载的包只会在该包被使用时得到加载，而不是一开始就加载，比如下面的代码：</p>
+<pre><code class="language-dart">import 'package:greetings/hello.dart' deferred as hello;
+</code></pre>
+<h4 id="异步">异步</h4>
+<p>Dart提供了类似ES7中的async await等异步操作，这种异步操作在Flutter开发中会经常遇到，比如网络或其他IO操作，文件选择等都需要用到异步的知识。<br>
+async和await往往是成对出现的，如果一个方法中有耗时的操作，你需要将这个方法设置成async，并给其中的耗时操作加上await关键字，如果这个方法有返回值，你需要将返回值塞到Future中并返回，如下代码所示：</p>
+<pre><code class="language-dart">Future checkVersion() async {  var version = await lookUpVersion();  // Do something with version}
+</code></pre>
+<p>下面的代码使用Dart从网络获取数据并打印出来：</p>
+<pre><code class="language-dart">import 'dart:async';import 'package:http/http.dart' as http;Future getNetData() async{  http.Response res = await http.get(&quot;http://www.baidu.com&quot;);  return res.body;}main() {  getNetData().then((str) {    print(str);  });}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[iOS开发将一个工程添加到另一个工程中]]></title>
         <id>https://dargonlee.github.io/post/ios-kai-fa-jiang-yi-ge-gong-cheng-tian-jia-dao-ling-yi-ge-gong-cheng-zhong/</id>
@@ -1395,38 +1583,6 @@ self.navigationItem.backBarButtonItem = backItem;
 </li>
 </ul>
 <p>viewDidLoad 当view对象被加载到内存是就会执行viewDidLoad，所以不管通过nib文件还是代码的方式创建对象都会执行viewDidLoad</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Hello Gridea]]></title>
-        <id>https://dargonlee.github.io/post/hello-gridea/</id>
-        <link href="https://dargonlee.github.io/post/hello-gridea/">
-        </link>
-        <updated>2018-12-11T16:00:00.000Z</updated>
-        <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-<!-- more -->
-<p><a href="https://github.com/getgridea/gridea">Github</a><br>
-<a href="https://gridea.dev/">Gridea 主页</a><br>
-<a href="http://fehey.com/">示例网站</a></p>
-<h2 id="特性">特性👇</h2>
-<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
-<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
-<p>🏷️  你可以对文章进行标签分组</p>
-<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
-<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
-<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
-<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
-<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
-<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
-<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
-<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
-<p>未来，它一定会成为你离不开的伙伴</p>
-<p>尽情发挥你的才华吧！</p>
-<p>😘 Enjoy~</p>
 ]]></content>
     </entry>
 </feed>
