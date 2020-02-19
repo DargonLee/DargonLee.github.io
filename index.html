@@ -116,7 +116,7 @@
     
   </div>
   <div class="md:mx-8 flex-shrink-0 self-start rounded-full border-4 border-dotted border-transparent hover:border-yellow-50 p-2 w-32 h-32 order-1 md:order-2 mx-auto s3-dotted">
-    <img class="rounded-full object-cover" src="https://dargonlee.github.io/images/avatar.png?v=1582079041383" alt="七里田间的守望者" width="100%" height="100%">
+    <img class="rounded-full object-cover" src="https://dargonlee.github.io/images/avatar.png?v=1582079529344" alt="七里田间的守望者" width="100%" height="100%">
   </div>
 </header>
       
@@ -133,10 +133,25 @@
       </h2>
       <div class="mb-4 text-xs text-gray-500">2020-02-18</div>
       <div class="mb-4 text-gray-500 dark:text-gray-300">
-        
-跟Java等很多语言不同的是，Dart没有public protected private等关键字，如果某个变量以下划线 _ 开头，代表这个变量在库中是私有的。Dart中变量可以以字母或下划线开头，后面跟着任意组合的字符或数字
+        <blockquote>
+<p>跟Java等很多语言不同的是，Dart没有public protected private等关键字，如果某个变量以下划线 _ 开头，代表这个变量在库中是私有的。Dart中变量可以以字母或下划线开头，后面跟着任意组合的字符或数字</p>
+</blockquote>
+<p>比如下面代码</p>
+<pre><code class="language-dart">main() {
+   String _name = '';//private变量
+   String name = ''//public变量
+}
+</code></pre>
+<h3 id="变量">变量</h3>
+<h4 id="变量的定义">变量的定义</h4>
+<pre><code class="language-dart">main() {
+    var a = 1;
+    int b = 10; 
+    String s = &quot;hello&quot;;
+    dynamic c = 0.5;
+}
+</code></pre>
 
-比如下面...
       </div>
       <a href="https://dargonlee.github.io/post/dart-yu-fa-ru-men/" class="btn">
         Read more

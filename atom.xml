@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-02-19T02:24:03.462Z</updated>
+    <updated>2020-02-19T02:32:11.937Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
@@ -16,6 +16,25 @@
         <link href="https://dargonlee.github.io/post/dart-yu-fa-ru-men/">
         </link>
         <updated>2020-02-18T11:51:21.000Z</updated>
+        <summary type="html"><![CDATA[<blockquote>
+<p>跟Java等很多语言不同的是，Dart没有public protected private等关键字，如果某个变量以下划线 _ 开头，代表这个变量在库中是私有的。Dart中变量可以以字母或下划线开头，后面跟着任意组合的字符或数字</p>
+</blockquote>
+<p>比如下面代码</p>
+<pre><code class="language-dart">main() {
+   String _name = '';//private变量
+   String name = ''//public变量
+}
+</code></pre>
+<h3 id="变量">变量</h3>
+<h4 id="变量的定义">变量的定义</h4>
+<pre><code class="language-dart">main() {
+    var a = 1;
+    int b = 10; 
+    String s = &quot;hello&quot;;
+    dynamic c = 0.5;
+}
+</code></pre>
+]]></summary>
         <content type="html"><![CDATA[<blockquote>
 <p>跟Java等很多语言不同的是，Dart没有public protected private等关键字，如果某个变量以下划线 _ 开头，代表这个变量在库中是私有的。Dart中变量可以以字母或下划线开头，后面跟着任意组合的字符或数字</p>
 </blockquote>
@@ -34,6 +53,7 @@
     dynamic c = 0.5;
 }
 </code></pre>
+<!-- more -->
 <blockquote>
 <p>你可以自己定义你数据类型比如<code>String</code>  <code>int</code> 当然也可以用<code>var</code>  <code>dynamic</code>定义变量，dart会自动推断其数据类型。</p>
 </blockquote>
