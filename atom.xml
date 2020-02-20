@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-02-19T02:32:11.937Z</updated>
+    <updated>2020-02-20T11:38:27.916Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
@@ -10,6 +10,128 @@
     <logo>https://dargonlee.github.io/images/avatar.png</logo>
     <icon>https://dargonlee.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 七里田间的守望者</rights>
+    <entry>
+        <title type="html"><![CDATA[Flex布局入门]]></title>
+        <id>https://dargonlee.github.io/post/flex-bu-ju-ru-men/</id>
+        <link href="https://dargonlee.github.io/post/flex-bu-ju-ru-men/">
+        </link>
+        <updated>2020-02-20T11:16:43.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="flex基本概念">Flex基本概念</h3>
+<p>在 flex 容器中默认存在两条轴，水平主轴(main axis) 和垂直的交叉轴(cross axis)，这是默认的设置，当然你可以通过修改使垂直方向变为主轴，水平方向变为交叉轴，这个我们后面再说。</p>
+<p>在容器中的每个单元块被称之为 flex item，每个项目占据的主轴空间为 (main size), 占据的交叉轴的空间为 (cross size)。</p>
+<p>这里需要强调，不能先入为主认为宽度就是 main size，高度就是 cross size，这个还要取决于你主轴的方向，如果你垂直方向是主轴，那么项目的高度就是 main size。</p>
+<h3 id="flex容器">Flex容器</h3>
+<p>首先，实现 flex 布局需要先指定一个容器，任何一个容器都可以被指定为 flex 布局，这样容器内部的元素就可以使用 flex 来进行布局。</p>
+<pre><code class="language-css">.container {
+    display: flex | inline-flex;       //可以有两种取值
+}
+</code></pre>
+<blockquote>
+<p>分别生成一个块状或行内的 flex 容器盒子。简单说来，如果你使用块元素如 div，你就可以使用 flex，而如果你使用行内元素，你可以使用 inline-flex。</p>
+</blockquote>
+<p><strong>需要注意的是：当时设置 flex 布局之后，子元素的 float、clear、vertical-align 的属性将会失效。</strong><br>
+有下面六种属性可以设置在容器上，它们分别是：</p>
+<ul>
+<li>flex-direction</li>
+<li>flex-wrap</li>
+<li>flex-flow</li>
+<li>justify-content</li>
+<li>align-items</li>
+<li>align-content</li>
+</ul>
+<h4 id="1-flex-direction-决定主轴的方向即项目的排列方向">1. flex-direction: 决定主轴的方向(即项目的排列方向)</h4>
+<pre><code class="language-css">.container {
+    flex-direction: row | row-reverse | column | column-reverse;
+}
+</code></pre>
+<p>默认值：row，主轴为水平方向，起点在左端。<br>
+<img src="https://dargonlee.github.io/post-images/1582197694806.jpg" alt="" loading="lazy"></p>
+<p>row-reverse：主轴为水平方向，起点在右端<br>
+<img src="https://dargonlee.github.io/post-images/1582197734826.jpg" alt="" loading="lazy"></p>
+<p>column：主轴为垂直方向，起点在上沿<br>
+<img src="https://dargonlee.github.io/post-images/1582197778557.jpg" alt="" loading="lazy"></p>
+<p>column-reverse：主轴为垂直方向，起点在下沿<br>
+<img src="https://dargonlee.github.io/post-images/1582197811839.jpg" alt="" loading="lazy"></p>
+<h4 id="2flex-wrap-决定容器内项目是否可换行">2.flex-wrap: 决定容器内项目是否可换行</h4>
+<p>默认情况下，项目都排在主轴线上，使用 flex-wrap 可实现项目的换行。</p>
+<pre><code class="language-css">.container {
+    flex-wrap: nowrap | wrap | wrap-reverse;
+}
+</code></pre>
+<p>默认值：nowrap 不换行，即当主轴尺寸固定时，当空间不足时，项目尺寸会随之调整而并不会挤到下一行。<br>
+<img src="https://dargonlee.github.io/post-images/1582197901240.jpg" alt="" loading="lazy"></p>
+<p>wrap：项目主轴总尺寸超出容器时换行，第一行在上方<br>
+<img src="https://dargonlee.github.io/post-images/1582197926276.jpg" alt="" loading="lazy"></p>
+<p>wrap-reverse：换行，第一行在下方<br>
+<img src="https://dargonlee.github.io/post-images/1582197952784.jpg" alt="" loading="lazy"></p>
+<h4 id="3flex-flow-flex-direction-和-flex-wrap-的简写形式">3.flex-flow: flex-direction 和 flex-wrap 的简写形式</h4>
+<pre><code class="language-css">.container {
+    flex-flow: &lt;flex-direction&gt; || &lt;flex-wrap&gt;;
+}
+</code></pre>
+<p>默认值为: row nowrap，感觉没什么卵用，老老实实分开写就好了。这样就不用记住这个属性了。</p>
+<h4 id="4-justify-content定义了项目在主轴的对齐方式">4. justify-content：定义了项目在主轴的对齐方式。</h4>
+<pre><code class="language-css">.container {
+    justify-content: flex-start | flex-end | center | space-between | space-around;
+}
+</code></pre>
+<p><strong>建立在主轴为水平方向时测试，即 flex-direction: row</strong></p>
+<p>默认值: flex-start 左对齐<br>
+<img src="https://dargonlee.github.io/post-images/1582198060131.jpg" alt="" loading="lazy"></p>
+<p>flex-end：右对齐<br>
+<img src="https://dargonlee.github.io/post-images/1582198085474.jpg" alt="" loading="lazy"></p>
+<p>center：居中<br>
+<img src="https://dargonlee.github.io/post-images/1582198111291.jpg" alt="" loading="lazy"></p>
+<p>space-between：两端对齐，项目之间的间隔相等，即剩余空间等分成间隙。<br>
+<img src="https://dargonlee.github.io/post-images/1582198138167.jpg" alt="" loading="lazy"></p>
+<p>space-around：每个项目两侧的间隔相等，所以项目之间的间隔比项目与边缘的间隔大一倍。<br>
+<img src="https://dargonlee.github.io/post-images/1582198162824.jpg" alt="" loading="lazy"></p>
+<h4 id="5-align-items-定义了项目在交叉轴上的对齐方式">5. align-items: 定义了项目在交叉轴上的对齐方式</h4>
+<pre><code class="language-css">.container {
+    align-items: flex-start | flex-end | center | baseline | stretch;
+}
+</code></pre>
+<p><strong>建立在主轴为水平方向时测试，即 flex-direction: row</strong></p>
+<p>默认值为 stretch 即如果项目未设置高度或者设为 auto，将占满整个容器的高度。<br>
+<img src="https://dargonlee.github.io/post-images/1582198224547.jpg" alt="" loading="lazy"><br>
+假设容器高度设置为 100px，而项目都没有设置高度的情况下，则项目的高度也为 100px。</p>
+<p>flex-start：交叉轴的起点对齐<br>
+<img src="https://dargonlee.github.io/post-images/1582198284299.jpg" alt="" loading="lazy"><br>
+假设容器高度设置为 100px，而项目分别为 20px, 40px, 60px, 80px, 100px, 则如上图显示。</p>
+<p>flex-end：交叉轴的终点对齐<br>
+<img src="https://dargonlee.github.io/post-images/1582198317437.jpg" alt="" loading="lazy"></p>
+<p>center：交叉轴的中点对齐<br>
+<img src="https://dargonlee.github.io/post-images/1582198350798.jpg" alt="" loading="lazy"></p>
+<p>baseline: 项目的第一行文字的基线对齐<br>
+<img src="https://dargonlee.github.io/post-images/1582198377647.jpg" alt="" loading="lazy"></p>
+<h4 id="6-align-content-定义了多根轴线的对齐方式如果项目只有一根轴线那么该属性将不起作用">6. align-content: 定义了多根轴线的对齐方式，如果项目只有一根轴线，那么该属性将不起作用</h4>
+<pre><code class="language-css">.container {
+    align-content: flex-start | flex-end | center | space-between | space-around | stretch;
+}
+</code></pre>
+<p>这个这样理解：</p>
+<p>当你 flex-wrap 设置为 nowrap 的时候，容器仅存在一根轴线，因为项目不会换行，就不会产生多条轴线。</p>
+<p>当你 flex-wrap 设置为 wrap 的时候，容器可能会出现多条轴线，这时候你就需要去设置多条轴线之间的对齐方式了。</p>
+<p>建立在主轴为水平方向时测试，即 flex-direction: row, flex-wrap: wrap</p>
+<p>默认值为 stretch，看下面的图就很好理解了<br>
+<img src="https://dargonlee.github.io/post-images/1582198454881.jpg" alt="" loading="lazy"><br>
+从图可以看出又三条轴线(因为容器宽度有限)，当值为 stretch 时会三条轴线平分容器的垂直方向上的空间。</p>
+<p>值得注意的是，虽然在每条轴线上项目的默认值也为 stretch，但是由于我每个项目我都设置了高度，所以它并没有撑开整个容器。如果项目不设置高度的话就会变成下面这样：<br>
+<img src="https://dargonlee.github.io/post-images/1582198492875.jpg" alt="" loading="lazy"></p>
+<p>这个我在前面也有提到(align-items)，这里重点还是理解三条轴线会平分垂直轴上的空间。</p>
+<p>flex-start：轴线全部在交叉轴上的起点对齐<br>
+<img src="https://dargonlee.github.io/post-images/1582198520321.jpg" alt="" loading="lazy"></p>
+<p>flex-end：轴线全部在交叉轴上的终点对齐<br>
+<img src="https://dargonlee.github.io/post-images/1582198543212.jpg" alt="" loading="lazy"></p>
+<p>center：轴线全部在交叉轴上的中间对齐<br>
+<img src="https://dargonlee.github.io/post-images/1582198574863.jpg" alt="" loading="lazy"></p>
+<p>space-between：轴线两端对齐，之间的间隔相等，即剩余空间等分成间隙。<br>
+<img src="https://dargonlee.github.io/post-images/1582198604298.jpg" alt="" loading="lazy"></p>
+<p>space-around：每个轴线两侧的间隔相等，所以轴线之间的间隔比轴线与边缘的间隔大一倍。<br>
+<img src="https://dargonlee.github.io/post-images/1582198682468.jpg" alt="" loading="lazy"></p>
+<p>到这里关于容器上的所有属性都讲完了，接下来就来讲讲关于在 flex item 上的属性。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Dart语法入门]]></title>
         <id>https://dargonlee.github.io/post/dart-yu-fa-ru-men/</id>
@@ -1840,193 +1962,6 @@ self.navigationItem.backBarButtonItem = backItem;
 <blockquote>
 <p>提示:上面这种方式只是修改返回文字而已 至于返回图标还是系统提供的 手势滑动返回依然存在</p>
 </blockquote>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[iOS控制器View加载顺序详细版]]></title>
-        <id>https://dargonlee.github.io/post/ios-kong-zhi-qi-view-jia-zai-shun-xu-xiang-xi-ban/</id>
-        <link href="https://dargonlee.github.io/post/ios-kong-zhi-qi-view-jia-zai-shun-xu-xiang-xi-ban/">
-        </link>
-        <updated>2019-01-23T06:35:16.000Z</updated>
-        <summary type="html"><![CDATA[<p><code>控制器声明周期</code></p>
-<pre><code class="language-objectivec">//通过nib问价初始化触发
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-
-//nib文件被加载的时候，会发送一个消息到nib文件中的每一个对象
-- (void)awakeFromNib
-
-//开始加载视图控制器自带的view
-- (void)loadView
-
-//视图控制器的view被加载完成
-- (void)viewDidLoad
-
-//视图控制器的view将要显示在window上
-
-- (void)viewWillAppear:(BOOL)animated
-
-//视图控制器的view开始更新Autolayout
-- (void)updateViewConstraints
-
-//视图控制器的view开始更新内容视图的位置
-- (void)viewWillLayoutSubviews
-
-//视图控制器的view已经更新内容视图的位置
-- (void)viewDidLayoutSubviews
-
-//视图控制器的view已经显示到window上
-- (void)viewDidAppear:(BOOL)animated
-
-//视图控制的view将要从window上消失
-- (void)viewWillDisappear:(BOOL)animated
-
-//视图控制器的view已经从window上消失
-- (void)viewDidDisappear:(BOOL)animated
-</code></pre>
-]]></summary>
-        <content type="html"><![CDATA[<p><code>控制器声明周期</code></p>
-<pre><code class="language-objectivec">//通过nib问价初始化触发
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-
-//nib文件被加载的时候，会发送一个消息到nib文件中的每一个对象
-- (void)awakeFromNib
-
-//开始加载视图控制器自带的view
-- (void)loadView
-
-//视图控制器的view被加载完成
-- (void)viewDidLoad
-
-//视图控制器的view将要显示在window上
-
-- (void)viewWillAppear:(BOOL)animated
-
-//视图控制器的view开始更新Autolayout
-- (void)updateViewConstraints
-
-//视图控制器的view开始更新内容视图的位置
-- (void)viewWillLayoutSubviews
-
-//视图控制器的view已经更新内容视图的位置
-- (void)viewDidLayoutSubviews
-
-//视图控制器的view已经显示到window上
-- (void)viewDidAppear:(BOOL)animated
-
-//视图控制的view将要从window上消失
-- (void)viewWillDisappear:(BOOL)animated
-
-//视图控制器的view已经从window上消失
-- (void)viewDidDisappear:(BOOL)animated
-</code></pre>
-<!-- more -->
-<p>加载过程:<br>
-1 一般情况下调用 init方法或者调用initWithNibName方法实例化UIViewController, 不管调用哪个方法都为调用initWithNibName(方法定义如下)</p>
-<ul>
-<li>
-<p><code>-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil</code></p>
-</li>
-<li>
-<p>接着会调用loadView方法来生成UIViewController.view</p>
-</li>
-<li>
-<p><code>- (void)loadView</code></p>
-</li>
-<li>
-<p>下面来简单说下loadView底层</p>
-<ul>
-<li>
-<p>判断下有没有指定storyboard，如果有，就去加载storyboard描述的控制器的view</p>
-</li>
-<li>
-<p>判断下有没有指定nibName,如果有，就去加载nibName描述的控制器的view</p>
-</li>
-<li>
-<p><code>- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil</code></p>
-</li>
-<li>
-<p>如果判断有没有指定nibName,[self nibName]</p>
-</li>
-<li>
-<p>判断下nibName是否为空，如果为空，他会尝试找下有没有跟控制器同名，但是不带Controller的xib</p>
-</li>
-<li>
-<p>跟控制器同名的xib,nibName = ViewController,但是这一步有条件，前提条件你没有重写loadView</p>
-</li>
-<li>
-<p>如果都没有找到，直接创建默认控制器的view</p>
-</li>
-</ul>
-</li>
-</ul>
-<p><code>- (void)awakeFromNib;</code></p>
-<ul>
-<li>
-<p>这个方法用的时候，outlet还没有连接起来，是view Controller刚从storyboard建的时候，没有完全建好，不过可能有一些事情要在这个方法里面完成，比如splitViewDelegate，需要在非常早期完成。然后调用 viewDidLoad方法<br>
-<code>- (void)viewDidLoad</code></p>
-</li>
-<li>
-<p>如果loadView不能生成UIViewController.view系统将会反复调用loadView及viewDidLoad方法, 并且最终调用[super loadView] 方法返回UIViewController.view<br>
-然后依次调用如下2个方法, 这2个方法也十分重要, 在UINavigationController的POP操作后有时将要显示的UIViewController中的View并没有释放(也有可能释放掉) , UIViewController将不会调用上面的三个方法(initWithNibName,loadView,viewDidLoad) 而会调用下面这2个方法</p>
-</li>
-<li>
-<p><code>- (void)viewWillAppear:(BOOL)animated;</code></p>
-</li>
-<li>
-<p><code>- (void)viewDidAppear:(BOOL)animated;</code><br>
-紧接着调用下面两个方法view中frame值布局，使子控制器的frame值更加准确</p>
-</li>
-<li>
-<p><code>- (void)viewWillLayoutSubviews</code></p>
-</li>
-<li>
-<p><code>-(void)viewDidLayoutSubviews</code></p>
-</li>
-<li>
-<p>页面消失的方法</p>
-</li>
-</ul>
-<p><code>- (void)viewWillDisappear:(BOOL)animated;</code><br>
-<code>- (void)viewDidDisappear:(BOOL)animated;</code><br>
-<code>- (void)viewWillUnload;</code>//iOS5.0添加- (void)viewDidUnload;<br>
-<code>- (void)dealloc；</code></p>
-<ul>
-<li>
-<p>控制器View一些方法的区分</p>
-<ul>
-<li>viewDidLoad其实没什么可混淆的,无论通过什么途径加载(Xcode或者IB,这里的加载属于实例化)完view后肯定会执行这个方法.</li>
-<li><code>- loadView</code>需要分两种情况.
-<ul>
-<li>当你通过Xcode实例化一个类的时候就需要自己在controller中实现这个方法.</li>
-<li>而在IB中实例化就不需要实现它.</li>
-<li><code>- initWithNibName</code>这个方法是在controller的类在IB中创建,但是通过Xcode实例化controller的时候用的.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>awakeFromNib这个方法是一个类在IB中被实例化是被调用的.</p>
-</li>
-<li>
-<p>看了帖子发现大家都推荐使用viewDidLoad而不要使用awakeFromNib,应为viewDidLoad会被多次调用,</p>
-</li>
-<li>
-<p>而awakeFromNib只会当从nib文件中unarchive的时候才会被调用一次.</p>
-</li>
-<li>
-<p>实际测试中发现,当一个类的awakeFromNib被调用的时候,那么这个类的viewDidLoad就不会被调用了,这个感觉很奇怪.</p>
-</li>
-<li>
-<p><code>- initWithCoder</code>是一个类在IB中创建但在Xcode中被实例化时被调用的.</p>
-</li>
-<li>
-<p>比如,通过IB创建一个controller的nib文件,然后在xocde中通过initWithNibName来实例化这个controller,那么这个controller的initWithCoder会被调用.</p>
-</li>
-<li>
-<p><code>- awakeFromNib</code> 当.nib文件被加载的时候，会发送一个awakeFromNib的消息到.nib文件中的每个对象，每个对象都可以定义自己的awakeFromNib函数来响应这个消息，执行一些必要的操作。也就是说通过nib文件创建view对象是执行awakeFromNib</p>
-</li>
-</ul>
-<p>viewDidLoad 当view对象被加载到内存是就会执行viewDidLoad，所以不管通过nib文件还是代码的方式创建对象都会执行viewDidLoad</p>
 ]]></content>
     </entry>
 </feed>

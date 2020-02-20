@@ -1,0 +1,419 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Flex布局入门 - 七里田间的守望者</title>
+<link rel="shortcut icon" href="https://dargonlee.github.io/favicon.ico">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css">
+<link rel="stylesheet" href="https://dargonlee.github.io/media/css/tailwind.css">
+<link rel="stylesheet" href="https://dargonlee.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="Flex布局入门 - 七里田间的守望者 - Atom Feed" href="https://dargonlee.github.io/atom.xml">
+
+    
+
+  <meta name="description" content="Flex基本概念
+在 flex 容器中默认存在两条轴，水平主轴(main axis) 和垂直的交叉轴(cross axis)，这是默认的设置，当然你可以通过修改使垂直方向变为主轴，水平方向变为交叉轴，这个我们后面再说。
+在容器中的每个单元块..." />
+  <meta property="og:title" content="Flex布局入门 - 七里田间的守望者">
+  <meta property="og:description" content="Flex基本概念
+在 flex 容器中默认存在两条轴，水平主轴(main axis) 和垂直的交叉轴(cross axis)，这是默认的设置，当然你可以通过修改使垂直方向变为主轴，水平方向变为交叉轴，这个我们后面再说。
+在容器中的每个单元块..." />
+  <meta property="og:type" content="articles">
+  <meta property="og:url" content="https://dargonlee.github.io/post/flex-bu-ju-ru-men/" />
+  <meta property="og:image" content="https://dargonlee.github.io/post-images/flex-bu-ju-ru-men.jpg">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:width" content="1200">
+  <meta name="twitter:title" content="Flex布局入门 - 七里田间的守望者">
+  <meta name="twitter:description" content="Flex基本概念
+在 flex 容器中默认存在两条轴，水平主轴(main axis) 和垂直的交叉轴(cross axis)，这是默认的设置，当然你可以通过修改使垂直方向变为主轴，水平方向变为交叉轴，这个我们后面再说。
+在容器中的每个单元块...">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://dargonlee.github.io/post/flex-bu-ju-ru-men/">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css">
+ 
+  
+    <link rel="stylesheet" href="https://dargonlee.github.io/media/css/prism-atom-dark.css">
+  
+
+  
+</head>
+
+<body>
+  <div class="antialiased flex flex-col min-h-screen" id="app">
+    <a href="https://dargonlee.github.io" class="fixed top-0 left-0 mt-4 bg-black text-white dark:text-gray-700 dark:bg-yellow-50 dark:hover:bg-black dark:hover:text-white inline-flex p-2 pl-8 hover:text-gray-700 hover:bg-yellow-50 font-bold z-10 transition-fast animated fadeInLeft">
+      七里田间的守望者
+    </a>
+    <div class="max-w-4xl w-full mx-auto">
+      <div class="shadow-box bg-white dark:bg-gray-600 rounded-lg pt-32 md:pt-64 px-4 md:px-8 pb-8 animated fadeIn mb-8">
+        <h1 class="text-5xl font-semibold leading-normal pb-8 mb-8 border-b-8 border-gray-700">
+          Flex布局入门
+        </h1>
+        
+          <img src="https://dargonlee.github.io/post-images/flex-bu-ju-ru-men.jpg" alt="Flex布局入门" class="block w-full mb-8">
+        
+        <div class="mb-8 flex flex-wrap">
+          <div class="text-gray-400 text-sm mr-4">2020-02-20 · 6 min read</div>
+          
+        </div>
+        <div class="markdown mb-8" v-pre>
+          <h3 id="flex基本概念">Flex基本概念</h3>
+<p>在 flex 容器中默认存在两条轴，水平主轴(main axis) 和垂直的交叉轴(cross axis)，这是默认的设置，当然你可以通过修改使垂直方向变为主轴，水平方向变为交叉轴，这个我们后面再说。</p>
+<p>在容器中的每个单元块被称之为 flex item，每个项目占据的主轴空间为 (main size), 占据的交叉轴的空间为 (cross size)。</p>
+<p>这里需要强调，不能先入为主认为宽度就是 main size，高度就是 cross size，这个还要取决于你主轴的方向，如果你垂直方向是主轴，那么项目的高度就是 main size。</p>
+<h3 id="flex容器">Flex容器</h3>
+<p>首先，实现 flex 布局需要先指定一个容器，任何一个容器都可以被指定为 flex 布局，这样容器内部的元素就可以使用 flex 来进行布局。</p>
+<pre><code class="language-css">.container {
+    display: flex | inline-flex;       //可以有两种取值
+}
+</code></pre>
+<blockquote>
+<p>分别生成一个块状或行内的 flex 容器盒子。简单说来，如果你使用块元素如 div，你就可以使用 flex，而如果你使用行内元素，你可以使用 inline-flex。</p>
+</blockquote>
+<p><strong>需要注意的是：当时设置 flex 布局之后，子元素的 float、clear、vertical-align 的属性将会失效。</strong><br>
+有下面六种属性可以设置在容器上，它们分别是：</p>
+<ul>
+<li>flex-direction</li>
+<li>flex-wrap</li>
+<li>flex-flow</li>
+<li>justify-content</li>
+<li>align-items</li>
+<li>align-content</li>
+</ul>
+<h4 id="1-flex-direction-决定主轴的方向即项目的排列方向">1. flex-direction: 决定主轴的方向(即项目的排列方向)</h4>
+<pre><code class="language-css">.container {
+    flex-direction: row | row-reverse | column | column-reverse;
+}
+</code></pre>
+<p>默认值：row，主轴为水平方向，起点在左端。<br>
+<img src="https://dargonlee.github.io/post-images/1582197694806.jpg" alt="" loading="lazy"></p>
+<p>row-reverse：主轴为水平方向，起点在右端<br>
+<img src="https://dargonlee.github.io/post-images/1582197734826.jpg" alt="" loading="lazy"></p>
+<p>column：主轴为垂直方向，起点在上沿<br>
+<img src="https://dargonlee.github.io/post-images/1582197778557.jpg" alt="" loading="lazy"></p>
+<p>column-reverse：主轴为垂直方向，起点在下沿<br>
+<img src="https://dargonlee.github.io/post-images/1582197811839.jpg" alt="" loading="lazy"></p>
+<h4 id="2flex-wrap-决定容器内项目是否可换行">2.flex-wrap: 决定容器内项目是否可换行</h4>
+<p>默认情况下，项目都排在主轴线上，使用 flex-wrap 可实现项目的换行。</p>
+<pre><code class="language-css">.container {
+    flex-wrap: nowrap | wrap | wrap-reverse;
+}
+</code></pre>
+<p>默认值：nowrap 不换行，即当主轴尺寸固定时，当空间不足时，项目尺寸会随之调整而并不会挤到下一行。<br>
+<img src="https://dargonlee.github.io/post-images/1582197901240.jpg" alt="" loading="lazy"></p>
+<p>wrap：项目主轴总尺寸超出容器时换行，第一行在上方<br>
+<img src="https://dargonlee.github.io/post-images/1582197926276.jpg" alt="" loading="lazy"></p>
+<p>wrap-reverse：换行，第一行在下方<br>
+<img src="https://dargonlee.github.io/post-images/1582197952784.jpg" alt="" loading="lazy"></p>
+<h4 id="3flex-flow-flex-direction-和-flex-wrap-的简写形式">3.flex-flow: flex-direction 和 flex-wrap 的简写形式</h4>
+<pre><code class="language-css">.container {
+    flex-flow: &lt;flex-direction&gt; || &lt;flex-wrap&gt;;
+}
+</code></pre>
+<p>默认值为: row nowrap，感觉没什么卵用，老老实实分开写就好了。这样就不用记住这个属性了。</p>
+<h4 id="4-justify-content定义了项目在主轴的对齐方式">4. justify-content：定义了项目在主轴的对齐方式。</h4>
+<pre><code class="language-css">.container {
+    justify-content: flex-start | flex-end | center | space-between | space-around;
+}
+</code></pre>
+<p><strong>建立在主轴为水平方向时测试，即 flex-direction: row</strong></p>
+<p>默认值: flex-start 左对齐<br>
+<img src="https://dargonlee.github.io/post-images/1582198060131.jpg" alt="" loading="lazy"></p>
+<p>flex-end：右对齐<br>
+<img src="https://dargonlee.github.io/post-images/1582198085474.jpg" alt="" loading="lazy"></p>
+<p>center：居中<br>
+<img src="https://dargonlee.github.io/post-images/1582198111291.jpg" alt="" loading="lazy"></p>
+<p>space-between：两端对齐，项目之间的间隔相等，即剩余空间等分成间隙。<br>
+<img src="https://dargonlee.github.io/post-images/1582198138167.jpg" alt="" loading="lazy"></p>
+<p>space-around：每个项目两侧的间隔相等，所以项目之间的间隔比项目与边缘的间隔大一倍。<br>
+<img src="https://dargonlee.github.io/post-images/1582198162824.jpg" alt="" loading="lazy"></p>
+<h4 id="5-align-items-定义了项目在交叉轴上的对齐方式">5. align-items: 定义了项目在交叉轴上的对齐方式</h4>
+<pre><code class="language-css">.container {
+    align-items: flex-start | flex-end | center | baseline | stretch;
+}
+</code></pre>
+<p><strong>建立在主轴为水平方向时测试，即 flex-direction: row</strong></p>
+<p>默认值为 stretch 即如果项目未设置高度或者设为 auto，将占满整个容器的高度。<br>
+<img src="https://dargonlee.github.io/post-images/1582198224547.jpg" alt="" loading="lazy"><br>
+假设容器高度设置为 100px，而项目都没有设置高度的情况下，则项目的高度也为 100px。</p>
+<p>flex-start：交叉轴的起点对齐<br>
+<img src="https://dargonlee.github.io/post-images/1582198284299.jpg" alt="" loading="lazy"><br>
+假设容器高度设置为 100px，而项目分别为 20px, 40px, 60px, 80px, 100px, 则如上图显示。</p>
+<p>flex-end：交叉轴的终点对齐<br>
+<img src="https://dargonlee.github.io/post-images/1582198317437.jpg" alt="" loading="lazy"></p>
+<p>center：交叉轴的中点对齐<br>
+<img src="https://dargonlee.github.io/post-images/1582198350798.jpg" alt="" loading="lazy"></p>
+<p>baseline: 项目的第一行文字的基线对齐<br>
+<img src="https://dargonlee.github.io/post-images/1582198377647.jpg" alt="" loading="lazy"></p>
+<h4 id="6-align-content-定义了多根轴线的对齐方式如果项目只有一根轴线那么该属性将不起作用">6. align-content: 定义了多根轴线的对齐方式，如果项目只有一根轴线，那么该属性将不起作用</h4>
+<pre><code class="language-css">.container {
+    align-content: flex-start | flex-end | center | space-between | space-around | stretch;
+}
+</code></pre>
+<p>这个这样理解：</p>
+<p>当你 flex-wrap 设置为 nowrap 的时候，容器仅存在一根轴线，因为项目不会换行，就不会产生多条轴线。</p>
+<p>当你 flex-wrap 设置为 wrap 的时候，容器可能会出现多条轴线，这时候你就需要去设置多条轴线之间的对齐方式了。</p>
+<p>建立在主轴为水平方向时测试，即 flex-direction: row, flex-wrap: wrap</p>
+<p>默认值为 stretch，看下面的图就很好理解了<br>
+<img src="https://dargonlee.github.io/post-images/1582198454881.jpg" alt="" loading="lazy"><br>
+从图可以看出又三条轴线(因为容器宽度有限)，当值为 stretch 时会三条轴线平分容器的垂直方向上的空间。</p>
+<p>值得注意的是，虽然在每条轴线上项目的默认值也为 stretch，但是由于我每个项目我都设置了高度，所以它并没有撑开整个容器。如果项目不设置高度的话就会变成下面这样：<br>
+<img src="https://dargonlee.github.io/post-images/1582198492875.jpg" alt="" loading="lazy"></p>
+<p>这个我在前面也有提到(align-items)，这里重点还是理解三条轴线会平分垂直轴上的空间。</p>
+<p>flex-start：轴线全部在交叉轴上的起点对齐<br>
+<img src="https://dargonlee.github.io/post-images/1582198520321.jpg" alt="" loading="lazy"></p>
+<p>flex-end：轴线全部在交叉轴上的终点对齐<br>
+<img src="https://dargonlee.github.io/post-images/1582198543212.jpg" alt="" loading="lazy"></p>
+<p>center：轴线全部在交叉轴上的中间对齐<br>
+<img src="https://dargonlee.github.io/post-images/1582198574863.jpg" alt="" loading="lazy"></p>
+<p>space-between：轴线两端对齐，之间的间隔相等，即剩余空间等分成间隙。<br>
+<img src="https://dargonlee.github.io/post-images/1582198604298.jpg" alt="" loading="lazy"></p>
+<p>space-around：每个轴线两侧的间隔相等，所以轴线之间的间隔比轴线与边缘的间隔大一倍。<br>
+<img src="https://dargonlee.github.io/post-images/1582198682468.jpg" alt="" loading="lazy"></p>
+<p>到这里关于容器上的所有属性都讲完了，接下来就来讲讲关于在 flex item 上的属性。</p>
+
+        </div>
+        <!-- Share to Twitter, Weibo, Telegram -->
+        <div class="flex items-center">
+          <div class="mr-4 flex items-center">
+            <i class="ri-share-forward-line text-gray-500"></i>
+          </div>
+          <div class="px-4 cursor-pointer text-blue-500 hover:bg-blue-100 dark:hover:bg-gray-600 inline-flex" @click="shareToTwitter">
+            <i class="ri-twitter-line"></i>
+          </div>
+          <div class="px-4 cursor-pointer text-red-500 hover:bg-red-100 dark:hover:bg-gray-600 inline-flex" @click="shareToWeibo">
+            <i class="ri-weibo-line"></i>
+          </div>
+          <div class="px-4 cursor-pointer text-indigo-500 hover:bg-indigo-100 dark:hover:bg-gray-600 inline-flex" @click="shareToTelegram">
+            <i class="ri-telegram-line"></i>
+          </div>
+        </div>
+      </div>
+
+      
+
+      
+        <div id="vlaine-comment"></div>
+<script type="application/javascript" src="https://unpkg.com/valine"></script>
+<script type="application/javascript">
+  new Valine({
+    el: '#vlaine-comment',
+    appId: 'h1psio0mJrbXDgqHo6c9bitY-gzGzoHsz',
+    appKey: 'ERtOWGyxp7IN1hGeE78kQcHM',
+    pageSize: 10,
+    notify: false,
+    avatar: 'mp',
+    verify: true,
+    placeholder: '来都来了，不妨评论一下',
+    visitor: true,
+    highlight: true,
+    recordIP: true,
+  })
+</script>
+      
+
+      <footer class="py-12 text-center px-4 md:px-0" v-pre>
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Harlans</a>
+</footer>
+    </div>
+
+    <!-- TOC Container -->
+    <div class="fixed right-0 bottom-0 mb-16 mr-4 shadow w-8 h-8 rounded-full flex justify-center items-center z-10 cursor-pointer bg-white dark:bg-gray-500 dark:text-gray-200 hover:shadow-lg transition-all animated fadeInRight" @click="showToc = true">
+      <i class="ri-file-list-line"></i>
+    </div>
+
+    <div class="fixed right-0 top-0 bottom-0 overflow-y-auto w-64 bg-white dark:bg-gray-800 p-4 border-l border-gray-100 dark:border-gray-600 z-10 transition-fast" :class="{ '-mr-64': !showToc }">
+      <div class="flex mb-4 justify-end">
+        <div class="w-8 h-8 inline-flex justify-center items-center rounded-full cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition-fast" @click="showToc = false">
+          <i class="ri-close-line text-lg"></i>
+        </div>
+      </div>
+      <div class="post-toc-container">
+        <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#flex%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5">Flex基本概念</a></li>
+<li><a href="#flex%E5%AE%B9%E5%99%A8">Flex容器</a>
+<ul>
+<li><a href="#1-flex-direction-%E5%86%B3%E5%AE%9A%E4%B8%BB%E8%BD%B4%E7%9A%84%E6%96%B9%E5%90%91%E5%8D%B3%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8E%92%E5%88%97%E6%96%B9%E5%90%91">1. flex-direction: 决定主轴的方向(即项目的排列方向)</a></li>
+<li><a href="#2flex-wrap-%E5%86%B3%E5%AE%9A%E5%AE%B9%E5%99%A8%E5%86%85%E9%A1%B9%E7%9B%AE%E6%98%AF%E5%90%A6%E5%8F%AF%E6%8D%A2%E8%A1%8C">2.flex-wrap: 决定容器内项目是否可换行</a></li>
+<li><a href="#3flex-flow-flex-direction-%E5%92%8C-flex-wrap-%E7%9A%84%E7%AE%80%E5%86%99%E5%BD%A2%E5%BC%8F">3.flex-flow: flex-direction 和 flex-wrap 的简写形式</a></li>
+<li><a href="#4-justify-content%E5%AE%9A%E4%B9%89%E4%BA%86%E9%A1%B9%E7%9B%AE%E5%9C%A8%E4%B8%BB%E8%BD%B4%E7%9A%84%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F">4. justify-content：定义了项目在主轴的对齐方式。</a></li>
+<li><a href="#5-align-items-%E5%AE%9A%E4%B9%89%E4%BA%86%E9%A1%B9%E7%9B%AE%E5%9C%A8%E4%BA%A4%E5%8F%89%E8%BD%B4%E4%B8%8A%E7%9A%84%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F">5. align-items: 定义了项目在交叉轴上的对齐方式</a></li>
+<li><a href="#6-align-content-%E5%AE%9A%E4%B9%89%E4%BA%86%E5%A4%9A%E6%A0%B9%E8%BD%B4%E7%BA%BF%E7%9A%84%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F%E5%A6%82%E6%9E%9C%E9%A1%B9%E7%9B%AE%E5%8F%AA%E6%9C%89%E4%B8%80%E6%A0%B9%E8%BD%B4%E7%BA%BF%E9%82%A3%E4%B9%88%E8%AF%A5%E5%B1%9E%E6%80%A7%E5%B0%86%E4%B8%8D%E8%B5%B7%E4%BD%9C%E7%94%A8">6. align-content: 定义了多根轴线的对齐方式，如果项目只有一根轴线，那么该属性将不起作用</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      </div>
+    </div>
+
+    <!-- Back to top -->
+    <div class="fixed right-0 bottom-0 mb-4 mr-4 shadow w-8 h-8 rounded-full flex justify-center items-center z-10 cursor-pointer bg-white hover:shadow-lg transition-all dark:bg-gray-500 dark:text-gray-200" @click="backToUp" v-show="scrolled">
+      <i class="ri-arrow-up-line"></i>
+    </div>
+  </div>
+
+  <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+  <!-- Background of PhotoSwipe. 
+        It's a separate element as animating opacity is faster than rgba(). -->
+  <div class="pswp__bg">
+  </div>
+  <!-- Slides wrapper with overflow:hidden. -->
+  <div class="pswp__scroll-wrap">
+    <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+    <div class="pswp__container">
+      <div class="pswp__item">
+      </div>
+      <div class="pswp__item">
+      </div>
+      <div class="pswp__item">
+      </div>
+    </div>
+    <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+    <div class="pswp__ui pswp__ui--hidden">
+      <div class="pswp__top-bar">
+        <!--  Controls are self-explanatory. Order can be changed. -->
+        <div class="pswp__counter">
+        </div>
+        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+        <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+        <!-- element will get class pswp__preloader--active when preloader is running -->
+        <div class="pswp__preloader">
+          <div class="pswp__preloader__icn">
+            <div class="pswp__preloader__cut">
+              <div class="pswp__preloader__donut">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+        <div class="pswp__share-tooltip">
+        </div>
+      </div>
+      <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+      </button>
+      <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+      </button>
+      <div class="pswp__caption">
+        <div class="pswp__caption__center">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://dargonlee.github.io/media/scripts/main.js"></script>
+  
+  <!-- Code Highlight -->
+  
+    <script src="https://dargonlee.github.io/media/prism.js"></script>
+    <script>
+      Prism.highlightAll()
+    </script>
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+  <script>
+    //拿到预览框架，也就是上面的html代码
+    var pswpElement = document.querySelectorAll('.pswp')[0];
+    //定义图片数组变量
+    var imgitems;
+    /**
+    * 用于显示预览界面
+    * @param index 图片数组下标
+    */
+    function viewImg(index) {
+      //其它选项这里不做过多阐述，详情见官网
+      var pswpoptions = {
+        index: parseInt(index, 10), // 开始幻灯片索引。0是第一张幻灯片。必须是整数，而不是字符串。
+        bgOpacity: 0.7, // 背景透明度，0-1
+        maxSpreadZoom: 3, // 缩放级别，不要太大
+      };
+      //初始化并打开PhotoSwipe，pswpElement对应上面预览框架，PhotoSwipeUI_Default为皮肤，imgitems为图片数组，pswpoptions为选项
+      var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, imgitems, pswpoptions);
+      gallery.init()
+    }
+    /**
+    * 用于添加图片点击事件
+    * @param img 图片元素
+    * @param index 所属下标（在imgitems中的位置）
+    */
+    function addImgClick(img, index) {
+      img.onclick = function() {
+        viewImg(index)
+      }
+    }
+    /**
+    * 轮询所有图片，获取src、width、height等数据，加入imgitems，并给图片元素添加事件
+    * 最好在onload中执行该方法，本站因放在最底部，所以直接初始化
+    * 异步加载图片可在图片元素创建完成后调用此方法
+    */
+    function initImg() {
+      //重置图片数组
+      imgitems = [];
+      //查找class:markdown 下的所有img元素并遍历
+      var imgs = document.querySelectorAll('.markdown img');
+      for (var i = 0; i < imgs.length; i++) {
+        var img = imgs[i];
+        //本站相册初始为loading图片，真实图片放在data-src
+        var ds = img.getAttribute("data-src");
+        //创建image对象，用于获取图片宽高
+        var imgtemp = new Image();
+        //判断是否存在data-src
+        if (ds != null && ds.length > 0) {
+          imgtemp.src = ds
+        } else {
+          imgtemp.src = img.src
+        }
+        //判断是否存在缓存
+        if (imgtemp.complete) {
+          var imgobj = {
+            "src": imgtemp.src,
+            "w": imgtemp.width,
+            "h": imgtemp.height,
+          };
+          imgitems[i] = imgobj;
+          addImgClick(img, i);
+        } else {
+          console.log('进来了2')
+          imgtemp.index = i;
+          imgtemp.img = img;
+          imgtemp.onload = function() {
+            var imgobj = {
+              "src": this.src,
+              "w": this.width,
+              "h": this.height,
+            };
+            //不要使用push，因为onload前后顺序会不同
+            imgitems[this.index] = imgobj
+            //添加点击事件
+            addImgClick(this.img, this.index);
+          }
+        }
+      }
+    }
+    //初始化
+    initImg();
+  </script>
+</body>
+
+</html>
