@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-02-21T08:03:34.586Z</updated>
+    <updated>2020-02-21T08:08:52.699Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
@@ -254,6 +254,20 @@
 3.当 flex-wrap 为 nowrap，且子项宽度和不及父容器宽度时，flex-grow 会起作用，子项会根据 flex-grow 设定的值放大（为0的项不放大）<br>
 4.当 flex-wrap 为 nowrap，且子项宽度和超过父容器宽度时，flex-shrink 会起作用，子项会根据 flex-shrink 设定的值进行缩小（为0的项不缩小）。但这里有一个较为特殊情况，就是当这一行所有子项 flex-shrink 都为0时，也就是说所有的子项都不能缩小，就会出现讨厌的横向滚动条<br>
 5.总结上面四点，可以看出不管在什么情况下，在同一时间，flex-shrink 和 flex-grow 只有一个能起作用，这其中的道理细想起来也很浅显：空间足够时，flex-grow 就有发挥的余地，而空间不足时，flex-shrink 就能起作用。当然，flex-wrap 的值为 wrap | wrap-reverse 时，表明可以换行，既然可以换行，一般情况下空间就总是足够的，flex-shrink 当然就不会起作用</p>
+<h4 id="6-align-self-允许单个项目有与其他项目不一样的对齐方式">6. align-self: 允许单个项目有与其他项目不一样的对齐方式</h4>
+<p>单个项目覆盖 align-items 定义的属性</p>
+<p>默认值为 auto，表示继承父元素的 align-items 属性，如果没有父元素，则等同于 stretch。</p>
+<pre><code class="language-css">.item {
+     align-self: auto | flex-start | flex-end | center | baseline | stretch;
+}
+</code></pre>
+<p>这个跟 align-items 属性时一样的，只不过 align-self 是对单个项目生效的，而 align-items 则是对容器下的所有项目生效的。<br>
+<img src="https://dargonlee.github.io/post-images/1582272279703.jpg" alt="" loading="lazy"></p>
+<p>容器 align-items 设置为 flex-start，而第三</p>
+<blockquote>
+<p>最后 这篇文章写的flex布局也不错<br>
+https://www.zhangxinxu.com/wordpress/2018/10/display-flex-css3-css/?shrink=1</p>
+</blockquote>
 ]]></content>
     </entry>
     <entry>
