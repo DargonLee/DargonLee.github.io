@@ -7,7 +7,7 @@
 <title>解决定时器的循环引用 - 七里田间的守望者</title>
 <link rel="shortcut icon" href="https://dargonlee.github.io/favicon.ico">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"> -->
 <link rel="stylesheet" href="https://dargonlee.github.io/media/css/tailwind.css">
 <link rel="stylesheet" href="https://dargonlee.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="解决定时器的循环引用 - 七里田间的守望者 - Atom Feed" href="https://dargonlee.github.io/atom.xml">
@@ -210,25 +210,7 @@
 
       
 
-      
-        <div id="vlaine-comment"></div>
-<script type="application/javascript" src="https://unpkg.com/valine"></script>
-<script type="application/javascript">
-  new Valine({
-    el: '#vlaine-comment',
-    appId: 'h1psio0mJrbXDgqHo6c9bitY-gzGzoHsz',
-    appKey: 'ERtOWGyxp7IN1hGeE78kQcHM',
-    pageSize: 10,
-    notify: false,
-    avatar: 'mp',
-    verify: true,
-    placeholder: '来都来了，不妨评论一下',
-    visitor: true,
-    highlight: true,
-    recordIP: true,
-  })
-</script>
-      
+      <div id="vlaine-comment"></div>
 
       <footer class="py-12 text-center px-4 md:px-0" v-pre>
   Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Harlans</a>
@@ -427,6 +409,35 @@
     }
     //初始化
     initImg();
+  </script>
+  <script type="application/javascript" src="https://dargonlee.github.io/media/scripts/valine.min.js"></script>
+  <script type="application/javascript">
+  
+    // var valine = new Valine();
+    // valine.init({
+    //   el: '#vlaine-comment',
+    //   appId: 'h1psio0mJrbXDgqHo6c9bitY-gzGzoHsz',
+    //   appKey: 'ERtOWGyxp7IN1hGeE78kQcHM',
+    //   notify: false,
+    //   avatar: 'mp',
+    //   verify: true,
+    //   placeholder: '来都来了，不妨评论一下',
+    //   visitor: true,
+    //   highlight: true,
+    //   recordIP: true,
+    // })
+  
+    var valine = new Valine();
+    valine.init({
+      el: '#vlaine-comment',
+      appId: 'h1psio0mJrbXDgqHo6c9bitY-gzGzoHsz',
+      appKey: 'ERtOWGyxp7IN1hGeE78kQcHM',
+      notify: false,
+      verify: false,
+      visitor: true,
+      avatar: 'mp',
+      placeholder: '加入讨论...'
+    })
   </script>
 </body>
 
