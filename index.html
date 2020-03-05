@@ -116,13 +116,36 @@
     
   </div>
   <div class="md:mx-8 flex-shrink-0 self-start rounded-full border-4 border-dotted border-transparent hover:border-yellow-50 p-2 w-32 h-32 order-1 md:order-2 mx-auto s3-dotted">
-    <img class="rounded-full object-cover" src="https://dargonlee.github.io/images/avatar.png?v=1582548639661" alt="七里田间的守望者" width="100%" height="100%">
+    <img class="rounded-full object-cover" src="https://dargonlee.github.io/images/avatar.png?v=1583379985081" alt="七里田间的守望者" width="100%" height="100%">
   </div>
 </header>
       
 
       <div class="shadow-box bg-white dark:bg-gray-600 border-gray-300 rounded-none md:rounded-lg -mx-1 md:mx-0 md:px-0">
         
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://dargonlee.github.io/post/css-de-tips/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          CSS的Tips 第一章
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2020-03-04</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        document的操作
+// 创建一个div元素标签
+let div = document.createElement(&quot;div&quot;);
+//创建文本节点
+let textNode = document.createTex...
+      </div>
+      <a href="https://dargonlee.github.io/post/css-de-tips/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+  </div>
+
   <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
     
     <div class="flex-1 order-2 md:order-1">
@@ -387,35 +410,6 @@ git config --system -l </code></pre>
 
       </div>
       <a href="https://dargonlee.github.io/post/ios-gei-uilabel-zeng-jia-fu-zhi-nian-tie-gong-neng/" class="btn">
-        Read more
-      </a>
-    </div>
-    
-  </div>
-
-  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
-    
-    <div class="flex-1 order-2 md:order-1">
-      <h2 class="text-2xl font-semibold mb-4">
-        <a href="https://dargonlee.github.io/post/xiu-gai-ios-fan-hui-an-niu-de-ji-chong-fang-shi/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
-          修改iOS返回按钮的几种方式
-        </a>
-      </h2>
-      <div class="mb-4 text-xs text-gray-500">2019-02-13</div>
-      <div class="mb-4 text-gray-500 dark:text-gray-300">
-        <h3 id="第一种">第一种</h3>
-<pre><code class="language-objectivec">UIImage *backButtonImage = [[UIImage imageNamed:@&quot;back&quot;] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)];
-
-[[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButtonImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-
-[[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(NSIntegerMin, NSIntegerMin) forBarMetrics:UIBarMetricsDefault];
-</code></pre>
-<blockquote>
-<p>提示:上面这种方法会被系统给拉伸,需要在当前控制器里面设置</p>
-</blockquote>
-
-      </div>
-      <a href="https://dargonlee.github.io/post/xiu-gai-ios-fan-hui-an-niu-de-ji-chong-fang-shi/" class="btn">
         Read more
       </a>
     </div>

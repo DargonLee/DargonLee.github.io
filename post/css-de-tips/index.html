@@ -1,0 +1,587 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>CSS的Tips 第一章 - 七里田间的守望者</title>
+<link rel="shortcut icon" href="https://dargonlee.github.io/favicon.ico">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"> -->
+<link rel="stylesheet" href="https://dargonlee.github.io/media/css/tailwind.css">
+<link rel="stylesheet" href="https://dargonlee.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="CSS的Tips 第一章 - 七里田间的守望者 - Atom Feed" href="https://dargonlee.github.io/atom.xml">
+
+    
+
+  <meta name="description" content="document的操作
+// 创建一个div元素标签
+let div = document.createElement(&amp;quot;div&amp;quot;);
+//创建文本节点
+let textNode = document.createTex..." />
+  <meta property="og:title" content="CSS的Tips 第一章 - 七里田间的守望者">
+  <meta property="og:description" content="document的操作
+// 创建一个div元素标签
+let div = document.createElement(&amp;quot;div&amp;quot;);
+//创建文本节点
+let textNode = document.createTex..." />
+  <meta property="og:type" content="articles">
+  <meta property="og:url" content="https://dargonlee.github.io/post/css-de-tips/" />
+  <meta property="og:image" content="https://dargonlee.github.io/images/avatar.png">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:width" content="1200">
+  <meta name="twitter:title" content="CSS的Tips 第一章 - 七里田间的守望者">
+  <meta name="twitter:description" content="document的操作
+// 创建一个div元素标签
+let div = document.createElement(&amp;quot;div&amp;quot;);
+//创建文本节点
+let textNode = document.createTex...">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://dargonlee.github.io/post/css-de-tips/">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css">
+ 
+  
+    <link rel="stylesheet" href="https://dargonlee.github.io/media/css/prism-atom-dark.css">
+  
+
+  
+</head>
+
+<body>
+  <div class="antialiased flex flex-col min-h-screen" id="app">
+    <a href="https://dargonlee.github.io" class="fixed top-0 left-0 mt-4 bg-black text-white dark:text-gray-700 dark:bg-yellow-50 dark:hover:bg-black dark:hover:text-white inline-flex p-2 pl-8 hover:text-gray-700 hover:bg-yellow-50 font-bold z-10 transition-fast animated fadeInLeft">
+      七里田间的守望者
+    </a>
+    <div class="max-w-4xl w-full mx-auto">
+      <div class="shadow-box bg-white dark:bg-gray-600 rounded-lg pt-32 md:pt-64 px-4 md:px-8 pb-8 animated fadeIn mb-8">
+        <h1 class="text-5xl font-semibold leading-normal pb-8 mb-8 border-b-8 border-gray-700">
+          CSS的Tips 第一章
+        </h1>
+        
+        <div class="mb-8 flex flex-wrap">
+          <div class="text-gray-400 text-sm mr-4">2020-03-04 · 8 min read</div>
+          
+            <a href="https://dargonlee.github.io/tag/geS3QFZ6F/" class="text-gray-700 text-sm border-b-2 border-dotted border-gray-200 hover:border-gray-600 transition-all duration-100 inline-flex mr-2">
+              <i class="ri-hashtag"></i>
+              CSS
+            </a>
+          
+        </div>
+        <div class="markdown mb-8" v-pre>
+          <h3 id="document的操作">document的操作</h3>
+<pre><code>// 创建一个div元素标签
+let div = document.createElement(&quot;div&quot;);
+//创建文本节点
+let textNode = document.createTextNode(titles[index]);
+//添加文本到创建好的div元素中
+ div.appendChild(textNode);
+</code></pre>
+<h3 id="css选择器">CSS选择器</h3>
+<pre><code>/* 通用选择器，作用适用于所有的标签 */
+* {
+    margin: 0;
+    padding: 0;
+} 
+
+/* 匹配所有使用属性 &quot;lefe&quot; 的元素 */
+[lefe] {
+    color: green;
+}
+
+/*匹配所有使用属性为 &quot;lefe&quot;，且值为 liquid 的元素*/
+[lefe='liquid'] {
+    background-color: goldenrod;
+}
+
+/*匹配所有使用属性为 &quot;lefe&quot;，且值包含 spicy 的元素*/
+[lefe~=&quot;spicy&quot;] {
+    color: red;
+}
+
+/* 伪选择器 */
+/* 匹配超链接样式 */
+a {
+    color: blue;
+    font-weight: bold;
+}
+
+/* 访问后的状态 */
+a:visited {
+    color: yellow;
+}
+
+/* 鼠标悬停、点击、聚焦时的样式 */
+a:hover,
+a:active,
+a:focus {
+    color: darkred;
+    text-decoration: none;
+}
+
+/* 伪元素（pseudo-elements）选择器，它以“ :: ” 为标识符。
+比如修改首字母的样式。在超链接后添加一个向上的弯曲的箭头： */
+p::first-letter {
+    font-weight: bold;
+}
+
+p::first-line {
+    font-size: 3em;
+}
+
+[href^=http]::after {
+    content: '⤴';
+}
+
+/* A B {} : A 元素的所有后代元素 B 都会起作用。下面的例子中 div p {}，
+它会遍历 div 中所有的子元素 p，只要找到 p 元素就应用对应的 CSS 样式，
+故所有的 p 元素都变成了红色； */
+div p {
+    color: red;
+}
+
+/* 只会找到 div 的第一层子节点 p */
+div&gt;p {
+    color: green;
+}
+
+/* div + p { } 只会匹配 div 的下一个兄弟节点 p */
+div+p {
+    background-color: hotpink;
+}
+
+/* div ~ p { } 会匹配 div 的所有兄弟节点 p； */
+div~p {
+    color: darkgoldenrod;
+}
+
+/* A 和 B 元素具有同一规则的 CSS 样式，不同元素使用逗号隔开。 */
+div,
+p {
+    color: red;
+}
+</code></pre>
+<h3 id="border-的使用">border 的使用</h3>
+<p>border 是一个简写属性，它由一个或多个属性组成：border-width, border-style, border-color。往往会使用简写的方式，比如：</p>
+<pre><code>. title {
+   border: 1px solid red;
+}
+</code></pre>
+<p>border-width：表示边框的宽度，可以分别设置上下左右边框为不同的宽度，比如 border-bottom-width；</p>
+<p>border-style: 表示边框的样式，可以分别设置上下左右边框为不同的样式，比如 border-bottom-style，可以取下面几种值：node、hidden、dotted、dashed、solid 等；</p>
+<p>border-color：表示边框的颜色，可以分别设置上下左右边框为不同的颜色。<br>
+给标题添加下划线</p>
+<pre><code>.section-title {
+    font-size: 20px;
+    padding-bottom: 5px;
+    margin-left: 10px;
+    color: #258BD6;
+    font-weight: 600;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+</code></pre>
+<p>利用border可以做三角箭头</p>
+<pre><code>.triangle {
+    width: 0;
+    border: 20px solid;
+    border-color: #f30 transparent transparent;
+}
+</code></pre>
+<p>扩大点击区域</p>
+<pre><code>.icon {
+    background-color: antiquewhite;
+    width: 15px;
+    height: 15px;
+    border: 11px solid transparent;
+}
+</code></pre>
+<h3 id="media-屏幕适配">@media 屏幕适配</h3>
+<p>整段代码的意思是匹配带有屏幕的设备，且最小尺寸是 700 像素。：</p>
+<pre><code>@media screen and (min-width: 700px) {
+   // css
+}
+</code></pre>
+<p>再来看个例子，这段代码的意思是匹配带有屏幕的设备，且最小尺寸是 700 像素，最大尺寸是 900像素。</p>
+<pre><code>@media screen and (min-width: 700px) and (max-width: 900px) {
+   // css
+}
+</code></pre>
+<p>@media 语法规则是：</p>
+<pre><code>@media mediaType and|not|only (media feture) {
+  // css
+}
+</code></pre>
+<p>例子：</p>
+<pre><code>//正常显示样式
+.top div {
+    height: 200px;
+    margin-bottom: 5px;
+    background: white;
+    /* 规定背景图像的尺寸 */
+    background-size: 100% 100%;
+    /* 如何定位背景图片 */
+    background-position: 0 0;
+}
+// 适配大于700px的屏幕显示样式
+@media screen and (min-width: 700px) {
+    .top {
+        width: 40%;
+        margin: 0 30px;
+    }
+    .top div {
+        height: 250px;
+    }
+}
+</code></pre>
+<h3 id="display-inline">display-inline</h3>
+<p>使用 inline 告诉浏览器这是一个行内元素，布局的时候要按照行内元素的方式布局，比如 span 标签默认的就是这种布局方式。在有足够空间的时候，它不会换行。<strong>不能使用 width 和 height 属性。从图中可知 width 和 height 并没有起作用，margin 只会在水平方向起作用</strong>。</p>
+<pre><code>.strong {
+    color: red;
+    border: 1px solid yellow;
+    padding: 10px;
+    margin: 20px;
+    background-color: antiquewhite;
+    width: 150px;
+    height: 80px;
+}
+
+&lt;span class=&quot;strong&quot;&gt;多媒体电子书&lt;/span&gt;，通过公众号的形式呈现内容，
+    并与粉丝形成互动，推动读者自我驱动，利用业余时间学习前端，
+    迎合大前端的浪潮。
+    &lt;/p&gt;
+</code></pre>
+<h3 id="displayinline-block">display：inline-block</h3>
+<p>这种布局方式结合了 inline 和 block 这两种元素的特性，它与块级元素不同的是：元素不会单独占用一行；相同的是：<strong>可以使用 width 和 height，可以通过 padding、margin 和 border 来控制元素的显示位置。说白了就是除了不会单独占一行，其余的与块级元素一致</strong>。</p>
+<pre><code>.strong {
+    display: inline-block;
+    color: red;
+    border: 1px solid yellow;
+    padding: 10px;
+    margin: 20px;
+    background-color: antiquewhite;
+    width: 150px;
+    height: 80px;
+}
+</code></pre>
+<h3 id="背景图">背景图</h3>
+<pre><code>&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
+</code></pre>
+<pre><code>.box {
+    width: 200px;
+    height: 200px;
+    background-color: antiquewhite;
+    background-image: url('./logo_suyan.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+</code></pre>
+<ol>
+<li>background-postion: 表示背景图的起始位置；</li>
+</ol>
+<p>background-postion：top | left | bottom | right，在某个边缘的位置，另一个维度为 50%。比如 top，背景图的起始位置为顶部，在X轴方向为 50%，居中显示；</p>
+<p>background-postion：center，居中背景图；</p>
+<p>background-postion：25% 75%，设置基于背景区域的开始位置，可以为负值；<strong>第一个值是水平位置，第二个值是垂直。</strong></p>
+<p>2.background-postion-x：背景在 x 轴上的位置；</p>
+<p>3.background-postion-y：背景在 y 轴上的位置；</p>
+<p>4.background-repeat: 背景的重复方式， no-repat 不重复，repeat 重复，repat-x X轴上重复，还有其它关键字，读者可以自行查看</p>
+<p>https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-repeat。</p>
+<p>5.background-size: 背景图的大小；<br>
+background-size: cover，缩放背景图以完全覆盖背景区，保持原图的宽高比，可能背景图部分会看不到，填满背景图；<br>
+background-size: contain，缩放背景图以完全显示背景图，保持原图的宽高比，可能背景部分区域空白，尽可能把图显示完整；</p>
+<p>background-size: 50%，背景图的大小为背景区的百分比；</p>
+<p>background-size: 12px，背景图的宽度为 12px，高度按照比例自动缩放；</p>
+<p>background-size: 12px 14px，背景图的宽度为 12px，高度14px；</p>
+<h3 id="在文字前-后插入一个图标">在文字前、后插入一个图标</h3>
+<p>对于「图+文字」这种效果可以利用 ::before 这个伪元素选择器。下面的 CSS 样式中的 content 属性必须有，否则将不会展示。（但是content的值可以为空）</p>
+<pre><code>&lt;p class=&quot;left&quot;&gt;文字前加图片&lt;/p&gt;
+</code></pre>
+<p>content为空，添加背景图片方式</p>
+<pre><code>.left {
+    color: black;
+    font-size: 15px; // 这里的大小会决定图标的大小
+}
+.left::before { // before 是在文字前添加图标 after是在文字后面添加文字
+    /* content: 'before'; */
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    background-image: url('./images/hert.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    margin-right: 4px;
+    width: 30px;
+    height: 30px;
+}
+</code></pre>
+<p>content不为空直接使用图标</p>
+<pre><code>
+.left {
+    color: black;
+    font-size: 15px;
+}
+.left::after {
+    content: '→';
+    display: inline-block;
+    color: red; // 这里的颜色就是图标的颜色
+    margin-left: 5px;
+}
+</code></pre>
+<p>除了上面的两个伪元素外，还有其它的伪元素，比如：</p>
+<pre><code>::first-letter 表示对首字母进行操作
+</code></pre>
+<pre><code>::first-line 对首行内容进行操作
+</code></pre>
+
+        </div>
+        <!-- Share to Twitter, Weibo, Telegram -->
+        <div class="flex items-center">
+          <div class="mr-4 flex items-center">
+            <i class="ri-share-forward-line text-gray-500"></i>
+          </div>
+          <div class="px-4 cursor-pointer text-blue-500 hover:bg-blue-100 dark:hover:bg-gray-600 inline-flex" @click="shareToTwitter">
+            <i class="ri-twitter-line"></i>
+          </div>
+          <div class="px-4 cursor-pointer text-red-500 hover:bg-red-100 dark:hover:bg-gray-600 inline-flex" @click="shareToWeibo">
+            <i class="ri-weibo-line"></i>
+          </div>
+          <div class="px-4 cursor-pointer text-indigo-500 hover:bg-indigo-100 dark:hover:bg-gray-600 inline-flex" @click="shareToTelegram">
+            <i class="ri-telegram-line"></i>
+          </div>
+        </div>
+      </div>
+
+      
+
+      <div id="vlaine-comment"></div>
+
+      <footer class="py-12 text-center px-4 md:px-0" v-pre>
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Harlans</a>
+</footer>
+    </div>
+
+    <!-- TOC Container -->
+    <div class="fixed right-0 bottom-0 mb-16 mr-4 shadow w-8 h-8 rounded-full flex justify-center items-center z-10 cursor-pointer bg-white dark:bg-gray-500 dark:text-gray-200 hover:shadow-lg transition-all animated fadeInRight" @click="showToc = true">
+      <i class="ri-file-list-line"></i>
+    </div>
+
+    <div class="fixed right-0 top-0 bottom-0 overflow-y-auto w-64 bg-white dark:bg-gray-800 p-4 border-l border-gray-100 dark:border-gray-600 z-10 transition-fast" :class="{ '-mr-64': !showToc }">
+      <div class="flex mb-4 justify-end">
+        <div class="w-8 h-8 inline-flex justify-center items-center rounded-full cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition-fast" @click="showToc = false">
+          <i class="ri-close-line text-lg"></i>
+        </div>
+      </div>
+      <div class="post-toc-container">
+        <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#document%E7%9A%84%E6%93%8D%E4%BD%9C">document的操作</a></li>
+<li><a href="#css%E9%80%89%E6%8B%A9%E5%99%A8">CSS选择器</a></li>
+<li><a href="#border-%E7%9A%84%E4%BD%BF%E7%94%A8">border 的使用</a></li>
+<li><a href="#media-%E5%B1%8F%E5%B9%95%E9%80%82%E9%85%8D">@media 屏幕适配</a></li>
+<li><a href="#display-inline">display-inline</a></li>
+<li><a href="#displayinline-block">display：inline-block</a></li>
+<li><a href="#%E8%83%8C%E6%99%AF%E5%9B%BE">背景图</a></li>
+<li><a href="#%E5%9C%A8%E6%96%87%E5%AD%97%E5%89%8D-%E5%90%8E%E6%8F%92%E5%85%A5%E4%B8%80%E4%B8%AA%E5%9B%BE%E6%A0%87">在文字前、后插入一个图标</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      </div>
+    </div>
+
+    <!-- Back to top -->
+    <div class="fixed right-0 bottom-0 mb-4 mr-4 shadow w-8 h-8 rounded-full flex justify-center items-center z-10 cursor-pointer bg-white hover:shadow-lg transition-all dark:bg-gray-500 dark:text-gray-200" @click="backToUp" v-show="scrolled">
+      <i class="ri-arrow-up-line"></i>
+    </div>
+  </div>
+
+  <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+  <!-- Background of PhotoSwipe. 
+        It's a separate element as animating opacity is faster than rgba(). -->
+  <div class="pswp__bg">
+  </div>
+  <!-- Slides wrapper with overflow:hidden. -->
+  <div class="pswp__scroll-wrap">
+    <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+    <div class="pswp__container">
+      <div class="pswp__item">
+      </div>
+      <div class="pswp__item">
+      </div>
+      <div class="pswp__item">
+      </div>
+    </div>
+    <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+    <div class="pswp__ui pswp__ui--hidden">
+      <div class="pswp__top-bar">
+        <!--  Controls are self-explanatory. Order can be changed. -->
+        <div class="pswp__counter">
+        </div>
+        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+        <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+        <!-- element will get class pswp__preloader--active when preloader is running -->
+        <div class="pswp__preloader">
+          <div class="pswp__preloader__icn">
+            <div class="pswp__preloader__cut">
+              <div class="pswp__preloader__donut">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+        <div class="pswp__share-tooltip">
+        </div>
+      </div>
+      <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+      </button>
+      <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+      </button>
+      <div class="pswp__caption">
+        <div class="pswp__caption__center">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://dargonlee.github.io/media/scripts/main.js"></script>
+  
+  <!-- Code Highlight -->
+  
+    <script src="https://dargonlee.github.io/media/prism.js"></script>
+    <script>
+      Prism.highlightAll()
+    </script>
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+  <script>
+    //拿到预览框架，也就是上面的html代码
+    var pswpElement = document.querySelectorAll('.pswp')[0];
+    //定义图片数组变量
+    var imgitems;
+    /**
+    * 用于显示预览界面
+    * @param index 图片数组下标
+    */
+    function viewImg(index) {
+      //其它选项这里不做过多阐述，详情见官网
+      var pswpoptions = {
+        index: parseInt(index, 10), // 开始幻灯片索引。0是第一张幻灯片。必须是整数，而不是字符串。
+        bgOpacity: 0.7, // 背景透明度，0-1
+        maxSpreadZoom: 3, // 缩放级别，不要太大
+      };
+      //初始化并打开PhotoSwipe，pswpElement对应上面预览框架，PhotoSwipeUI_Default为皮肤，imgitems为图片数组，pswpoptions为选项
+      var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, imgitems, pswpoptions);
+      gallery.init()
+    }
+    /**
+    * 用于添加图片点击事件
+    * @param img 图片元素
+    * @param index 所属下标（在imgitems中的位置）
+    */
+    function addImgClick(img, index) {
+      img.onclick = function() {
+        viewImg(index)
+      }
+    }
+    /**
+    * 轮询所有图片，获取src、width、height等数据，加入imgitems，并给图片元素添加事件
+    * 最好在onload中执行该方法，本站因放在最底部，所以直接初始化
+    * 异步加载图片可在图片元素创建完成后调用此方法
+    */
+    function initImg() {
+      //重置图片数组
+      imgitems = [];
+      //查找class:markdown 下的所有img元素并遍历
+      var imgs = document.querySelectorAll('.markdown img');
+      for (var i = 0; i < imgs.length; i++) {
+        var img = imgs[i];
+        //本站相册初始为loading图片，真实图片放在data-src
+        var ds = img.getAttribute("data-src");
+        //创建image对象，用于获取图片宽高
+        var imgtemp = new Image();
+        //判断是否存在data-src
+        if (ds != null && ds.length > 0) {
+          imgtemp.src = ds
+        } else {
+          imgtemp.src = img.src
+        }
+        //判断是否存在缓存
+        if (imgtemp.complete) {
+          var imgobj = {
+            "src": imgtemp.src,
+            "w": imgtemp.width,
+            "h": imgtemp.height,
+          };
+          imgitems[i] = imgobj;
+          addImgClick(img, i);
+        } else {
+          console.log('进来了2')
+          imgtemp.index = i;
+          imgtemp.img = img;
+          imgtemp.onload = function() {
+            var imgobj = {
+              "src": this.src,
+              "w": this.width,
+              "h": this.height,
+            };
+            //不要使用push，因为onload前后顺序会不同
+            imgitems[this.index] = imgobj
+            //添加点击事件
+            addImgClick(this.img, this.index);
+          }
+        }
+      }
+    }
+    //初始化
+    initImg();
+  </script>
+  <script type="application/javascript" src="https://dargonlee.github.io/media/scripts/valine.min.js"></script>
+  <script type="application/javascript">
+  
+    // var valine = new Valine();
+    // valine.init({
+    //   el: '#vlaine-comment',
+    //   appId: 'h1psio0mJrbXDgqHo6c9bitY-gzGzoHsz',
+    //   appKey: 'ERtOWGyxp7IN1hGeE78kQcHM',
+    //   notify: false,
+    //   avatar: 'mp',
+    //   verify: true,
+    //   placeholder: '来都来了，不妨评论一下',
+    //   visitor: true,
+    //   highlight: true,
+    //   recordIP: true,
+    // })
+  
+    var valine = new Valine();
+    valine.init({
+      el: '#vlaine-comment',
+      appId: 'h1psio0mJrbXDgqHo6c9bitY-gzGzoHsz',
+      appKey: 'ERtOWGyxp7IN1hGeE78kQcHM',
+      notify: false,
+      verify: false,
+      visitor: true,
+      avatar: 'mp',
+      placeholder: '加入讨论...'
+    })
+  </script>
+</body>
+
+</html>

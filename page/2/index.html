@@ -58,6 +58,35 @@
     
     <div class="flex-1 order-2 md:order-1">
       <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://dargonlee.github.io/post/xiu-gai-ios-fan-hui-an-niu-de-ji-chong-fang-shi/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          修改iOS返回按钮的几种方式
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2019-02-13</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <h3 id="第一种">第一种</h3>
+<pre><code class="language-objectivec">UIImage *backButtonImage = [[UIImage imageNamed:@&quot;back&quot;] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)];
+
+[[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButtonImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+
+[[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(NSIntegerMin, NSIntegerMin) forBarMetrics:UIBarMetricsDefault];
+</code></pre>
+<blockquote>
+<p>提示:上面这种方法会被系统给拉伸,需要在当前控制器里面设置</p>
+</blockquote>
+
+      </div>
+      <a href="https://dargonlee.github.io/post/xiu-gai-ios-fan-hui-an-niu-de-ji-chong-fang-shi/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
         <a href="https://dargonlee.github.io/post/ios-kong-zhi-qi-view-jia-zai-shun-xu-xiang-xi-ban/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
           iOS控制器View加载顺序详细版
         </a>
