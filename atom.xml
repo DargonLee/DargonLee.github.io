@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-03-05T03:52:04.941Z</updated>
+    <updated>2020-03-05T05:33:05.782Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
@@ -17,7 +17,7 @@
         </link>
         <updated>2020-03-04T03:57:18.000Z</updated>
         <summary type="html"><![CDATA[<h3 id="document的操作">document的操作</h3>
-<pre><code>// 创建一个div元素标签
+<pre><code class="language-css">// 创建一个div元素标签
 let div = document.createElement(&quot;div&quot;);
 //创建文本节点
 let textNode = document.createTextNode(titles[index]);
@@ -26,7 +26,7 @@ let textNode = document.createTextNode(titles[index]);
 </code></pre>
 ]]></summary>
         <content type="html"><![CDATA[<h3 id="document的操作">document的操作</h3>
-<pre><code>// 创建一个div元素标签
+<pre><code class="language-css">// 创建一个div元素标签
 let div = document.createElement(&quot;div&quot;);
 //创建文本节点
 let textNode = document.createTextNode(titles[index]);
@@ -35,7 +35,7 @@ let textNode = document.createTextNode(titles[index]);
 </code></pre>
 <!-- more -->
 <h3 id="css选择器">CSS选择器</h3>
-<pre><code>/* 通用选择器，作用适用于所有的标签 */
+<pre><code class="language-css">/* 通用选择器，作用适用于所有的标签 */
 * {
     margin: 0;
     padding: 0;
@@ -120,7 +120,7 @@ p {
 </code></pre>
 <h3 id="border-的使用">border 的使用</h3>
 <p>border 是一个简写属性，它由一个或多个属性组成：border-width, border-style, border-color。往往会使用简写的方式，比如：</p>
-<pre><code>. title {
+<pre><code class="language-css">. title {
    border: 1px solid red;
 }
 </code></pre>
@@ -128,7 +128,7 @@ p {
 <p>border-style: 表示边框的样式，可以分别设置上下左右边框为不同的样式，比如 border-bottom-style，可以取下面几种值：node、hidden、dotted、dashed、solid 等；</p>
 <p>border-color：表示边框的颜色，可以分别设置上下左右边框为不同的颜色。<br>
 给标题添加下划线</p>
-<pre><code>.section-title {
+<pre><code class="language-css">.section-title {
     font-size: 20px;
     padding-bottom: 5px;
     margin-left: 10px;
@@ -139,14 +139,14 @@ p {
 }
 </code></pre>
 <p>利用border可以做三角箭头</p>
-<pre><code>.triangle {
+<pre><code class="language-css">.triangle {
     width: 0;
     border: 20px solid;
     border-color: #f30 transparent transparent;
 }
 </code></pre>
 <p>扩大点击区域</p>
-<pre><code>.icon {
+<pre><code class="language-css">.icon {
     background-color: antiquewhite;
     width: 15px;
     height: 15px;
@@ -155,22 +155,22 @@ p {
 </code></pre>
 <h3 id="media-屏幕适配">@media 屏幕适配</h3>
 <p>整段代码的意思是匹配带有屏幕的设备，且最小尺寸是 700 像素。：</p>
-<pre><code>@media screen and (min-width: 700px) {
+<pre><code class="language-css">@media screen and (min-width: 700px) {
    // css
 }
 </code></pre>
 <p>再来看个例子，这段代码的意思是匹配带有屏幕的设备，且最小尺寸是 700 像素，最大尺寸是 900像素。</p>
-<pre><code>@media screen and (min-width: 700px) and (max-width: 900px) {
+<pre><code class="language-css">@media screen and (min-width: 700px) and (max-width: 900px) {
    // css
 }
 </code></pre>
 <p>@media 语法规则是：</p>
-<pre><code>@media mediaType and|not|only (media feture) {
+<pre><code class="language-css">@media mediaType and|not|only (media feture) {
   // css
 }
 </code></pre>
 <p>例子：</p>
-<pre><code>//正常显示样式
+<pre><code class="language-css">//正常显示样式
 .top div {
     height: 200px;
     margin-bottom: 5px;
@@ -193,7 +193,7 @@ p {
 </code></pre>
 <h3 id="display-inline">display-inline</h3>
 <p>使用 inline 告诉浏览器这是一个行内元素，布局的时候要按照行内元素的方式布局，比如 span 标签默认的就是这种布局方式。在有足够空间的时候，它不会换行。<strong>不能使用 width 和 height 属性。从图中可知 width 和 height 并没有起作用，margin 只会在水平方向起作用</strong>。</p>
-<pre><code>.strong {
+<pre><code class="language-css">.strong {
     color: red;
     border: 1px solid yellow;
     padding: 10px;
@@ -210,7 +210,7 @@ p {
 </code></pre>
 <h3 id="displayinline-block">display：inline-block</h3>
 <p>这种布局方式结合了 inline 和 block 这两种元素的特性，它与块级元素不同的是：元素不会单独占用一行；相同的是：<strong>可以使用 width 和 height，可以通过 padding、margin 和 border 来控制元素的显示位置。说白了就是除了不会单独占一行，其余的与块级元素一致</strong>。</p>
-<pre><code>.strong {
+<pre><code class="language-css">.strong {
     display: inline-block;
     color: red;
     border: 1px solid yellow;
@@ -222,9 +222,9 @@ p {
 }
 </code></pre>
 <h3 id="背景图">背景图</h3>
-<pre><code>&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
+<pre><code class="language-css">&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
 </code></pre>
-<pre><code>.box {
+<pre><code class="language-css">.box {
     width: 200px;
     height: 200px;
     background-color: antiquewhite;
@@ -252,10 +252,10 @@ background-size: contain，缩放背景图以完全显示背景图，保持原�
 <p>background-size: 12px 14px，背景图的宽度为 12px，高度14px；</p>
 <h3 id="在文字前-后插入一个图标">在文字前、后插入一个图标</h3>
 <p>对于「图+文字」这种效果可以利用 ::before 这个伪元素选择器。下面的 CSS 样式中的 content 属性必须有，否则将不会展示。（但是content的值可以为空）</p>
-<pre><code>&lt;p class=&quot;left&quot;&gt;文字前加图片&lt;/p&gt;
+<pre><code class="language-css">&lt;p class=&quot;left&quot;&gt;文字前加图片&lt;/p&gt;
 </code></pre>
 <p>content为空，添加背景图片方式</p>
-<pre><code>.left {
+<pre><code class="language-css">.left {
     color: black;
     font-size: 15px; // 这里的大小会决定图标的大小
 }
@@ -274,7 +274,7 @@ background-size: contain，缩放背景图以完全显示背景图，保持原�
 }
 </code></pre>
 <p>content不为空直接使用图标</p>
-<pre><code>
+<pre><code class="language-css">
 .left {
     color: black;
     font-size: 15px;
@@ -287,9 +287,9 @@ background-size: contain，缩放背景图以完全显示背景图，保持原�
 }
 </code></pre>
 <p>除了上面的两个伪元素外，还有其它的伪元素，比如：</p>
-<pre><code>::first-letter 表示对首字母进行操作
+<pre><code class="language-css">::first-letter 表示对首字母进行操作
 </code></pre>
-<pre><code>::first-line 对首行内容进行操作
+<pre><code class="language-css">::first-line 对首行内容进行操作
 </code></pre>
 ]]></content>
     </entry>
