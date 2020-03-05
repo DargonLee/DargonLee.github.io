@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-03-05T05:33:05.782Z</updated>
+    <updated>2020-03-05T07:03:08.366Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
@@ -10,6 +10,46 @@
     <logo>https://dargonlee.github.io/images/avatar.png</logo>
     <icon>https://dargonlee.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 七里田间的守望者</rights>
+    <entry>
+        <title type="html"><![CDATA[CSS的Tips 第二章]]></title>
+        <id>https://dargonlee.github.io/post/css-de-tips-di-er-zhang/</id>
+        <link href="https://dargonlee.github.io/post/css-de-tips-di-er-zhang/">
+        </link>
+        <updated>2020-03-05T06:37:36.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="显示一行内容">显示一行内容</h3>
+<p>单行文字</p>
+<pre><code class="language-css">.singal-line {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+</code></pre>
+<p>text-overflow 属性<br>
+<code>ellipsis</code>（省略号）: 以 ... 省略号显示；<br>
+<code>clip</code> : 截断显示；</p>
+<h3 id="只显示两行内容">只显示两行内容</h3>
+<p>显示两行且超出部分以省略号显示，这个需要使用 webkit 的 CSS 扩展属性 -webkit-line-clamp ，它用来控制内容的行数，如果想让这个属性起作用，需要满足：</p>
+<ol>
+<li>
+<p>display 为 -webkit-box 或者 -webkit-inline-box；</p>
+</li>
+<li>
+<p>-webkit-box-orient 的属性值为 vertical；</p>
+</li>
+</ol>
+<pre><code class="language-css">.two-line {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+</code></pre>
+<blockquote>
+<p>如果想显示 3 行内容，把 -webkit-line-clamp 改为 -webkit-line-clamp：3；</p>
+</blockquote>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[CSS的Tips 第一章]]></title>
         <id>https://dargonlee.github.io/post/css-de-tips/</id>
@@ -240,13 +280,23 @@ p {
 <p>background-postion：top | left | bottom | right，在某个边缘的位置，另一个维度为 50%。比如 top，背景图的起始位置为顶部，在X轴方向为 50%，居中显示；</p>
 <p>background-postion：center，居中背景图；</p>
 <p>background-postion：25% 75%，设置基于背景区域的开始位置，可以为负值；<strong>第一个值是水平位置，第二个值是垂直。</strong></p>
-<p>2.background-postion-x：背景在 x 轴上的位置；</p>
-<p>3.background-postion-y：背景在 y 轴上的位置；</p>
-<p>4.background-repeat: 背景的重复方式， no-repat 不重复，repeat 重复，repat-x X轴上重复，还有其它关键字，读者可以自行查看</p>
+<ol start="2">
+<li>
+<p>background-postion-x：背景在 x 轴上的位置；</p>
+</li>
+<li>
+<p>background-postion-y：背景在 y 轴上的位置；</p>
+</li>
+<li>
+<p>background-repeat: 背景的重复方式， no-repat 不重复，repeat 重复，repat-x X轴上重复，还有其它关键字，读者可以自行查看</p>
+</li>
+</ol>
 <p>https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-repeat。</p>
-<p>5.background-size: 背景图的大小；<br>
+<ol start="5">
+<li>background-size: 背景图的大小；<br>
 background-size: cover，缩放背景图以完全覆盖背景区，保持原图的宽高比，可能背景图部分会看不到，填满背景图；<br>
-background-size: contain，缩放背景图以完全显示背景图，保持原图的宽高比，可能背景部分区域空白，尽可能把图显示完整；</p>
+background-size: contain，缩放背景图以完全显示背景图，保持原图的宽高比，可能背景部分区域空白，尽可能把图显示完整；</li>
+</ol>
 <p>background-size: 50%，背景图的大小为背景区的百分比；</p>
 <p>background-size: 12px，背景图的宽度为 12px，高度按照比例自动缩放；</p>
 <p>background-size: 12px 14px，背景图的宽度为 12px，高度14px；</p>
@@ -2210,112 +2260,6 @@ git commit --amend
 .clearfix { //清除浮动
   overflow: auto;
 }
-</code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[iOS-给UILabel增加复制粘贴功能]]></title>
-        <id>https://dargonlee.github.io/post/ios-gei-uilabel-zeng-jia-fu-zhi-nian-tie-gong-neng/</id>
-        <link href="https://dargonlee.github.io/post/ios-gei-uilabel-zeng-jia-fu-zhi-nian-tie-gong-neng/">
-        </link>
-        <updated>2019-06-11T05:37:07.000Z</updated>
-        <summary type="html"><![CDATA[<h2 id="第一步">第一步</h2>
-<pre><code class="language-objectivec">//让label有资格成为第一响应者
-- (BOOL)becomeFirstResponder
-{
-    return YES;
-}
-
-//label能执行哪些操作(比如 拷贝 等)
-- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
-{
-    if (action == @selector(copy:) || action == @selector(paste:) || action == @selector(cut:)) return YES;
-    return NO;
-}
-</code></pre>
-]]></summary>
-        <content type="html"><![CDATA[<h2 id="第一步">第一步</h2>
-<pre><code class="language-objectivec">//让label有资格成为第一响应者
-- (BOOL)becomeFirstResponder
-{
-    return YES;
-}
-
-//label能执行哪些操作(比如 拷贝 等)
-- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
-{
-    if (action == @selector(copy:) || action == @selector(paste:) || action == @selector(cut:)) return YES;
-    return NO;
-}
-</code></pre>
-<!--more-->
-<h2 id="第二步">第二步</h2>
-<pre><code class="language-objectivec">
-- (void)copy:(UIMenuController *)menu
-{
-    //将自己的文字赋值到粘贴板
-    [self copy:menu];
-    //清空文字
-    self.text = nil;
-}
-
-- (void)paste:(UIMenuController *)menu
-{
-    //将自己的文字赋值到粘贴板
-    UIPasteboard * board = [UIPasteboard generalPasteboard];
-    board.string = self.text;
-}
-
-- (void)cut:(UIMenuController *)menu
-{
-    UIPasteboard * board = [UIPasteboard generalPasteboard];
-    self.text = board.string;
-}
-</code></pre>
-<h2 id="第三步">第三步</h2>
-<pre><code class="language-objectivec">- (void)awakeFromNib
-{
-    [self setup];
-    [super awakeFromNib];
-}
-
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    if (self == [super initWithFrame:frame]) {
-        [self setup];
-    }
-    return self;
-}
-
-- (void)setup
-{
-    self.userInteractionEnabled = YES;
-
-    [self addGestureRecognizer:[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(labelClick)]];
-}
-</code></pre>
-<p>显示menu</p>
-<pre><code class="language-objectivec">- (void)labelClick
-{
-    //1.让label成为第一响应者(这里的self是UILabel)
-    [self becomeFirstResponder];
-
-    //2.显示menuController
-    UIMenuController * menu = [UIMenuController sharedMenuController];
-//    [menu setTargetRect:self.frame inView:self.superview];
-    [menu setTargetRect:self.bounds inView:self];
-    [menu setMenuVisible:YES animated:YES];
-
-    NSLog(@&quot;%s&quot;,__func__);
-}
-</code></pre>
-<h1 id="over">OVER</h1>
-<p>如果你想自定义的话可以写下面方法(相应的实现方法需要再控制器里面实现不然用不了)</p>
-<pre><code class="language-objectivec">UIMenuController * menu = [UIMenuController sharedMenuController];
-UIMenuItem * reply = [[UIMenuItem alloc]initWithTitle:@&quot;回复&quot; action:@selector(replay:)];
-UIMenuItem * ding = [[UIMenuItem alloc]initWithTitle:@&quot;顶&quot; action:@selector(ding:)];
-UIMenuItem * report = [[UIMenuItem alloc]initWithTitle:@&quot;举报&quot; action:@selector(report:)];
-menu.menuItems = @[reply,ding,report];
 </code></pre>
 ]]></content>
     </entry>
