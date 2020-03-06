@@ -73,7 +73,7 @@ text-overflow ...">
         </h1>
         
         <div class="mb-8 flex flex-wrap">
-          <div class="text-gray-400 text-sm mr-4">2020-03-05 · 1 min read</div>
+          <div class="text-gray-400 text-sm mr-4">2020-03-05 · 5 min read</div>
           
         </div>
         <div class="markdown mb-8" v-pre>
@@ -109,6 +109,92 @@ text-overflow ...">
 <blockquote>
 <p>如果想显示 3 行内容，把 -webkit-line-clamp 改为 -webkit-line-clamp：3；</p>
 </blockquote>
+<h3 id="animation">animation</h3>
+<p>在@keyframes规则中指定CSS样式时，动画将在特定时间逐渐从当前样式更改为新样式。要使动画生效，必须将动画绑定到元素。以下示例将“example”动画绑定到<div>元素。动画将持续4秒，并且会逐渐将<div>元素的背景颜色从“红色”更改为“×××”：</p>
+<pre><code class="language-css">/* 动画代码 */
+@keyframes example {
+  from {background-color: red;}
+  to {background-color: yellow;}
+}
+/* 要将动画应用到的元素 */
+div {
+  width: 100px;
+  height: 100px;
+  background-color: red;
+  animation-name: example;
+  animation-duration: 4s;
+}
+</code></pre>
+<blockquote>
+<p>注意：该animation-duration属性定义动画完成所需的时间。如果animation-duration未指定该属性，则不会发生动画，因为默认值为0（0秒）。 在上面的示例中，我们通过使用关键字“from”和“to”&gt;&gt;（表示0％（开始）和100％（完成））指定样式何时更改。也可以使用百分比。通过使用百分比，您可以根据需要添加任意数量的样式更改。当动画完成25％，完成50％时，以及动画100％完成时，以下示例将更改<div>元素的背景颜色：</p>
+</blockquote>
+<pre><code class="language-css">/* 动画代码 */
+@keyframes example {
+  0%   {background-color: red;}
+  25%  {background-color: yellow;}
+  50%  {background-color: blue;}
+  100% {background-color: green;}
+}
+/* 将动画应用到元素 */
+div {
+  width: 100px;
+  height: 100px;
+  background-color: red;
+  animation-name: example;
+  animation-duration: 4s;
+}
+</code></pre>
+<p>以下示例将在动画完成25％，完成50％时再次更改背景颜色和<div>元素的位置，并在动画完成100％时再次更改：</p>
+<pre><code class="language-css">/* 动画代码 */
+@keyframes example {
+  0%   {background-color:red; left:0px; top:0px;}
+  25%  {background-color:yellow; left:200px; top:0px;}
+  50%  {background-color:blue; left:200px; top:200px;}
+  75%  {background-color:green; left:0px; top:200px;}
+  100% {background-color:red; left:0px; top:0px;}
+}
+/* 将动画应用到元素 */
+div {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  background-color: red;
+  animation-name: example;
+  animation-duration: 4s;
+}
+</code></pre>
+<p>animation-name: 动画的名字，这个是通过 @keyframes 定义的名字，比如 @keyframes 定义如下，那么 animation-name 就为 move。@keyframes 指定某一帧的动画如何变化，可通过 % 来控制各个阶段的属性值，比如 0% 的时候，元素的 left 和 top 都为 0。</p>
+<pre><code class="language-css">@keyframes move {
+    0% {
+        left: 0;
+        top: 0;
+    }
+    100% {
+        left: 0;
+        top: 0;
+    }
+}
+</code></pre>
+<p>animation-duration：动画的持续时间；</p>
+<p>animation-delay：动画开始时的延迟时间；</p>
+<p>animation-iteration-count：动画循环次数；</p>
+<p>animation-direction：动画的方向，比如 alternate 表示先正向后逆序，nomal 正向，reverse 逆序；</p>
+<p>animation-timing-function：动画的时间曲线，它的值有 ease、ease-in、ease-out、ease-in-out、linear；</p>
+<p>animation-fill-mode：动画执行后的填充模式，它的值有 forwards、backwards、none、both；</p>
+<h3 id="transition">transition</h3>
+<p>transition 是过渡动画，修改某些属性的时候不会立刻生效，它会以动画的形式逐渐过渡到要设置的值。比如设置某个 HTML 元素的背景颜色，修改宽度和高度。</p>
+<pre><code class="language-css">.move-transition {
+    /* transition-property: all; */
+    transition-property: background-color, height, width;
+    transition-duration: 1.8s, 1.0s, 1.0s;
+    transition-delay: 0.1s;
+    transition-timing-function: linear;
+}
+</code></pre>
+<p>transition-property: 指需要使用过渡动画的属性，这里设置了背景色，高度和宽度。也可以通过关键字 all 设置所有的属性；<br>
+transition-duration: 动画持续的时间，可以单独控制某个属性的时间， transition-duration：1.8s, 1.0s, 1.0s 表示修改 background-color 需要 1.8s, 修改 height 需要 1.0s,  修改 width 需要 1.0s;<br>
+transition-delay：动画开始时需要延迟多长时间才开始执行；<br>
+transition-timing-function：表示动画执行时的时间函数，不同函数走过的曲线不一样；</p>
 
         </div>
         <!-- Share to Twitter, Weibo, Telegram -->
@@ -156,6 +242,8 @@ text-overflow ...">
 <ul>
 <li><a href="#%E6%98%BE%E7%A4%BA%E4%B8%80%E8%A1%8C%E5%86%85%E5%AE%B9">显示一行内容</a></li>
 <li><a href="#%E5%8F%AA%E6%98%BE%E7%A4%BA%E4%B8%A4%E8%A1%8C%E5%86%85%E5%AE%B9">只显示两行内容</a></li>
+<li><a href="#animation">animation</a></li>
+<li><a href="#transition">transition</a></li>
 </ul>
 </li>
 </ul>

@@ -61,7 +61,7 @@ let textNode = document.createTex...">
         </h1>
         
         <div class="mb-8 flex flex-wrap">
-          <div class="text-gray-400 text-sm mr-4">2020-03-04 · 8 min read</div>
+          <div class="text-gray-400 text-sm mr-4">2020-03-04 · 9 min read</div>
           
             <a href="https://dargonlee.github.io/tag/geS3QFZ6F/" class="text-gray-700 text-sm border-b-2 border-dotted border-gray-200 hover:border-gray-600 transition-all duration-100 inline-flex mr-2">
               <i class="ri-hashtag"></i>
@@ -346,6 +346,52 @@ p {
 </code></pre>
 <pre><code class="language-css">::first-line 对首行内容进行操作
 </code></pre>
+<h3 id="position属性">position属性</h3>
+<blockquote>
+<p>CSS position属性用于指定一个元素在文档中的定位方式。top、right、bottom、left 属性则决定了该元素的最终位置。</p>
+</blockquote>
+<ul>
+<li>
+<p>position: static<br>
+该关键字指定元素使用正常的布局行为，即元素在文档常规流中当前的布局位置。此时 top、right、bottom、left 属性无效。</p>
+</li>
+<li>
+<p>position: relative【相对定位】<br>
+相对定位是相对于元素自身的正常位置的偏移，并不会脱离正常流，会在原位置上留下空白。</p>
+</li>
+</ul>
+<pre><code class="language-css">.pos_top{
+    position: relative;
+    top:20px;
+}
+.pos_left{
+    position: relative;
+    left:50px;
+}
+</code></pre>
+<ul>
+<li>position: absolute【绝对定位】<br>
+生成绝对定位的元素，相对于 static 定位以外的第一个父元素进行定位。<br>
+绝对定位的元素相对于于最近的非static祖先元素定位，如果这样的祖先不存在，那么它的位置是相对于<html>的；绝对定位的元素脱离了正常流。</li>
+</ul>
+<pre><code class="language-css">.first{
+    width:400px;
+    height:400px;
+    background-color: green;
+    position: relative;
+}
+.second{
+    width:100px;
+    height:100px;
+    background-color: red;
+    position: absolute;
+    top:50%;
+    left
+</code></pre>
+<ul>
+<li>position:fixed【固定定位】<br>
+固定定位是指元素的位置相对于浏览器窗口是固定的，即使窗口是滚动的它也不会滚动，固定定位脱离了正常流，所以它有可能和其他元素发生重叠。</li>
+</ul>
 
         </div>
         <!-- Share to Twitter, Weibo, Telegram -->
@@ -399,6 +445,7 @@ p {
 <li><a href="#displayinline-block">display：inline-block</a></li>
 <li><a href="#%E8%83%8C%E6%99%AF%E5%9B%BE">背景图</a></li>
 <li><a href="#%E5%9C%A8%E6%96%87%E5%AD%97%E5%89%8D-%E5%90%8E%E6%8F%92%E5%85%A5%E4%B8%80%E4%B8%AA%E5%9B%BE%E6%A0%87">在文字前、后插入一个图标</a></li>
+<li><a href="#position%E5%B1%9E%E6%80%A7">position属性</a></li>
 </ul>
 </li>
 </ul>
