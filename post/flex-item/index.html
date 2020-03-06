@@ -81,19 +81,18 @@ flex-item 最重要的 3 个属性是 flex-grow（扩展比例）、flex-shrink�
 <p>flex-shrink 的默认值是 1，也就是说当空间不足的时候，item 会以同样的尺寸进行缩放。但是这个属性和 flex-grow 在极端的情况下表现并不相同，因为在缩小的过程中，不会把 item 的尺寸缩小到 0，它会受 min-content 的影响，也会受 min-width 的影响，缩到一定尺寸后它就不再进行缩放了。</p>
 </blockquote>
 <ol>
-<li>
-<p>flex-basis（伸缩基准）：它表示 item 未扩展或收缩之前的宽度，可以理解为 item 未放入容器时该有的尺寸，默认值是 auto。它会影响剩余空间和不足空间的计算，它对 flex-grow 和 flex-shrink 有很大的影响。总的来说 flex-basis 最终的值会以 flex-basis -&gt; content size -&gt; width 的属性依次确定它的值。</p>
-</li>
-<li>
-<p>flex：它是 flex-grow、flex-shrink 和 flex-basis 的缩写。<br>
+<li>flex-basis（伸缩基准）：它表示 item 未扩展或收缩之前的宽度，可以理解为 item 未放入容器时该有的尺寸，默认值是 auto。它会影响剩余空间和不足空间的计算，它对 flex-grow 和 flex-shrink 有很大的影响。总的来说 flex-basis 最终的值会以 flex-basis -&gt; content size -&gt; width 的属性依次确定它的值。</li>
+</ol>
+<blockquote>
+<p>也就<code>flex-basis</code> 有值的话会以此值作为每个item的固定值 这个时候<code>flex-grow</code>和<code>flex-shrink</code> 只会对其他 <code>flex-basis</code>值为0的或者不写<code>flex-basis</code>item起作用，如果<code>flex-basis</code>有值（设置width或者max-width时）<code>flex-grow</code>和<code>flex-shrink</code>对此item不起作用</p>
+</blockquote>
+<ol start="2">
+<li>flex：它是 flex-grow、flex-shrink 和 flex-basis 的缩写。<br>
 flex：initial（默认值），等同于 flex：0 1 auto；<br>
 flex：auto，等同于 flex: 1 1 auto;<br>
 flex：none，等同于 flex: 0 0 auto;<br>
-flex：1，等同于 flex: 1 1 0;</p>
-</li>
-<li>
-<p>order：默认值为 0，设置 item 的值可以改变它在 FlexBox 容器中的位置，它的值可以是负数也可以是整数。上面的代码修改第一个和最后一个 item，添加 order 属性，初始 item 的顺序：</p>
-</li>
+flex：1，等同于 flex: 1 1 0;</li>
+<li>order：默认值为 0，设置 item 的值可以改变它在 FlexBox 容器中的位置，它的值可以是负数也可以是整数。上面的代码修改第一个和最后一个 item，添加 order 属性，初始 item 的顺序：</li>
 </ol>
 
         </div>
