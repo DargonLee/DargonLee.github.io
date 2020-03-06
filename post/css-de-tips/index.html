@@ -371,8 +371,8 @@ p {
 </code></pre>
 <ul>
 <li>position: absolute【绝对定位】<br>
-生成绝对定位的元素，相对于 static 定位以外的第一个父元素进行定位。<br>
-绝对定位的元素相对于于最近的非static祖先元素定位，如果这样的祖先不存在，那么它的位置是相对于<html>的；绝对定位的元素脱离了正常流。</li>
+绝对定位，元素不占据父容器空间，相当于文档body定位<br>
+（如果元素的父级节点中有position不等于static的，则相当于最近的非static父节点定位）</li>
 </ul>
 <pre><code class="language-css">.first{
     width:400px;
