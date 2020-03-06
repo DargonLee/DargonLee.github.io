@@ -58,6 +58,7 @@ flex-item 最重要的 3 个属性是 flex-grow（扩展比例）、flex-shrink�
         <div class="markdown mb-8" v-pre>
           <h3 id="flex-item">flex-item</h3>
 <p>flex-item 最重要的 3 个属性是 <code>flex-grow（扩展比例）</code>、<code>flex-shrink（收缩比例）</code>、<code>flex-basis（伸缩基准）</code>，它们决定了 item 在「主轴」上的尺寸，只有彻底理解了这 3 个属性，才能彻底理解 FlexBox 布局。下面以 flex-direction 为 row（主轴为水平方向） 进行说明 3 个属性是如何计算布局的</p>
+<!-- more -->
 <ol>
 <li>flex-grow（扩展比例）：占剩余空间的比例<br>
 它的作用就是，当所有的 item 未占满容器的宽度时，item 该如何扩充自己以填满容器的剩余空间。理解这个属性前关键要理解剩余空间，在 flex 容器中，如果所有 item 的宽度和小于容器的宽度，那么容器的剩余空间等于容器宽度减去所有item宽度的和。每个 item 的宽度为 150px，容器宽度为 600 px，剩余空间为 600 - 3*150 = 150px， 一图胜千言<br>
