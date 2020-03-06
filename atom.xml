@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-03-06T03:15:35.982Z</updated>
+    <updated>2020-03-06T07:19:17.086Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
@@ -10,6 +10,53 @@
     <logo>https://dargonlee.github.io/images/avatar.png</logo>
     <icon>https://dargonlee.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 七里田间的守望者</rights>
+    <entry>
+        <title type="html"><![CDATA[flex-item]]></title>
+        <id>https://dargonlee.github.io/post/flex-item/</id>
+        <link href="https://dargonlee.github.io/post/flex-item/">
+        </link>
+        <updated>2020-03-06T06:50:59.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="flex-item">flex-item</h3>
+<p>flex-item 最重要的 3 个属性是 <code>flex-grow（扩展比例）</code>、<code>flex-shrink（收缩比例）</code>、<code>flex-basis（伸缩基准）</code>，它们决定了 item 在「主轴」上的尺寸，只有彻底理解了这 3 个属性，才能彻底理解 FlexBox 布局。下面以 flex-direction 为 row（主轴为水平方向） 进行说明 3 个属性是如何计算布局的</p>
+<ol>
+<li>flex-grow（扩展比例）：占剩余空间的比例<br>
+它的作用就是，当所有的 item 未占满容器的宽度时，item 该如何扩充自己以填满容器的剩余空间。理解这个属性前关键要理解剩余空间，在 flex 容器中，如果所有 item 的宽度和小于容器的宽度，那么容器的剩余空间等于容器宽度减去所有item宽度的和。每个 item 的宽度为 150px，容器宽度为 600 px，剩余空间为 600 - 3*150 = 150px， 一图胜千言<br>
+<img src="https://dargonlee.github.io/post-images/1583477508418.webp" alt="" loading="lazy"></li>
+</ol>
+<p>如果给每个 item 设置 flex-grow 为 1，它表示每个 item 占用相同比例的剩余空间，这样每个 item 增加的宽度为 150 * 1/3  = 50px。最终效果变成：<br>
+<img src="https://dargonlee.github.io/post-images/1583477546574.webp" alt="" loading="lazy"></p>
+<p>flex-grow 的默认值为 0，表示即使有剩余空间，item 也不会扩充。它不能为负数，但是可以为小数，如果上面的例子中，给每个 item 设置 flex-grow 为 0.2，这样每个 item 增加的宽度为 150 * 0.2  = 30px，最终还会有 60px 的剩余空间未被占用<br>
+<img src="https://dargonlee.github.io/post-images/1583477641270.webp" alt="" loading="lazy"></p>
+<blockquote>
+<p>总之 flex-grow 的值可以理解成比例，总剩余空间可以看成 1，剩余空间会受 flex-basis 影响，下面会提到这个属性的使用。还有一点需要明确，item 增长会受 max-width 的影响，增长后的最大长度只能是 max-width。</p>
+</blockquote>
+<ol start="2">
+<li>flex-shrink（收缩比例）：占缺少空间的比例（item<em>shrink作为收缩比例）<br>
+当所有的 item 的宽度和大于容器的宽度，就会出现容器空间不足的情况，这时可以通过缩放比例来缩放每个 item 的宽度。假如每个 item 的宽度为 250px，容器宽度为 600 px，缺少空间为 600 - 3</em>250 = -150px， 一图胜千言：<br>
+<img src="https://dargonlee.github.io/post-images/1583477738850.webp" alt="" loading="lazy"></li>
+</ol>
+<p>一旦出现空间不足，可以通过 flex-shrink 控制每个 item 是否要进行缩放，缩放的比例是多少。如果设置 flex-shrink：1，每个 item 将缩放同样的宽度，其值为 150 * 1/3 = 50px，效果如下：<br>
+<img src="https://dargonlee.github.io/post-images/1583477759563.webp" alt="" loading="lazy"></p>
+<blockquote>
+<p>flex-shrink 的默认值是 1，也就是说当空间不足的时候，item 会以同样的尺寸进行缩放。但是这个属性和 flex-grow 在极端的情况下表现并不相同，因为在缩小的过程中，不会把 item 的尺寸缩小到 0，它会受 min-content 的影响，也会受 min-width 的影响，缩到一定尺寸后它就不再进行缩放了。</p>
+</blockquote>
+<ol>
+<li>
+<p>flex-basis（伸缩基准）：它表示 item 未扩展或收缩之前的宽度，可以理解为 item 未放入容器时该有的尺寸，默认值是 auto。它会影响剩余空间和不足空间的计算，它对 flex-grow 和 flex-shrink 有很大的影响。总的来说 flex-basis 最终的值会以 flex-basis -&gt; content size -&gt; width 的属性依次确定它的值。</p>
+</li>
+<li>
+<p>flex：它是 flex-grow、flex-shrink 和 flex-basis 的缩写。<br>
+flex：initial（默认值），等同于 flex：0 1 auto；<br>
+flex：auto，等同于 flex: 1 1 auto;<br>
+flex：none，等同于 flex: 0 0 auto;<br>
+flex：1，等同于 flex: 1 1 0;</p>
+</li>
+<li>
+<p>order：默认值为 0，设置 item 的值可以改变它在 FlexBox 容器中的位置，它的值可以是负数也可以是整数。上面的代码修改第一个和最后一个 item，添加 order 属性，初始 item 的顺序：</p>
+</li>
+</ol>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[CSS的Tips 第二章]]></title>
         <id>https://dargonlee.github.io/post/css-de-tips-di-er-zhang/</id>
@@ -2271,140 +2318,6 @@ $ git stash pop
 <pre><code class="language-bash">顺便说一下，如果commit注释写错了，只是想改一下注释，只需要：
 git commit --amend
 此时会进入默认vim编辑器，修改注释完毕后保存就好了
-</code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[CSS布局]]></title>
-        <id>https://dargonlee.github.io/post/css-bu-ju/</id>
-        <link href="https://dargonlee.github.io/post/css-bu-ju/">
-        </link>
-        <updated>2019-07-09T05:36:06.000Z</updated>
-        <summary type="html"><![CDATA[<h1 id="position">position</h1>
-<blockquote>
-<p>为了制作更多复杂的布局，我们需要讨论下<code>position</code>属性。它有一大堆的值，名字还都特抽象，别提有多难记了。让我们先一个个的过一遍，不过你最好还是把这页放到书签里。</p>
-</blockquote>
-<ul>
-<li><code>static</code>元素框正常生成。块级元素生成一个矩形框，作为文档流的一部分；行内元素则会创建一个或多个行框，置于其父元素中。</li>
-</ul>
-<pre><code class="language-css">.static {
-    position: static;
-}
-</code></pre>
-]]></summary>
-        <content type="html"><![CDATA[<h1 id="position">position</h1>
-<blockquote>
-<p>为了制作更多复杂的布局，我们需要讨论下<code>position</code>属性。它有一大堆的值，名字还都特抽象，别提有多难记了。让我们先一个个的过一遍，不过你最好还是把这页放到书签里。</p>
-</blockquote>
-<ul>
-<li><code>static</code>元素框正常生成。块级元素生成一个矩形框，作为文档流的一部分；行内元素则会创建一个或多个行框，置于其父元素中。</li>
-</ul>
-<pre><code class="language-css">.static {
-    position: static;
-}
-</code></pre>
-<!--more-->
-<p><code>static</code>是默认值。任意<code>position: static;</code>的元素不会被特殊的定位。一个 static 元素表示它<em>不会被“positioned”</em>，一个 position 属性被设置为其他值的元素表示它<em>会被“positioned”</em>。</p>
-<ul>
-<li><code>relative</code>元素框相对于之前正常文档流中的位置发生偏移，并且原先的位置仍然被占据。发生偏移的时候，可能会覆盖其他元素。</li>
-</ul>
-<pre><code class="language-css">.relative1 {
-  position: relative;
-}
-
-.relative2 {
-  position: relative;
-  top: -20px;
-  left: 20px;
-  background-color: white;
-  width: 500px;
-}
-</code></pre>
-<blockquote>
-<p>relative1 的表现和static一样，除非你添加了一些额外的属性</p>
-<p>在一个相对定位（position属性的值为relative）的元素上设置<code>top</code>、<code>right</code>、<code>bottom</code>和<code>left</code>属性会使其偏离其正常位置。其他的元素的位置则不会受该元素的影响发生位置改变来弥补它偏离后剩下的空隙</p>
-</blockquote>
-<p><code>absolute</code>元素框不再占有文档流位置，并且相对于包含块进行偏移(所谓的包含块就是最近一级外层元素position不为static的元素)</p>
-<p><code>absolute</code>与<code>fixed</code>的表现类似，但是它不是相对于视窗而是相对于<em>最近的“positioned”祖先元素</em>。如果绝对定位（position属性的值为absolute）的元素没有“positioned”祖先元素，那么它是相对于文档的 body 元素，并且它会随着页面滚动而移动。记住一个“positioned”元素是指 position 值不是<code>static</code>的元素。</p>
-<pre><code class="language-css">.relative { // 父元素
-  position: relative; 
-  width: 600px;
-  height: 400px;
-}
-.absolute { // 子元素
-  position: absolute;
-  top: 120px;
-  right: 0;
-  width: 300px;
-  height: 200px;
-}
-</code></pre>
-<blockquote>
-<p>子元素是相对定位的。如果它的父元素是<code>position: static;</code>，子元素会跳过父元素直接相对于body元素定位。</p>
-<p>换句话说就是 子元素要想使用  `absolute 进行绝对定位 那么它相对的那个元素postition必须relative，如果父元素没有relative的话 子元素会相对本身最近的一个有relative属性的元素进行定位</p>
-</blockquote>
-<p><code>fixed</code>元素框不再占有文档流位置，并且相对于视窗进行定位</p>
-<pre><code class="language-css">&lt;div class=&quot;footer&quot;&gt;&lt;/div&gt;
-.footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  height: 70px;
-  background-color: white;
-  width: 100%;
-}
-</code></pre>
-<p><code>sticky</code>(这是css3新增的属性值)粘性定位，官方的介绍比较简单，或许你不能理解。其实，它就相当于relative和fixed混合。最初会被当作是relative，相对于原来的位置进行偏移；一旦超过一定阈值之后，会被当成fixed定位，相对于视口进行定位</p>
-<blockquote>
-<p>相对于body定位并且是悬浮的</p>
-</blockquote>
-<ul>
-<li><code>floate</code></li>
-</ul>
-<blockquote>
-<p>另一个布局中常用的CSS属性是<code>float</code>。Float 可用于实现文字环绕图片</p>
-</blockquote>
-<pre><code class="language-css">img {
-  float: right;
-  margin: 0 0 1em 1em;
-}
-</code></pre>
-<ul>
-<li><code>clear</code></li>
-</ul>
-<blockquote>
-<p><code>clear</code>属性被用于控制浮动。比较下面两个例子：</p>
-</blockquote>
-<pre><code class="language-html">&lt;div class=&quot;box&quot;&gt;...&lt;/div&gt;
-&lt;section&gt;...&lt;/section&gt;
-</code></pre>
-<pre><code class="language-css">.box {
-  float: left;
-  width: 200px;
-  height: 100px;
-  margin: 1em;
-}
-在这个例子中， section 元素实际上是在 div 之后的（译注：DOM结构上）。然而 div 元素是浮动到左边的，于是 section 中的文字就围绕了 div ，并且 section 元素包围了整个元素。如果我们想让 section 显示在浮动元素之后呢？
-</code></pre>
-<pre><code class="language-css">.box {
-  float: left;
-  width: 200px;
-  height: 100px;
-  margin: 1em;
-}
-.after-box {
-  clear: left;
-}
-使用 clear 我们就可以将这个段落移动到浮动元素 div 下面。你需要用 left 值才能清除元素的向左浮动。你还可以用 right 或 both 来清除向右浮动或同时清除向左向右浮动。
-</code></pre>
-<p>清除浮动</p>
-<pre><code class="language-css">img {
-  float: right;
-}
-
-.clearfix { //清除浮动
-  overflow: auto;
-}
 </code></pre>
 ]]></content>
     </entry>
