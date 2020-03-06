@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-03-06T03:09:45.614Z</updated>
+    <updated>2020-03-06T03:15:35.982Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
@@ -16,6 +16,18 @@
         <link href="https://dargonlee.github.io/post/css-de-tips-di-er-zhang/">
         </link>
         <updated>2020-03-05T06:37:36.000Z</updated>
+        <summary type="html"><![CDATA[<h3 id="显示一行内容">显示一行内容</h3>
+<p>单行文字</p>
+<pre><code class="language-css">.singal-line {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+</code></pre>
+<p>text-overflow 属性<br>
+<code>ellipsis</code>（省略号）: 以 ... 省略号显示；<br>
+<code>clip</code> : 截断显示；</p>
+]]></summary>
         <content type="html"><![CDATA[<h3 id="显示一行内容">显示一行内容</h3>
 <p>单行文字</p>
 <pre><code class="language-css">.singal-line {
@@ -27,6 +39,7 @@
 <p>text-overflow 属性<br>
 <code>ellipsis</code>（省略号）: 以 ... 省略号显示；<br>
 <code>clip</code> : 截断显示；</p>
+<!-- more -->
 <h3 id="只显示两行内容">只显示两行内容</h3>
 <p>显示两行且超出部分以省略号显示，这个需要使用 webkit 的 CSS 扩展属性 -webkit-line-clamp ，它用来控制内容的行数，如果想让这个属性起作用，需要满足：</p>
 <ol>
