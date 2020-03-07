@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-03-06T07:58:22.143Z</updated>
+    <updated>2020-03-07T10:29:25.085Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
@@ -11,7 +11,251 @@
     <icon>https://dargonlee.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 七里田间的守望者</rights>
     <entry>
-        <title type="html"><![CDATA[flex-item]]></title>
+        <title type="html"><![CDATA[Grid布局入门]]></title>
+        <id>https://dargonlee.github.io/post/grid-bu-ju/</id>
+        <link href="https://dargonlee.github.io/post/grid-bu-ju/">
+        </link>
+        <updated>2020-03-07T07:29:28.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="前言">前言</h3>
+<p>给<code>&lt;div&gt;</code>这类块状元素元素设置<code>display:grid</code>或者给<code>&lt;span&gt;</code>这类内联元素设置<code>display:inline-grid</code>，Grid布局即创建！例如：</p>
+<pre><code class="language-css">div {
+    display: grid;
+}
+</code></pre>
+<h3 id="作用在grid容器上的css属性">作用在grid容器上的CSS属性</h3>
+<ol>
+<li>grid-template-columns和grid-template-rows<br>
+这两个CSS属性用来对田地进行基本的划分，columns是列的意思，表示竖直方向的划分；rows是行的意思，表示水平方向的划分。</li>
+</ol>
+<pre><code class="language-html">&lt;div class=&quot;main&quot;&gt;
+        &lt;div&gt;1&lt;/div&gt;
+        &lt;div&gt;2&lt;/div&gt;
+        &lt;div&gt;3&lt;/div&gt;
+        &lt;div&gt;4&lt;/div&gt;
+        &lt;div&gt;5&lt;/div&gt;
+        &lt;div&gt;6&lt;/div&gt;
+    &lt;/div&gt;
+</code></pre>
+<p>比如我们想把上面的布局分为3行3列</p>
+<pre><code class="language-css">.main {
+    grid-template-columns: 80px auto 100px;
+    grid-template-rows: 25% 100px auto;
+}
+</code></pre>
+<p><code>grid-template-columns</code>后面3个值，表示分为了3列，从左往右每列的尺寸分别是80px，auto（自动）和100px；<br>
+<code>grid-template-rows</code>属性值含4个值，表示分为了4行，从上往下每行的高度分别是25%，100px，auto（自动）<br>
+&lt;1&gt; 这里分为多少行和多少列既可以用固定值也可以用百分比去写。例如下面这样</p>
+<pre><code class="language-css">.container {
+    grid-template-columns: 40% 60%;
+    display: grid;
+}
+</code></pre>
+<p>&lt;2&gt; 还可以使用弹性单位 fr，可以按比例分配容器的大小。总共分成 3 份，第一列占 1份，第二列占 2份：</p>
+<blockquote>
+<p>fr单位是什么？<br>
+fr是单词fraction的缩写，表示分数。</p>
+</blockquote>
+<pre><code>.container {
+    grid-template-columns: 1fr 2fr;
+    display: grid;
+}
+</code></pre>
+<p>分为三份 第一列占一份 第二列占两份</p>
+<p>&lt;3&gt; 使用 minmax 设置长度范围，接受 2 个参数，分别表示最大值和最小值。下面设置列的最小宽度为 100px，最大宽度为 1fr。</p>
+<pre><code class="language-css">.container {
+    grid-template-columns: minmax(100px, 1fr) 1fr;
+    display: grid;
+}
+</code></pre>
+<p>&lt;4&gt;.使用 repeat 可以表示多个值，grid-template-columns：repeat(2, 1fr) 与grid-template-columns：1fr 1fr 等价。</p>
+<pre><code class="language-css">.container {
+    grid-template-columns: repeat(2, 1fr);
+    display: grid;
+}
+</code></pre>
+<h3 id="grid-gap间隙">grid-gap：间隙</h3>
+<p>grid-column-gap：列与列之间的间隙；grid-row-gap：行与行之间的间隙；grid-gap 为 grid-row-gap 和 grid-column-gap 的缩写。如果只设置一个值，表示行和列之间的间隙一样。<br>
+下面设置列与列的间隙为 10px，行与行的间隙为 5px：</p>
+<pre><code class="language-css">.container {
+    grid-template-columns: 40% auto;
+    grid-template-rows: 60px 20%;
+    display: grid;
+    grid-gap: 5px 10px;
+}
+</code></pre>
+<h3 id="分块">分块</h3>
+<p>就是在grid布局里面的盒子需要占多少行多少列，从第几行到第几行 从第几列到第几列。<br>
+例如下面代码我们分别去分块</p>
+<pre><code class="language-html">&lt;div class=&quot;main&quot;&gt;
+    &lt;div class=&quot;huayuan&quot;&gt;花园&lt;/div&gt;
+    &lt;div class=&quot;caiyuan&quot;&gt;菜园&lt;/div&gt;
+    &lt;div class=&quot;house&quot;&gt;房子&lt;/div&gt;
+    &lt;div class=&quot;rest_area&quot;&gt;休息区&lt;/div&gt;
+    &lt;div class=&quot;guoyuan&quot;&gt;果园&lt;/div&gt;
+    &lt;div class=&quot;tree&quot;&gt;树&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<ol>
+<li>使用 grid 布局把整块地划分成 9 行 8 列的网格，分别使用属性 grid-template-columns 和 grid-template-rows。</li>
+</ol>
+<pre><code class="language-css">.main {
+    background-color: #eeeeee;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(9, 30px);
+}
+</code></pre>
+<ol start="2">
+<li>以网格线的编号来标记 house 的位置，行号开始为 3、结束为 8（用负数表示为 -3），列号开始为 3、结束为 7（用负数表示为 -3）。转换成 grid 布局中的属性 grid-row 和 grid-column，分别表示在网格布局中行与列的位置，这里用网格线的编号表示，开始结束使用 “/” 分开：</li>
+</ol>
+<pre><code class="language-css">.house {
+    background-color: cornflowerblue; 
+    grid-row: 3 / -3;
+    grid-column: 3 / -3;
+}
+</code></pre>
+<ol start="3">
+<li>再分花园<br>
+行号开始为 8、结束为 10（用负数表示为 -1），列号开始为 3、结束为 7（用负数表示为 -3）：</li>
+</ol>
+<pre><code class="language-css">.huayuan {
+    background-color: brown;
+    grid-row: 8 / -1;
+    grid-column: 3 / -3;
+}
+</code></pre>
+<ol start="4">
+<li>休息区<br>
+行号开始为 3、结束为 10（用负数表示为 -1），列号开始为 1、结束为 3：</li>
+</ol>
+<pre><code class="language-css">.rest_area {
+    background-color: darksalmon;
+    grid-row: 3 / -1;
+    grid-column: 1 / 3;
+}
+</code></pre>
+<ol start="5">
+<li>菜园和果园：</li>
+</ol>
+<pre><code class="language-css">.caiyuan {
+    background-color: cadetblue;
+    grid-row: 1 / 3;
+    grid-column: 1 / -3;
+}
+.guoyuan {
+    background-color: hotpink;
+    grid-row: 1 / -1;
+    grid-column: -3 / -1;
+}
+</code></pre>
+<ol start="6">
+<li>设置间隙<br>
+使用 row-gap 设置每列之间的间隙，column-gap 设置每行之间的间隙。</li>
+</ol>
+<pre><code class="language-css">.main {
+    background-color: #eeeeee;
+    display: grid;
+    margin: 10px 60px;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(9, 30px);
+    row-gap: 40px;
+    column-gap: 60px;
+}
+</code></pre>
+<ol start="7">
+<li>树</li>
+</ol>
+<pre><code class="language-css">.tree {
+    background-color: green;
+    grid-row: 10 / 11;
+    grid-column: 1 / -1;
+}
+</code></pre>
+<h3 id="grid-template-areas">grid-template-areas</h3>
+<p>使用 grid-template-areas 来重新设计一个与上面一模一样的图。这个属性可以根据区域名称把某些 item 组合起来，区域名称需要通过 item 属性 grid-area 来定义。使用的时候每个值需要使用空格隔开，而且必须组成一个矩形，对于不能组成矩形的属性将不起作用。它的值可以是：</p>
+<ol>
+<li>通过属性 grid-area 定义名字；</li>
+<li>使用“.”指定一个空的 cell;</li>
+<li>none 不定义区域。<br>
+下面通过这个属性实现与上面一样的效果：</li>
+</ol>
+<pre><code class="language-css">&lt;style&gt;
+.main {
+    background-color: #eeeeee;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(9, 40px);
+    grid-auto-rows: 40px;
+    row-gap: 20px;
+    column-gap: 20px;
+    grid-template-areas: 
+        &quot;caiyuan caiyuan caiyuan caiyuan caiyuan caiyuan guoyuan guoyuan&quot;
+        &quot;caiyuan caiyuan caiyuan caiyuan caiyuan caiyuan guoyuan guoyuan&quot;
+        &quot;rest_area rest_area house house house house guoyuan guoyuan&quot;
+        &quot;rest_area rest_area house house house house guoyuan guoyuan&quot;
+        &quot;rest_area rest_area house house house house guoyuan guoyuan&quot;
+        &quot;rest_area rest_area house house house house guoyuan guoyuan&quot;
+        &quot;rest_area rest_area house house house house guoyuan guoyuan&quot;
+        &quot;rest_area rest_area huayuan huayuan huayuan huayuan guoyuan guoyuan&quot;
+        &quot;rest_area rest_area huayuan huayuan huayuan huayuan guoyuan guoyuan&quot;
+        &quot;. . tree tree tree tree . .&quot;;
+}
+.huayuan {
+    background-color: brown;
+    grid-area: huayuan;
+}
+.caiyuan {
+    background-color: cadetblue;
+    grid-area: caiyuan;
+}
+.house {
+    background-color: cornflowerblue;
+    grid-area: house;
+}
+.rest_area {
+    background-color: darksalmon;
+    grid-area: rest_area;
+}
+.guoyuan {
+    background-color: hotpink;
+    grid-area: guoyuan;
+}
+.tree {
+    background-color: green;
+    grid-area: tree;
+}
+&lt;/style&gt;
+</code></pre>
+<h3 id="grid对齐">grid对齐</h3>
+<ol>
+<li>
+<p>justify-items（容器属性）: 定义 grid-item 在 grid-area（布局区域）水平方向的（左右）对齐方式：</p>
+</li>
+<li>
+<p>justify-content: 它的意思是 justify-content 这个属性用来给内容周围分配空间，在 flex 容器中它按照主轴进行分配，在 grid 容器中按照 inline axis 进行分派。</p>
+</li>
+<li>
+<p>justify-self：表示 item 在布局区域水平方向的对齐方式。<br>
+在「竖直轴」上的对齐方式主要通过align-content, align-items and align-self 来设置，都以 align- 开头。</p>
+</li>
+<li>
+<p>align-items：这个属性适用于 FlexBox 和 grid 布局，在 FlexBox 布局中它表示 items 在纵轴上的对齐方式；在grid布局中，表示item在 grid area 竖直方向上对齐方式。</p>
+</li>
+<li>
+<p>align-content: 如果所有的 items 尺寸和小于 grid 容器的尺寸，可以通过 align-content 设置内容在竖直轴上的对齐方式：</p>
+</li>
+<li>
+<p>align-self: 表示自己在竖直轴上的对齐方式。</p>
+</li>
+</ol>
+<blockquote>
+<p>1.place-content: 是 align-content 和 justify-content 的缩写。为方便记忆，可以联想到“Angelababy”，多念几次，是不有点像 “aj”。<br>
+2.place-items: 它是 align-items 和 justify-items 的缩写方式。</p>
+</blockquote>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Flex-item]]></title>
         <id>https://dargonlee.github.io/post/flex-item/</id>
         <link href="https://dargonlee.github.io/post/flex-item/">
         </link>
@@ -2005,329 +2249,6 @@ Stack(
       ),
 </code></pre>
 <figure data-type="image" tabindex="7"><img src="https://upload-images.jianshu.io/upload_images/646265-105875d9a122bce3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Git的常用命令]]></title>
-        <id>https://dargonlee.github.io/post/git-de-chang-yong-ming-ling/</id>
-        <link href="https://dargonlee.github.io/post/git-de-chang-yong-ming-ling/">
-        </link>
-        <updated>2019-08-12T05:38:57.000Z</updated>
-        <summary type="html"><![CDATA[<pre><code class="language-bash"># 显示当前的Git配置
-$ git config --list
-
-# 查看仓库配置
-git config --local -l 
-
-# 查看用户配置
-git config --global -l 
-
-# 查看系统配置
-git config --system -l </code></pre>
-]]></summary>
-        <content type="html"><![CDATA[<pre><code class="language-bash"># 显示当前的Git配置
-$ git config --list
-
-# 查看仓库配置
-git config --local -l 
-
-# 查看用户配置
-git config --global -l 
-
-# 查看系统配置
-git config --system -l 
-
-&lt;!-- more --&gt;
-
-# 编辑Git配置文件
-
-git config --local -e 编辑仓库级别配置文件
-git config --global -e 编辑用户级别配置文件
-git config --system -e 编辑系统级别配置文件
-
-# 设置提交代码时的用户信息
-$ git config [--global] user.name &quot;[name]&quot;
-$ git config [--global] user.email &quot;[email address]&quot;
-</code></pre>
-<p>推送操作 切记直接使用 <code>git push</code></p>
-<pre><code class="language-bash">git push origin HEAD:refs/for/develop  
-</code></pre>
-<p>创建并切换到dev分支（本地分支）</p>
-<pre><code class="language-bash">git checkout -b dev
-</code></pre>
-<p>删除本地dev分支(本地)</p>
-<pre><code class="language-bash">git branch -d dev
-</code></pre>
-<p>分支合并</p>
-<pre><code class="language-scheme">git checkout master
-git merge dev
-</code></pre>
-<p>推送本地分支到远程</p>
-<pre><code class="language-bash">git push -u origin develop
-</code></pre>
-<p>查看分支：</p>
-<pre><code class="language-bash">git branch
-</code></pre>
-<p>创建分支：</p>
-<pre><code class="language-bash">git branch 
-</code></pre>
-<p>切换分支：</p>
-<pre><code class="language-bash">git checkout `或者`git switch `
-</code></pre>
-<p>删除远程分支：</p>
-<pre><code class="language-bash"> git push origin --delete 
-</code></pre>
-<p>打tag</p>
-<pre><code class="language-bash">git tag 
-</code></pre>
-<p>删除本地tag</p>
-<pre><code class="language-bash">git tag -d 
-</code></pre>
-<p>删除远程tag</p>
-<pre><code class="language-bash">git push origin --delete tag 
-</code></pre>
-<p>推送到哪个分支</p>
-<pre><code class="language-bash">git push origin HEAD:refs/for/branch
-</code></pre>
-<p>回退相关操作</p>
-<pre><code class="language-bash">git reset --hard HEAD^ // 回退pull操作
-
-git reset --mixed HEAD^ // 回退commit 只退一步
-
-git reset --hard 139dcfaa558e3276b30b6b2e5cbbb9c00bbdca96 // 回退到某一个版本
-git reset --soft HEAD^//该命令会将工作去的文件回退到目标版本，但是不会改变暂存区的状态。
-
---hard 会清空工作目录和暂存区的改动,而 --soft则会保留工作目录的内容，并把因为保留工作目录内容所带来的新的文件差异放进暂存区
-</code></pre>
-<p>执行存储时，添加备注，方便查找，只有git stash 也要可以的，但查找时不方便识别。</p>
-<pre><code class="language-bash">git stash save &quot;save message&quot; :
-</code></pre>
-<p>查看stash了哪些存储</p>
-<pre><code class="language-bash">git stash list
-</code></pre>
-<p>显示做了哪些改动，默认show第一个存储,如果要显示其他存贮，后面加stash@{$num}，比如第二个 git stash show stash@{1}</p>
-<pre><code class="language-scheme">git stash show
-</code></pre>
-<p>显示第一个存储的改动，如果想显示其他存存储，命令：git stash show stash@{$num} -p ，比如第二个：git stash show stash@{1} -p</p>
-<pre><code class="language-bash">git stash show -p
-</code></pre>
-<p>应用某个存储,但不会把存储从存储列表中删除，默认使用第一个存储,即stash@{0}，如果要使用其他个，git stash apply stash@{$num} ， 比如第二个：git stash apply stash@{1}</p>
-<pre><code class="language-bash">git stash apply
-</code></pre>
-<p>命令恢复之前缓存的工作目录，将缓存堆栈中的对应stash删除，并将对应修改应用到当前的工作目录下,默认为第一个stash,即stash@{0}，如果要应用并删除其他stash，命令：git stash pop stash@{$num} ，比如应用并删除第二个：git stash pop stash@{1}</p>
-<pre><code class="language-bash">git stash pop
-</code></pre>
-<p>从列表中删除这个存储</p>
-<pre><code class="language-bash">git stash drop stash@{$num} ：丢弃stash@{$num}存储
-</code></pre>
-<p>删除所有缓存的stash</p>
-<pre><code class="language-bash">git stash clear
-</code></pre>
-<p>代码提交</p>
-<pre><code class="language-bash"># 提交暂存区到仓库区
-$ git commit -m [message]
-
-# 提交暂存区的指定文件到仓库区
-$ git commit [file1] [file2] ... -m [message]
-
-# 提交工作区自上次commit之后的变化，直接到仓库区
-$ git commit -a
-
-# 提交时显示所有diff信息
-$ git commit -v
-
-# 使用一次新的commit，替代上一次提交
-# 如果代码没有任何新变化，则用来改写上一次commit的提交信息
-$ git commit --amend -m [message]
-
-# 重做上一次commit，并包括指定文件的新变化
-$ git commit --amend [file1] [file2] ...
-</code></pre>
-<p>分支</p>
-<pre><code class="language-bash"># 列出所有本地分支
-$ git branch
-
-# 列出所有远程分支
-$ git branch -r
-
-# 列出所有本地分支和远程分支
-$ git branch -a
-
-# 新建一个分支，但依然停留在当前分支
-$ git branch [branch-name]
-
-# 新建一个分支，并切换到该分支
-$ git checkout -b [branch]
-
-# 新建一个分支，指向指定commit
-$ git branch [branch] [commit]
-
-# 新建一个分支，与指定的远程分支建立追踪关系
-$ git branch --track [branch] [remote-branch]
-
-# 切换到指定分支，并更新工作区
-$ git checkout [branch-name]
-
-# 切换到上一个分支
-$ git checkout -
-
-# 建立追踪关系，在现有分支与指定的远程分支之间
-$ git branch --set-upstream [branch] [remote-branch]
-
-# 合并指定分支到当前分支
-$ git merge [branch]
-
-# 选择一个commit，合并进当前分支
-$ git cherry-pick [commit]
-
-# 删除分支
-$ git branch -d [branch-name]
-
-# 删除远程分支
-$ git push origin --delete [branch-name]
-$ git branch -dr [remote/branch]
-</code></pre>
-<p>查看信息</p>
-<pre><code class="language-bash"># 显示有变更的文件
-$ git status
-
-# 显示当前分支的版本历史
-$ git log
-
-# 显示commit历史，以及每次commit发生变更的文件
-$ git log --stat
-
-# 搜索提交历史，根据关键词
-$ git log -S [keyword]
-
-# 显示某个commit之后的所有变动，每个commit占据一行
-$ git log [tag] HEAD --pretty=format:%s
-
-# 显示某个commit之后的所有变动，其&quot;提交说明&quot;必须符合搜索条件
-$ git log [tag] HEAD --grep feature
-
-# 显示某个文件的版本历史，包括文件改名
-$ git log --follow [file]
-$ git whatchanged [file]
-
-# 显示指定文件相关的每一次diff
-$ git log -p [file]
-
-# 显示过去5次提交
-$ git log -5 --pretty --oneline
-
-# 显示所有提交过的用户，按提交次数排序
-$ git shortlog -sn
-
-# 显示指定文件是什么人在什么时间修改过
-$ git blame [file]
-
-# 显示暂存区和工作区的差异
-$ git diff
-
-# 显示暂存区和上一个commit的差异
-$ git diff --cached [file]
-
-# 显示工作区与当前分支最新commit之间的差异
-$ git diff HEAD
-
-# 显示两次提交之间的差异
-$ git diff [first-branch]...[second-branch]
-
-# 显示今天你写了多少行代码
-$ git diff --shortstat &quot;@{0 day ago}&quot;
-
-# 显示某次提交的元数据和内容变化
-$ git show [commit]
-
-# 显示某次提交发生变化的文件
-$ git show --name-only [commit]
-
-# 显示某次提交时，某个文件的内容
-$ git show [commit]:[filename]
-
-# 显示当前分支的最近几次提交
-$ git reflog
-</code></pre>
-<p>远程同步</p>
-<pre><code class="language-bash"># 下载远程仓库的所有变动
-$ git fetch [remote]
-
-# 显示所有远程仓库
-$ git remote -v
-
-# 显示某个远程仓库的信息
-$ git remote show [remote]
-
-# 增加一个新的远程仓库，并命名
-$ git remote add [shortname] [url]
-
-# 取回远程仓库的变化，并与本地分支合并
-$ git pull [remote] [branch]
-
-# 上传本地指定分支到远程仓库
-$ git push [remote] [branch]
-
-# 强行推送当前分支到远程仓库，即使有冲突
-$ git push [remote] --force
-
-# 推送所有分支到远程仓库
-$ git push [remote] --all
-</code></pre>
-<p>撤销</p>
-<pre><code class="language-bash"># 恢复暂存区的指定文件到工作区
-$ git checkout [file]
-
-# 恢复某个commit的指定文件到暂存区和工作区
-$ git checkout [commit] [file]
-
-# 恢复暂存区的所有文件到工作区
-$ git checkout .
-
-# 重置暂存区的指定文件，与上一次commit保持一致，但工作区不变
-$ git reset [file]
-
-# 重置暂存区与工作区，与上一次commit保持一致
-$ git reset --hard
-
-# 重置当前分支的指针为指定commit，同时重置暂存区，但工作区不变
-$ git reset [commit]
-
-# 重置当前分支的HEAD为指定commit，同时重置暂存区和工作区，与指定commit一致
-$ git reset --hard [commit]
-
-# 重置当前HEAD为指定commit，但保持暂存区和工作区不变
-$ git reset --keep [commit]
-
-# 新建一个commit，用来撤销指定commit
-# 后者的所有变化都将被前者抵消，并且应用到当前分支
-$ git revert [commit]
-
-# 暂时将未提交的变化移除，稍后再移入
-$ git stash
-$ git stash pop
-</code></pre>
-<p>撤销本地提交</p>
-<blockquote>
-<p>HEAD^的意思是上一个版本，也可以写成HEAD~1<br>
-如果你进行了2次commit，想都撤回，可以使用HEAD~2</p>
-</blockquote>
-<p>至于这几个参数：</p>
-<pre><code class="language-bash">--mixed 
-意思是：不删除工作空间改动代码，撤销commit，并且撤销git add . 操作
-这个为默认参数,git reset --mixed HEAD^ 和 git reset HEAD^ 效果是一样的
-</code></pre>
-<pre><code class="language-bash">--soft  
-不删除工作空间改动代码，撤销commit，不撤销git add . 
-</code></pre>
-<pre><code class="language-bash">--hard
-删除工作空间改动代码，撤销commit，撤销git add . 
-注意完成这个操作后，就恢复到了上一次的commit状态。
-</code></pre>
-<pre><code class="language-bash">顺便说一下，如果commit注释写错了，只是想改一下注释，只需要：
-git commit --amend
-此时会进入默认vim编辑器，修改注释完毕后保存就好了
-</code></pre>
 ]]></content>
     </entry>
 </feed>
