@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-03-09T03:16:36.666Z</updated>
+    <updated>2020-03-09T08:46:56.440Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
@@ -10,6 +10,59 @@
     <logo>https://dargonlee.github.io/images/avatar.png</logo>
     <icon>https://dargonlee.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 七里田间的守望者</rights>
+    <entry>
+        <title type="html"><![CDATA[开启一个 WebServer]]></title>
+        <id>https://dargonlee.github.io/post/kai-qi-yi-ge-webserver/</id>
+        <link href="https://dargonlee.github.io/post/kai-qi-yi-ge-webserver/">
+        </link>
+        <updated>2020-03-09T08:17:37.000Z</updated>
+        <summary type="html"><![CDATA[<blockquote>
+<p>在 Mac 上开启一个 WebServer，把写好的页面部署到 WebServer 上并可以通过 「ip+端口」 的形式访问。</p>
+</blockquote>
+<h3 id="mac-自带的-webserver">mac 自带的 WebServer</h3>
+<p>mac 自带了一个 WebServer Apache，可以使用命令来开启关闭 WebServer：</p>
+<pre><code class="language-shell">sudo apachectl start //开启
+sudo apachectl restart //重启 
+sudo apachectl stop //关闭 
+</code></pre>
+]]></summary>
+        <content type="html"><![CDATA[<blockquote>
+<p>在 Mac 上开启一个 WebServer，把写好的页面部署到 WebServer 上并可以通过 「ip+端口」 的形式访问。</p>
+</blockquote>
+<h3 id="mac-自带的-webserver">mac 自带的 WebServer</h3>
+<p>mac 自带了一个 WebServer Apache，可以使用命令来开启关闭 WebServer：</p>
+<pre><code class="language-shell">sudo apachectl start //开启
+sudo apachectl restart //重启 
+sudo apachectl stop //关闭 
+</code></pre>
+<!-- more -->
+<p>打开终端窗口，输入 <code>sudo apachectl start</code>，便可以开启 webServer，在浏览器中输入 127.0.0.1 。会打开一个默认的网页：<strong>It works</strong>。</p>
+<p>把写好的html内容放到 <code>/Library/WebServer/Documents</code> 这个目录下。<strong>最好html文件以index.html来命名的</strong><br>
+然后就可以通过 127.0.0.1 这个 ip 地址来访问具体的页面<br>
+在浏览器中输入：<a href="http://127.0.0.1/index.html">http://127.0.0.1/index.html</a> 便可以访问写的html网页。这里的index.html是写好的文件，当然你也可以以其他名字命名，但是在网页访问的时候要写那重新命名的那个名字，<br>
+比如：<a href="http://127.0.0.1/test.html">http://127.0.0.1/test.html</a></p>
+<h3 id="fis3">FIS3</h3>
+<p>安装前需要先安装Node 可以到 Node 官网下载安装 https://nodejs.org/zh-cn/。<br>
+安装Node完成后，在终端输入下面命令看是否安装正常</p>
+<pre><code class="language-shell">node -v // node的版本
+v10.7.0
+
+npm -v // npm 的版本
+6.13.7
+</code></pre>
+<p>安装<br>
+<code>npm install -g fis3</code> 如果报错权限问题 试下加<code>sudo</code><br>
+如果安装过程中出现问题，可以参考 http://fis.baidu.com/fis3/docs/beginning/install.html 。</p>
+<p>安装成功后我们通过 Fis3 来开启一个 WebServer，达到与 mac 的 WebServer  同样的效果。</p>
+<ol start="0">
+<li>首先<code>cd</code> 到你要部署的文件夹下</li>
+<li>然后通过<code>fis3 server start</code> 开启 WebServer</li>
+<li>通过 fis3 release 把相关代码部署到 WebServer【通过 <code>fis3 server open</code> 可以打开 WebServer 所在目录】</li>
+<li>根据提示在浏览器输入<code>http://127.0.0.1:8080/</code></li>
+</ol>
+<p>** 大功告成！！！**</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Grid布局入门]]></title>
         <id>https://dargonlee.github.io/post/grid-bu-ju/</id>
@@ -2098,197 +2151,6 @@ constant:  是来计算两个视图之间约束的倍数关系的基础上再加
         make.width.height.equalTo(self.redView).multipliedBy(1.5);
     }];
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Flutter 常用布局]]></title>
-        <id>https://dargonlee.github.io/post/flutter-chang-yong-bu-ju/</id>
-        <link href="https://dargonlee.github.io/post/flutter-chang-yong-bu-ju/">
-        </link>
-        <updated>2019-09-17T06:33:37.000Z</updated>
-        <summary type="html"><![CDATA[<h4 id="行布局-在x轴上">行布局 （在X轴上）</h4>
-<blockquote>
-<p>Row.mainAxisAlignment 主轴排列方式</p>
-</blockquote>
-<pre><code class="language-objectivec">Row(
-  mainAxisAlignment: MainAxisAlignment.spaceAround,  // 改变这个值 可以更改排列方式 如下图
-  mainAxisSize: MainAxisSize.max,
-  children: [
-    Icon(Icons.stars, size: 50.0),
-    Icon(Icons.stars, size: 50.0),
-    Icon(Icons.stars, size: 50.0),
-], )
-</code></pre>
-<figure data-type="image" tabindex="1"><img src="https://upload-images.jianshu.io/upload_images/646265-2fc1ab8a4b7f57a4.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="row.jpg" loading="lazy"></figure>
-]]></summary>
-        <content type="html"><![CDATA[<h4 id="行布局-在x轴上">行布局 （在X轴上）</h4>
-<blockquote>
-<p>Row.mainAxisAlignment 主轴排列方式</p>
-</blockquote>
-<pre><code class="language-objectivec">Row(
-  mainAxisAlignment: MainAxisAlignment.spaceAround,  // 改变这个值 可以更改排列方式 如下图
-  mainAxisSize: MainAxisSize.max,
-  children: [
-    Icon(Icons.stars, size: 50.0),
-    Icon(Icons.stars, size: 50.0),
-    Icon(Icons.stars, size: 50.0),
-], )
-</code></pre>
-<figure data-type="image" tabindex="1"><img src="https://upload-images.jianshu.io/upload_images/646265-2fc1ab8a4b7f57a4.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="row.jpg" loading="lazy"></figure>
-<!-- more -->
-<blockquote>
-<p>Row.crossAxisAlignment 纵轴排列方式</p>
-</blockquote>
-<pre><code class="language-objectivec">Row(
-  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  crossAxisAlignment: CrossAxisAlignment.start,  // 改变这个值 可以更改排列方式 如下图
-  children: [
-    Icon(Icons.stars, size: 50.0),
-    Icon(Icons.stars, size: 100.0),
-    Icon(Icons.stars, size: 50.0),
-], )
-</code></pre>
-<figure data-type="image" tabindex="2"><img src="https://upload-images.jianshu.io/upload_images/646265-90a2530f54792a81.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></figure>
-<h4 id="列布局在y轴上">列布局（在Y轴上）</h4>
-<blockquote>
-<p>Column.mainAxisAlignment 列布局 主轴排列方式</p>
-</blockquote>
-<pre><code class="language-objectivec">Column(
-  mainAxisAlignment: MainAxisAlignment.start, // 改变这个值 可以更改排列方式 如下图
-  mainAxisSize: MainAxisSize.max,
-  children: [
-    Icon(Icons.stars, size: 50.0),
-    Icon(Icons.stars, size: 50.0),
-    Icon(Icons.stars, size: 50.0),
-], )
-</code></pre>
-<figure data-type="image" tabindex="3"><img src="https://upload-images.jianshu.io/upload_images/646265-ef8cbc570e2abf84.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></figure>
-<blockquote>
-<p>Column.mainAxisAlignment 列布局 纵轴排列方式</p>
-</blockquote>
-<pre><code class="language-objectivec">Column(
-  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  crossAxisAlignment: CrossAxisAlignment.start, // 改变这个值 可以更改排列方式 如下图
-  children: [
-    Icon(Icons.stars, size: 50.0),
-    Icon(Icons.stars, size: 100.0),
-    Icon(Icons.stars, size: 50.0),
-], )
-</code></pre>
-<figure data-type="image" tabindex="4"><img src="https://upload-images.jianshu.io/upload_images/646265-d03f1a32a2a66c41.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></figure>
-<h4 id="stack布局允许子widget堆叠可以叠加布局view也就是在-z-轴上">Stack布局（允许子widget堆叠，可以叠加布局View，也就是在 Z 轴上）</h4>
-<blockquote>
-<p>Stack.alignment</p>
-</blockquote>
-<pre><code class="language-objectivec">Stack(
-  alignment: AlignmentDirectional.topStart, //改变这个值 可以更改排列方式 如下面两张图
-  children:[
-    SizedBox(
-      width: 300.0,
-      height: 300.0,
-      child: Container(color: Colors.green),
-), SizedBox(
-      width: 200.0,
-      height: 200.0,
-      child: Container(color: Colors.yellow),
-), SizedBox(
-      width: 100.0,
-      height: 100.0,
-      child: Container(color: Colors.red),
-), ],
-)
-```objectivec
-![image.png](https://upload-images.jianshu.io/upload_images/646265-6ea3906a2a13098f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-![image.png](https://upload-images.jianshu.io/upload_images/646265-9e0c8ba13561b3a8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-#### Positioned布局
-&gt; Stack允许子widget堆叠，而Positioned可以给子widget定位 `根据Stack的四个角`
-```objectivec
-Stack(
-  children: [
-    SizedBox(
-      width: 300.0,
-      height: 300.0,
-      child: Container(color: Colors.green),
-    ),
-    Positioned( // 这里的位置都是相对于 上面的SizeBox的位置的
-      left: 20.0, 
-      top: 20.0,
-      width: 100.0,
-      height: 100.0,
-      child: Container(color: Colors.indigo),
-    ),
-    Positioned( // 这里的位置都是相对于 上面的SizeBox的位置的
-      bottom: 20.0,
-      right: 20.0,
-      width: 100.0,
-      height: 100.0,
-      child: Container(color: Colors.black87),
-), ],
-)
-</code></pre>
-<figure data-type="image" tabindex="5"><img src="https://upload-images.jianshu.io/upload_images/646265-32432b7a3de5aa7b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></figure>
-<h4 id="expanded布局">Expanded布局</h4>
-<blockquote>
-<p>Expanded组件可以使Row、Column、Flex等子组件在其主轴方向上展开并填充可用空间(例如，Row在水平方向，Column在垂直方向)。如果多个子组件展开，可用空间会被其flex factor(表示扩展的速度、比例)分割。</p>
-</blockquote>
-<pre><code class="language-objectivec">Row(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: &lt;Widget&gt;[
-            Expanded(
-              flex: 1, //组件占据剩余空间的比例
-              child: Container(
-                color: Colors.yellow,
-                child: Center(child: Text('flex: 1'),),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Container(
-                color: Colors.orange,
-                child: Center(child: Text('flex: 2'),),
-              ),
-            ),
-            Expanded(
-              flex: 3,
-              child: Container(
-                color: Colors.cyan,
-                child: Center(child: Text('flex: 3'),),
-              ),
-            )
-          ],
-        ),
-</code></pre>
-<figure data-type="image" tabindex="6"><img src="https://upload-images.jianshu.io/upload_images/646265-072a28dbc18077cc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></figure>
-<h4 id="expanded-padding-sizedbox">Expanded + Padding + SizedBox</h4>
-<blockquote>
-<p>如何用 <code>padding</code> 和 <code>SizeBox</code> 给内容之间添加间隙</p>
-</blockquote>
-<pre><code class="language-objectivec">Container(
-        height: 200.0,
-        color: Colors.yellow,
-        padding: EdgeInsets.all(16.0),
-        child: Row(
-          children: &lt;Widget&gt;[
-            Expanded(
-              flex: 1,
-              child: Container(
-                color: Colors.green,
-                child: Center(child: Text('flex: 1'),),
-              ),
-            ),
-            SizedBox(width: 40.0,),
-            Expanded(
-              flex: 2,
-              child: Container(
-                color: Colors.orange,
-                child: Center(child: Text('flex: 2'),),
-              ),
-            )
-          ],
-        ),
-      ),
-</code></pre>
-<figure data-type="image" tabindex="7"><img src="https://upload-images.jianshu.io/upload_images/646265-105875d9a122bce3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></figure>
 ]]></content>
     </entry>
 </feed>
