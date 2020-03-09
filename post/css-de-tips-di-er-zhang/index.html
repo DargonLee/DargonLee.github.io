@@ -73,7 +73,7 @@ text-overflow ...">
         </h1>
         
         <div class="mb-8 flex flex-wrap">
-          <div class="text-gray-400 text-sm mr-4">2020-03-05 · 5 min read</div>
+          <div class="text-gray-400 text-sm mr-4">2020-03-05 · 6 min read</div>
           
         </div>
         <div class="markdown mb-8" v-pre>
@@ -196,6 +196,46 @@ div {
 transition-duration: 动画持续的时间，可以单独控制某个属性的时间， transition-duration：1.8s, 1.0s, 1.0s 表示修改 background-color 需要 1.8s, 修改 height 需要 1.0s,  修改 width 需要 1.0s;<br>
 transition-delay：动画开始时需要延迟多长时间才开始执行；<br>
 transition-timing-function：表示动画执行时的时间函数，不同函数走过的曲线不一样；</p>
+<h3 id="float">float</h3>
+<p>float 布局最初是为文字环绕效果而设计，但是后来被广泛应用到布局上，比如多列布局。float 是一个 CSS 属性，使用方法如下</p>
+<pre><code class="language-css">.box {
+  float: left;
+  /*left 左侧浮动, right 右侧浮动*/
+ }
+</code></pre>
+<p>选择器 box 使用了浮动属性 float，值为 left，表示左浮动。浮动元素会脱离正常的流式布局，并吸附到父容器的左边，位于浮动元素之后的内容将围绕着浮动元素。</p>
+<p>使用浮动后，后面的元素都挨着向上移动，如果想让元素不会受到浮动的影响，可以使用 clear 属性：</p>
+<pre><code class="language-css">.cleared {
+    clear: left; 
+    /*left: 清除左浮动，right：清除右浮动，both：清除所有的浮动*/
+}
+</code></pre>
+<p><strong>注意这里给使用浮动元素标签的同级兄弟元素标签的第一个标签</strong></p>
+<p>例如：</p>
+<pre><code class="language-html">&lt;div class=&quot;wrapper&quot;&gt;
+       &lt;div class=&quot;box&quot;&gt;Float&lt;/div&gt;
+            &lt;p&gt;多媒体电子书&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;p class=&quot;cleared&quot;&gt;系统地学习前端知识。避免 case-by-case 学习。如果想让元素不会受到浮动的影响，可以使用 clear 属性：&lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+<p>有时候，浮动元素被一个 div 包裹着，如果使用 clear 属性进行清除时，你会发现一个问题。使用浮动的父标签不能完全包裹住浮动元素标签。<br>
+可以通过下面的方法来解决这个问题：</p>
+<pre><code class="language-css">.wrapper::after {
+  content: &quot;&quot;;
+  clear: both;
+  display: block;
+}
+</code></pre>
+<p>这里的wrapper就是使用float标签的父级标签</p>
+<p>也可以通过 overflow 属性解决，给 wrapper 选择器添加 overflow：auto。</p>
+<pre><code class="language-css">.wrapper {
+    background-color: red;
+    color: #fff; 
+    padding: 10px;
+    overflow: auto;
+}
+</code></pre>
 
         </div>
         <!-- Share to Twitter, Weibo, Telegram -->
@@ -245,6 +285,7 @@ transition-timing-function：表示动画执行时的时间函数，不同函数
 <li><a href="#%E5%8F%AA%E6%98%BE%E7%A4%BA%E4%B8%A4%E8%A1%8C%E5%86%85%E5%AE%B9">只显示两行内容</a></li>
 <li><a href="#animation">animation</a></li>
 <li><a href="#transition">transition</a></li>
+<li><a href="#float">float</a></li>
 </ul>
 </li>
 </ul>
