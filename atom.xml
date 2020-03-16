@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-03-09T09:49:31.022Z</updated>
+    <updated>2020-03-16T02:59:42.975Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
@@ -10,6 +10,56 @@
     <logo>https://dargonlee.github.io/images/avatar.png</logo>
     <icon>https://dargonlee.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 七里田间的守望者</rights>
+    <entry>
+        <title type="html"><![CDATA[JavaScript 调试技巧]]></title>
+        <id>https://dargonlee.github.io/post/javascript-diao-shi-ji-qiao/</id>
+        <link href="https://dargonlee.github.io/post/javascript-diao-shi-ji-qiao/">
+        </link>
+        <updated>2020-03-16T02:56:06.000Z</updated>
+        <content type="html"><![CDATA[<ol>
+<li>自动断点<br>
+有时候在执行 JavaScript 代码的时候，可能来不及设置断点，代码就被执行了，其实可以通过在代码中写上 debugger（代码中第 8 行），让代码执行到 debugger 的位置自动暂停。</li>
+</ol>
+<pre><code class="language-js">function b() {
+    console.log('enter b');
+    debugger;
+}
+</code></pre>
+<ol start="2">
+<li>打印调用堆栈<br>
+可以通过调试面板查看当前代码的调用堆栈，也可以通过 console.trace() 打印函数调用堆栈</li>
+</ol>
+<pre><code class="language-js">function c() {
+    console.log('enter c');
+    console.trace();
+}
+</code></pre>
+<ol start="3">
+<li>以表格的方式打印对象<br>
+下面是一个对象，可以通过 console.table( obj ) 来打印这个对象。</li>
+</ol>
+<pre><code class="language-js">
+let pkg = {
+    &quot;name&quot;: &quot;mini_tools&quot;,
+    &quot;version&quot;: &quot;1.0.0&quot;,
+    &quot;description&quot;: &quot;&quot;,
+    &quot;main&quot;: &quot;index.js&quot;,
+    &quot;dependencies&quot;: {
+        &quot;jquery&quot;: &quot;^1.12.4&quot;
+    },
+    &quot;devDependencies&quot;: {},
+    &quot;scripts&quot;: {
+        &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;
+    },
+    &quot;author&quot;: &quot;&quot;,
+    &quot;license&quot;: &quot;ISC&quot;
+};
+
+console.table(pkg);
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://dargonlee.github.io/post-images/1584327572021.webp" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[开启一个 WebServer]]></title>
         <id>https://dargonlee.github.io/post/kai-qi-yi-ge-webserver/</id>
@@ -2008,149 +2058,6 @@ main() {
     }];
 </code></pre>
 <p>这种block的方法也可以解决循环引用</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[NSLayoutAnchor实践]]></title>
-        <id>https://dargonlee.github.io/post/nslayoutanchor-shi-jian/</id>
-        <link href="https://dargonlee.github.io/post/nslayoutanchor-shi-jian/">
-        </link>
-        <updated>2019-11-14T06:37:44.000Z</updated>
-        <summary type="html"><![CDATA[<blockquote>
-<p>iOS如果项目中不用xib或者storyboard的话，给view做约束一般都是用第三方库<code>Masonry</code>，为什么不用系统提供的AutoLayout呢？<code>因为代码太多不好用</code></p>
-</blockquote>
-<ul>
-<li>今天给大家介绍一个苹果iOS9后更新的一个布局的好用的类 <code>NSLayoutAnchor</code></li>
-</ul>
-<h4 id="分别用-nslayoutconstraint-nslayoutanchor-和-masonry来进行如下图所示的布局">分别用 <code>NSLayoutConstraint</code> <code>NSLayoutAnchor</code> 和 <code>Masonry</code>来进行如下图所示的布局</h4>
-<blockquote>
-<p>在进行布局的时候，我会分别讲解下系统 <code>NSLayoutConstraint</code> <code>NSLayoutAnchor</code>两种布局的方法使用和参数说明<br>
-至于<code>Masonry</code>的使用 我就不做多介绍了（官方介绍的很清楚，网上资料也不少）</p>
-</blockquote>
-]]></summary>
-        <content type="html"><![CDATA[<blockquote>
-<p>iOS如果项目中不用xib或者storyboard的话，给view做约束一般都是用第三方库<code>Masonry</code>，为什么不用系统提供的AutoLayout呢？<code>因为代码太多不好用</code></p>
-</blockquote>
-<ul>
-<li>今天给大家介绍一个苹果iOS9后更新的一个布局的好用的类 <code>NSLayoutAnchor</code></li>
-</ul>
-<h4 id="分别用-nslayoutconstraint-nslayoutanchor-和-masonry来进行如下图所示的布局">分别用 <code>NSLayoutConstraint</code> <code>NSLayoutAnchor</code> 和 <code>Masonry</code>来进行如下图所示的布局</h4>
-<blockquote>
-<p>在进行布局的时候，我会分别讲解下系统 <code>NSLayoutConstraint</code> <code>NSLayoutAnchor</code>两种布局的方法使用和参数说明<br>
-至于<code>Masonry</code>的使用 我就不做多介绍了（官方介绍的很清楚，网上资料也不少）</p>
-</blockquote>
-<!-- more -->
-<figure data-type="image" tabindex="1"><img src="https://upload-images.jianshu.io/upload_images/646265-8b480a3ee6085ef6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190509-105625@2x.png" loading="lazy"></figure>
-<h3 id="第一种-nslayoutconstraint">第一种 <code>NSLayoutConstraint</code></h3>
-<pre><code class="language-objectivec"># NSLayoutConstraint 的核心布局方法
-[NSLayoutConstraint constraintWithItem:self.redView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
-
-</code></pre>
-<p>上面代码的白话文就是<br>
-<code>红色view 的 centerX 等于 self.view 的 centerX 1.0倍 加 0</code><br>
-如果还不是很明白的话 看下图就一目了然了</p>
-<figure data-type="image" tabindex="2"><img src="https://upload-images.jianshu.io/upload_images/646265-b155f2e0c3eaa558.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="WX20190509-110720@2x.png" loading="lazy"></figure>
-<h4 id="接下来我们来讲一下初始化方法中各个参数的意义">接下来我们来讲一下初始化方法中各个参数的意义：</h4>
-<pre><code class="language-objectivec">item:        要布局的view
-
-attribute: 是一个NSLayoutAttribute枚举，可以看到他的枚举值有 left、right、bottom、top 等
-
-relatedBy:  是一个NSLayoutRelation枚举，他的枚举值有 lessThanOrEqual（小于等于）、equal（等于）、greaterThanOrEqual（大于等于）， 指定 view1和接下来那个参数 view2两个视图之
-间的约束关系的
-
-toItem:     第一个view的参照view 你要参照哪个view 这个就是哪个view（本例中的是self.view控制器view）
-
-attribute:  和第二个参数一样，是来表示第一个视图对第二个视图的
-参考位置 ，上下左右 还是 center等
-
-multiplier: 是来计算两个视图之间约束的倍数关系
-
-constant:  是来计算两个视图之间约束的倍数关系的基础上再加一些常量
-
-</code></pre>
-<h4 id="下面看约束代码">下面看约束代码</h4>
-<pre><code class="language-objectivec">// 布局redView
-    NSLayoutConstraint *centerX = [NSLayoutConstraint constraintWithItem:self.redView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
-    NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.redView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTopMargin multiplier:1.0 constant:10];
-    
-    NSLayoutConstraint *width = [NSLayoutConstraint constraintWithItem:self.redView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:200];
-    NSLayoutConstraint *heith = [NSLayoutConstraint constraintWithItem:self.redView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:200];
-    
-    //可以单个添加约束
-    [self.view addConstraint:centerX];
-    [self.view addConstraint:top];
-    
-    //也可以添加约束多个约束
-    [self.redView addConstraints:@[width, heith]];
-    
-    
-    
-    // 布局blueView
-    NSLayoutConstraint *centerX1 = [NSLayoutConstraint constraintWithItem:self.blueView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.redView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
-    NSLayoutConstraint *top1 = [NSLayoutConstraint constraintWithItem:self.blueView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.redView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:20];
-    
-    NSLayoutConstraint *width1 = [NSLayoutConstraint constraintWithItem:self.blueView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.redView attribute:NSLayoutAttributeWidth multiplier:1.5 constant:0];
-    NSLayoutConstraint *heith1 = [NSLayoutConstraint constraintWithItem:self.blueView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.redView attribute:NSLayoutAttributeWidth multiplier:1.5 constant:0];
-    
-    //iOS8 以后 NSLayoutConstraint 的类方法 也可以把约束添加到视图上，而且省掉了判断添加到那个视图上的问题，避免了上面例子中因为视图添加错误而导致的崩溃
-    [NSLayoutConstraint activateConstraints:@[centerX1,top1, width1, heith1]];
-</code></pre>
-<h5 id="nslayoutconstraint添加约束注意事项"><code>NSLayoutConstraint</code>添加约束注意事项</h5>
-<p>1.如果两个视图（也就是参数 item 和 toItem）是父子关系，设置子控件的约束，约束添加到父控件上<br>
-2.如果两个视图（也就是参数 item 和 toItem）是兄弟关系，设置两兄弟的约束，约束会添加到第一个共同的父控件上<br>
-3.如果两个视图（也就是参数 item 和 toItem）是同一个视图，约束会添加到自己上(一般给自己添加约束toItem为nil attribute为NSLayoutAttributeNotAnAttribute)<br>
-4.要给添加约束的view要设置<code>translatesAutoresizingMaskIntoConstraints</code>为NO 否则约束不生效</p>
-<pre><code class="language-objectivec">    UIView *redView = [[UIView alloc]init];
-    redView.backgroundColor = [UIColor redColor];
-    // 要禁止 autoresize 意思就是遵循autoLayout抛弃原有设置的高度宽度等
-    // 使用autolayout的视图必须要设置该属性
-    redView.translatesAutoresizingMaskIntoConstraints = NO;
-</code></pre>
-<h3 id="第二种-nslayoutanchor-ios9以后">第二种 <code>NSLayoutAnchor</code> ios9以后</h3>
-<pre><code class="language-objectivec">- (NSLayoutConstraint *)constraintEqualToAnchor:(NSLayoutAnchor&lt;AnchorType&gt; *)anchor;
-- (NSLayoutConstraint *)constraintGreaterThanOrEqualToAnchor:(NSLayoutAnchor&lt;AnchorType&gt; *)anchor;
-- (NSLayoutConstraint *)constraintLessThanOrEqualToAnchor:(NSLayoutAnchor&lt;AnchorType&gt; *)anchor;
-
-/* These methods return an inactive constraint of the form thisAnchor = otherAnchor + constant.
- */
-- (NSLayoutConstraint *)constraintEqualToAnchor:(NSLayoutAnchor&lt;AnchorType&gt; *)anchor constant:(CGFloat)c;
-- (NSLayoutConstraint *)constraintGreaterThanOrEqualToAnchor:(NSLayoutAnchor&lt;AnchorType&gt; *)anchor constant:(CGFloat)c;
-- (NSLayoutConstraint *)constraintLessThanOrEqualToAnchor:(NSLayoutAnchor&lt;AnchorType&gt; *)anchor constant:(CGFloat)c;
-
-</code></pre>
-<h4 id="接下来我们来讲一下使用方法">接下来我们来讲一下使用方法</h4>
-<p>比如要给redView设置一个约束，如下</p>
-<pre><code class="language-objectivec">[self.redView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor];
-</code></pre>
-<p>上面代码的意思为 <code>红色的view的centerX和self.view的centerX相等</code></p>
-<h4 id="下面看使用nslayoutanchor写的约束代码">下面看使用<code>NSLayoutAnchor</code>写的约束代码</h4>
-<pre><code class="language-objectivec">    [self.redView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
-    [self.redView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:20].active = YES;
-    [self.redView.widthAnchor constraintEqualToConstant:200].active = YES;
-    [self.redView.heightAnchor constraintEqualToConstant:200].active = YES;
-    
-    [self.blueView.centerXAnchor constraintEqualToAnchor:self.redView.centerXAnchor].active = YES;
-    [self.blueView.topAnchor constraintEqualToAnchor:self.redView.bottomAnchor constant:20].active = YES;
-    [self.blueView.widthAnchor constraintEqualToAnchor:self.redView.widthAnchor multiplier:1.5].active = YES;
-    [self.blueView.heightAnchor constraintEqualToAnchor:self.redView.heightAnchor multiplier:1.5].active = YES;
-</code></pre>
-<h5 id="nslayoutanchor添加约束注意事项"><code>NSLayoutAnchor</code>添加约束注意事项</h5>
-<p>1.要给添加约束的view要设置<code>translatesAutoresizingMaskIntoConstraints</code>为NO 否则约束不生效 <code>自定义view的时候也要给子view设置此属性，总之你要给哪个view设置Layout就要给哪个view设置此属性为NO</code><br>
-2.<code>active</code>要设置为YES 这个是控制约束是否真正添加的开关 设置为NO的时候 约束失效</p>
-<h3 id="第三种-masonry">第三种 <code>Masonry</code></h3>
-<h4 id="直接上代码了">直接上代码了</h4>
-<pre><code class="language-objectivec">    [self.redView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_topMargin).with.offset(20);
-        make.centerX.equalTo(self.view.mas_centerX);
-        make.width.height.equalTo(@200);
-    }];
-    
-    [self.blueView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.redView.mas_bottom).offset(20);
-        make.centerX.equalTo(self.redView.mas_centerX);
-        make.width.height.equalTo(self.redView).multipliedBy(1.5);
-    }];
-</code></pre>
 ]]></content>
     </entry>
 </feed>
