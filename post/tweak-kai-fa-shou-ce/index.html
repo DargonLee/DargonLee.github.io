@@ -4,31 +4,43 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>常用LLDB指令 - 七里田间的守望者</title>
+<title>Tweak开发手册 - 七里田间的守望者</title>
 <link rel="shortcut icon" href="https://dargonlee.github.io/favicon.ico">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"> -->
 <link rel="stylesheet" href="https://dargonlee.github.io/media/css/tailwind.css">
 <link rel="stylesheet" href="https://dargonlee.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="常用LLDB指令 - 七里田间的守望者 - Atom Feed" href="https://dargonlee.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="Tweak开发手册 - 七里田间的守望者 - Atom Feed" href="https://dargonlee.github.io/atom.xml">
 
     
 
-  <meta name="description" content="指令格式
-&amp;lt;command&amp;gt; [&amp;lt;subcommand&amp;gt; [&amp;lt;subcommand&amp;gt;]...] &amp;lt;actions&amp;gt; [-options [options value]] [argument[a..." />
-  <meta property="og:title" content="常用LLDB指令 - 七里田间的守望者">
-  <meta property="og:description" content="指令格式
-&amp;lt;command&amp;gt; [&amp;lt;subcommand&amp;gt; [&amp;lt;subcommand&amp;gt;]...] &amp;lt;actions&amp;gt; [-options [options value]] [argument[a..." />
+  <meta name="description" content="tweak怎么多文件开发
+
+一般来说我们开发tweak代码都是在Tweak.xm文件里面写代码，但是代码量小的话还好，一旦代码多了的话，代码开发起来就比较费劲。这个时候我们就可以使用多文件进行开发。
+
+
+可以在Tweak.xm所在的目录下新..." />
+  <meta property="og:title" content="Tweak开发手册 - 七里田间的守望者">
+  <meta property="og:description" content="tweak怎么多文件开发
+
+一般来说我们开发tweak代码都是在Tweak.xm文件里面写代码，但是代码量小的话还好，一旦代码多了的话，代码开发起来就比较费劲。这个时候我们就可以使用多文件进行开发。
+
+
+可以在Tweak.xm所在的目录下新..." />
   <meta property="og:type" content="articles">
-  <meta property="og:url" content="https://dargonlee.github.io/post/chang-yong-lldb-zhi-ling/" />
+  <meta property="og:url" content="https://dargonlee.github.io/post/tweak-kai-fa-shou-ce/" />
   <meta property="og:image" content="https://dargonlee.github.io/images/avatar.png">
   <meta property="og:image:height" content="630">
   <meta property="og:image:width" content="1200">
-  <meta name="twitter:title" content="常用LLDB指令 - 七里田间的守望者">
-  <meta name="twitter:description" content="指令格式
-&amp;lt;command&amp;gt; [&amp;lt;subcommand&amp;gt; [&amp;lt;subcommand&amp;gt;]...] &amp;lt;actions&amp;gt; [-options [options value]] [argument[a...">
+  <meta name="twitter:title" content="Tweak开发手册 - 七里田间的守望者">
+  <meta name="twitter:description" content="tweak怎么多文件开发
+
+一般来说我们开发tweak代码都是在Tweak.xm文件里面写代码，但是代码量小的话还好，一旦代码多了的话，代码开发起来就比较费劲。这个时候我们就可以使用多文件进行开发。
+
+
+可以在Tweak.xm所在的目录下新...">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="canonical" href="https://dargonlee.github.io/post/chang-yong-lldb-zhi-ling/">
+  <link rel="canonical" href="https://dargonlee.github.io/post/tweak-kai-fa-shou-ce/">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css">
@@ -48,7 +60,7 @@
     <div class="max-w-4xl w-full mx-auto">
       <div class="shadow-box bg-white dark:bg-gray-600 rounded-lg pt-32 md:pt-64 px-4 md:px-8 pb-8 animated fadeIn mb-8">
         <h1 class="text-5xl font-semibold leading-normal pb-8 mb-8 border-b-8 border-gray-700">
-          常用LLDB指令
+          Tweak开发手册
         </h1>
         
         <div class="mb-8 flex flex-wrap">
@@ -61,155 +73,104 @@
           
         </div>
         <div class="markdown mb-8" v-pre>
-          <h5 id="指令格式">指令格式</h5>
-<pre><code>&lt;command&gt; [&lt;subcommand&gt; [&lt;subcommand&gt;]...] &lt;actions&gt; [-options [options value]] [argument[argument]...]
-</code></pre>
+          <h4 id="tweak怎么多文件开发">tweak怎么多文件开发</h4>
+<blockquote>
+<p>一般来说我们开发tweak代码都是在<code>Tweak.xm</code>文件里面写代码，但是代码量小的话还好，一旦代码多了的话，代码开发起来就比较费劲。这个时候我们就可以使用多文件进行开发。</p>
+</blockquote>
 <ul>
-<li><command> 命令</li>
-<li><subcommand>子命令</li>
-<li><actions>命令操作</li>
-<li><options>命令选项</li>
-<li><argument> 命令参数</li>
+<li>可以在<code>Tweak.xm</code>所在的目录下新建一个<code>src</code>文件夹，里面放你写的OC源代码。</li>
+<li>然后在<code>Tweak.xm</code>文件是使用的地方<code>#import &quot;Person&quot;</code>导入就可以用了</li>
+<li>但是在编译的时候你会发现报错，因为你写的<code>.m</code>文件没有参与编译</li>
+<li>所以我们需要在<code>Makefile</code>里面的tweak_wechat_FILES = Tweak.xm指定下要参与编译的<code>.m</code>文件</li>
 </ul>
-<p>比如给<code>test</code>函数设置断点</p>
+<pre><code>tweak_wechat_FILES = Tweak.xm src/Persom.m // 记住多个文件以空格分割
+</code></pre>
 <!-- more -->
-<pre><code>breakpoint set -n test
-</code></pre>
 <ul>
-<li>breakpoint是<command></li>
-<li>set是<actions></li>
-<li>-n是<options></li>
-<li>test是<argument></li>
+<li>这样配置了之后，我们就可以执行<code>make</code> 进行编译了</li>
+<li>如果你有一个目录下有很多文件，按上面写法就会很麻烦，还好tweak支持通配符</li>
 </ul>
-<h5 id="help指令">help指令</h5>
+<pre><code>tweak_wechat_FILES = Tweak.xm src/*.m // 记住多个文件以空格分割
+</code></pre>
+<p><strong>这样就可以把某个文件夹下的多个文件参与编译的，记住tweak不支持文件夹的通配符</strong></p>
 <blockquote>
-<p>查看指令用法</p>
+<p>注意如果你新建了很多目录结构，要保证编译的文件能找到，导入的文件也能找到。</p>
 </blockquote>
-<p>比如</p>
-<pre><code>help breakpoint 
+<h4 id="theos-tweak加载资源">theos-tweak加载资源</h4>
+<ul>
+<li>一般开发的tweak文件中有一个<code>layout</code>文件夹里面对应的什么目录结构，就安装到手机对应的目录结构中</li>
+<li>比如本地文件目录结构<code>layout/Libary/PreferenceLoader/Preferences/MJWeChat/xx.png</code></li>
+<li>这样手机就会把<code>MJWeChat</code>文件夹中的图片资源或者其他资源复制到手机的<code>Libary/PreferenceLoader/Preferences/</code>目录中</li>
+<li>然后在tweak中编写代码加载文件资源的时候需要通过路径取资源文件<code>/Libary/PreferenceLoader/Preferences/MJWeChat/xx.png</code></li>
+<li>当然我们的资源也不一定非得放到<code>/Libary/PreferenceLoader/Preferences/</code>文件夹下，也可以放到<code>/Libary/Caches/MJWeChat</code>这个目录下</li>
+</ul>
+<h4 id="安装release版本">安装<code>release</code>版本</h4>
+<pre><code>make package // 为debug版本
+make package debug=0 // 为release版本
 </code></pre>
-<pre><code>help breakpoint set
-</code></pre>
-<h5 id="expression-cmd-options-expr">expression <cmd-options>--<expr></h5>
-<blockquote>
-<p>执行一个表达式</p>
-</blockquote>
+<h4 id="logos语法">Logos语法</h4>
 <ul>
-<li><cmd-options> 命令行选项</li>
-<li>-- 命令选项结束符 表示所有的命令选项已经设置完毕 如果没有命令选项，--可以省略</li>
-<li><expr> 需要执行的表达式</li>
+<li>%hook %end hook一个类的开始和结束</li>
+<li>%log 打印方法调用详情 （可以通过Xcode - Window - Devices and Simulators 查看日志）</li>
+<li>HBDebugLog: 跟NSLog类似</li>
+<li>%new 添加一个新方法</li>
 </ul>
-<pre><code>expression self.view.backgroundColor = [UIColor redColor]
-</code></pre>
-<ul>
-<li>expression、expression--和指令print、p、call的效果一样</li>
-<li>expression -O --和po指令效果一样</li>
-</ul>
-<h5 id="thread-backtrace">thread backtrace</h5>
-<ul>
-<li>打印线程的堆栈信息</li>
-<li>和指令bt效果一样</li>
-</ul>
-<h5 id="thread-return-expr">thread return [<expr>]</h5>
-<ul>
-<li>让函数直接返回某一个值，不会执行断点后面的代码</li>
-</ul>
-<h5 id="frame-variable-variable-name">frame variable [<variable-name>]</h5>
-<ul>
-<li>打印当前栈帧的变量</li>
-</ul>
-<h5 id="thread-continue-continue-c-程序继续运行">thread continue 、continue、c ：程序继续运行</h5>
-<h5 id="thread-step-over-next-n-单步运行-把子函数当做整体一步执行">thread step-over 、next、n ：单步运行、把子函数当做整体一步执行</h5>
-<h5 id="thread-step-in-step-s-单步运行-遇到子函数进入到子函数中">thread step-in 、step、s ：单步运行、遇到子函数进入到子函数中</h5>
-<h5 id="thread-step-out-finish直接执行完当前函数所有代码-返回到上一个函数">thread step-out 、finish：直接执行完当前函数所有代码、返回到上一个函数</h5>
-<h5 id="si-ni和s-n类似">si、ni和s、n类似</h5>
-<ul>
-<li>s、n是源码级别的</li>
-<li>si、ni是汇编指令级别的</li>
-</ul>
-<h5 id="breakpoint-set-设置断点">breakpoint set 设置断点</h5>
-<ul>
-<li>breakpoint set -a 函数地址</li>
-</ul>
-<pre><code>
-</code></pre>
-<ul>
-<li>breakpoint set -n 函数名称</li>
-</ul>
-<pre><code>breakpoint set -n test
+<pre><code>@interface xxx
+- (void)test;
+@end
 
-breakpoint set -n  touchBegan:withEvent:
 
-breakpoint set -n &quot;-[ViewController touchBegan:withEvent:]&quot;
-</code></pre>
-<p><strong>breakpoint set -n test 简写为 br set -n test</strong></p>
-<ul>
-<li>
-<p>breakpoint set -r 正则表达式</p>
-</li>
-<li>
-<p>breakpoint set -s 动态库 -n 函数名</p>
-</li>
-<li>
-<p>breakpoint list 列出所有断点</p>
-</li>
-<li>
-<p>breakpoint disable 断点编号 ： 禁用断点</p>
-</li>
-<li>
-<p>breakpoint enable 断点编号 ： 启用断点</p>
-</li>
-<li>
-<p>breakpoint delete 断点编号 ： 删除断点</p>
-</li>
-<li>
-<p>breakpoint command 断点编号 ： 给断点预先设置需要执行的命令，到触发断点时，就会按顺序执行</p>
-</li>
-<li>
-<p>breakpoint command list 断点编号：查看某个断点设置的命令</p>
-</li>
-<li>
-<p>breakpoint command delete 断点编号：删除某个断点设置的命令</p>
-</li>
-</ul>
-<h5 id="内存断点">内存断点</h5>
-<blockquote>
-<p>在内存数据发生改变的时候触发 <code>watchpoint set variable 变量</code></p>
-</blockquote>
-<pre><code>watchpoint set variable self-&gt;age
+%hook XMGAdView
+
+%new
+- (void)test  
+{// 新增的方法需要声明
+    
+}
+
+- (id)init
+{
+    [self test];
+}
+
+%end
 </code></pre>
 <ul>
-<li><code>watchpoint set expression 地址</code></li>
+<li>%c(className):生成一个class对象，比如（%c(NSObject)）类似与NSStringFromClass() objc_getClass()</li>
+<li>%orig: 函数原来的逻辑</li>
+<li>%ctor: 在加载动态库时调用,做一些初始化操作</li>
 </ul>
-<pre><code>watchpoint set variable &amp;(self-&gt;_age)
+<pre><code>%ctor {
+    
+}
 </code></pre>
 <ul>
-<li>watchpoint list</li>
-<li>watchpoint disable 断点编号</li>
-<li>watchpoint enable 断点编号</li>
-<li>watchpoint delete 断点编号</li>
-<li>watchpoint command add 断点编号</li>
-<li>watchpoint command list 断点编号</li>
-<li>watchpoint command delete 断点编号</li>
+<li>%dtor: 在程序即将退出时调用，做一些结尾操作</li>
 </ul>
-<h5 id="image-lookup">image lookup</h5>
-<ul>
-<li>image lookup -t 类型：查找某个类型的信息</li>
-<li>image lookup -a 地址：根据内存地址查找在模块中的位置</li>
-<li>image lookup -n 符号或者函数名：查找某个符号或者函数的位置</li>
-<li>image list 列出所加载模块的信息</li>
-<li>image list -o -f 打印出模块的偏移地址、全路径</li>
-</ul>
-<pre><code> image list -o -f | grep WeChat
+<pre><code>%dtor {
+    
+}
 </code></pre>
-<h5 id="寄存器">寄存器</h5>
 <ul>
-<li>memory read 读取所有寄存器的值</li>
-<li>memory write 寄存器 值  给某个寄存器写入值</li>
-<li>po $x0:打印方法调用者</li>
-<li>x/s $x1: 打印方法名</li>
-<li>po $x2:打印参数（以此类推，x3 x4也可能是参数）</li>
+<li>logify.pl: 可以将一个头文件快速转换成包含打印信息的xm文件</li>
 </ul>
+<pre><code>logify.pl xx.h &gt; xx.xm
+</code></pre>
+<p><strong>logify.pl使用注意</strong></p>
+<ul>
+<li><code>logify.pl生成的文件，有很多事编译不过的，需要进行一些处理</code></li>
+<li>删除<code>__weak</code></li>
+<li>删除<code>inout</code></li>
+<li>删除协议，比如<code>&lt;XXTestDelegate&gt;</code></li>
+<li>或者声明一下协议信息<code>@protocol XXTestDelegate</code></li>
+<li>删除<code>-(void).cxx_destrut{%log; %orig;}</code></li>
+<li>删除<code>HBLogDebug(@&quot;=0x%x,(unsigned int)r&quot;)</code></li>
+<li>替换类型为void，比如将<code>XXPersion替换为void</code></li>
+<li>或者声明一下类信息</li>
+</ul>
+<pre><code>@interface XXPerson : NSObject
+@end
+</code></pre>
 
         </div>
         <!-- Share to Twitter, Weibo, Telegram -->
@@ -257,25 +218,10 @@ breakpoint set -n &quot;-[ViewController touchBegan:withEvent:]&quot;
 <ul>
 <li>
 <ul>
-<li>
-<ul>
-<li><a href="#%E6%8C%87%E4%BB%A4%E6%A0%BC%E5%BC%8F">指令格式</a></li>
-<li><a href="#help%E6%8C%87%E4%BB%A4">help指令</a></li>
-<li><a href="#expression-cmd-options-expr">expression <cmd-options>--<expr></a></li>
-<li><a href="#thread-backtrace">thread backtrace</a></li>
-<li><a href="#thread-return-expr">thread return [<expr>]</a></li>
-<li><a href="#frame-variable-variable-name">frame variable [<variable-name>]</a></li>
-<li><a href="#thread-continue-continue-c-%E7%A8%8B%E5%BA%8F%E7%BB%A7%E7%BB%AD%E8%BF%90%E8%A1%8C">thread continue 、continue、c ：程序继续运行</a></li>
-<li><a href="#thread-step-over-next-n-%E5%8D%95%E6%AD%A5%E8%BF%90%E8%A1%8C-%E6%8A%8A%E5%AD%90%E5%87%BD%E6%95%B0%E5%BD%93%E5%81%9A%E6%95%B4%E4%BD%93%E4%B8%80%E6%AD%A5%E6%89%A7%E8%A1%8C">thread step-over 、next、n ：单步运行、把子函数当做整体一步执行</a></li>
-<li><a href="#thread-step-in-step-s-%E5%8D%95%E6%AD%A5%E8%BF%90%E8%A1%8C-%E9%81%87%E5%88%B0%E5%AD%90%E5%87%BD%E6%95%B0%E8%BF%9B%E5%85%A5%E5%88%B0%E5%AD%90%E5%87%BD%E6%95%B0%E4%B8%AD">thread step-in 、step、s ：单步运行、遇到子函数进入到子函数中</a></li>
-<li><a href="#thread-step-out-finish%E7%9B%B4%E6%8E%A5%E6%89%A7%E8%A1%8C%E5%AE%8C%E5%BD%93%E5%89%8D%E5%87%BD%E6%95%B0%E6%89%80%E6%9C%89%E4%BB%A3%E7%A0%81-%E8%BF%94%E5%9B%9E%E5%88%B0%E4%B8%8A%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0">thread step-out 、finish：直接执行完当前函数所有代码、返回到上一个函数</a></li>
-<li><a href="#si-ni%E5%92%8Cs-n%E7%B1%BB%E4%BC%BC">si、ni和s、n类似</a></li>
-<li><a href="#breakpoint-set-%E8%AE%BE%E7%BD%AE%E6%96%AD%E7%82%B9">breakpoint set 设置断点</a></li>
-<li><a href="#%E5%86%85%E5%AD%98%E6%96%AD%E7%82%B9">内存断点</a></li>
-<li><a href="#image-lookup">image lookup</a></li>
-<li><a href="#%E5%AF%84%E5%AD%98%E5%99%A8">寄存器</a></li>
-</ul>
-</li>
+<li><a href="#tweak%E6%80%8E%E4%B9%88%E5%A4%9A%E6%96%87%E4%BB%B6%E5%BC%80%E5%8F%91">tweak怎么多文件开发</a></li>
+<li><a href="#theos-tweak%E5%8A%A0%E8%BD%BD%E8%B5%84%E6%BA%90">theos-tweak加载资源</a></li>
+<li><a href="#%E5%AE%89%E8%A3%85release%E7%89%88%E6%9C%AC">安装<code>release</code>版本</a></li>
+<li><a href="#logos%E8%AF%AD%E6%B3%95">Logos语法</a></li>
 </ul>
 </li>
 </ul>

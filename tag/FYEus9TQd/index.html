@@ -49,78 +49,11 @@
   </nav>
 </div>
 
-    <div class="max-w-4xl w-full mx-auto ">
-      
-        <header class="flex py-16 md:py-32 mt-12 flex-col md:flex-row px-4 md:px-0 animated fadeIn">
-  <div class="flex-1 order-2 md:order-1 md:pr-16">
-    <div class="text-4xl font-bold text-center md:text-left">
-      七里田间的守望者
-    </div>
-    <div class="text-xl text-gray-500 mt-4 text-center md:text-left">
-      我不在乎是悲伤的离别还是不痛快的离别，只要是离开一个地方，我总希望离开的时候自己心中有数。
-    </div>
-    
-      <div class="mt-8 text-center md:text-left">
-        <a
-          href="/post/about" 
-          arget="_blank"
-          class="text-sm bg-yellow-50 dark:bg-indigo-500 dark:text-gray-700 font-semibold px-4 py-2 inline-block yellow-btn transition-fast rounded"
-        >LET&#39;S TALK!</a>
-      </div>
-    
-    
-      <div class="mt-8 flex items-center">
-        
-          <div class="text-gray-500 mr-2">
-            Follow me 👉
-          </div>
-        
-        
-          
-        
-          
-        
-          
-            
-              <a href="https://github.com/DargonLee" target="_blank" class="mr-2 w-8 h-8 inline-flex items-center justify-center text-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-fast">
-                <i class="ri-github-line"></i>
-              </a>
-            
-          
-        
-          
-        
-          
-            
-              <a href="https://weibo.com/u/2246752722/home?wvr=5&amp;lf=reg" target="_blank" class="mr-2 w-8 h-8 inline-flex items-center justify-center text-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-fast">
-                <i class="ri-weibo-line"></i>
-              </a>
-            
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-      </div>
-    
-  </div>
-  <div class="md:mx-8 flex-shrink-0 self-start rounded-full border-4 border-dotted border-transparent hover:border-yellow-50 p-2 w-32 h-32 order-1 md:order-2 mx-auto s3-dotted">
-    <img class="rounded-full object-cover" src="https://dargonlee.github.io/images/avatar.png?v=1595680750671" alt="七里田间的守望者" width="100%" height="100%">
-  </div>
-</header>
-      
-
+    <div class="max-w-4xl w-full mx-auto pt-32">
+      <h1 class="text-2xl font-bold pb-8 flex justify-center items-center">
+        <i class="ri-hashtag"></i>
+        iOS逆向
+      </h1>
       <div class="shadow-box bg-white dark:bg-gray-600 border-gray-300 rounded-none md:rounded-lg -mx-1 md:mx-0 md:px-0">
         
   <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
@@ -381,41 +314,6 @@ export PATH=$THEOS/bin:$PATH
     
     <div class="flex-1 order-2 md:order-1">
       <h2 class="text-2xl font-semibold mb-4">
-        <a href="https://dargonlee.github.io/post/ios-ming-ling-xing-gong-ju-kai-fa/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
-          iOS命令行工具开发
-        </a>
-      </h2>
-      <div class="mb-4 text-xs text-gray-500">2020-07-25</div>
-      <div class="mb-4 text-gray-500 dark:text-gray-300">
-        <h4 id="本质">本质</h4>
-<ul>
-<li>可执行文件</li>
-<li>跟App内部的可执行文件差不多</li>
-<li>只不过没有UI界面</li>
-<li>需要可执行权限</li>
-</ul>
-<h5 id="新建一个ios项目">新建一个iOS项目</h5>
-<ul>
-<li>把<code>main.m</code>文件的改为<code>return 0；</code></li>
-<li>然后在代码里面写自己代码就可了</li>
-<li>写完代码后，真机编译<code>.app</code>文件，取出里面的可执行文件</li>
-<li>真机编译的时候记得处理下签名认证</li>
-<li>然后拷贝到<code>/usr/bin</code>目录下</li>
-<li>授权可执行权限<code>chomd +x /usr/bin/xxx</code></li>
-</ul>
-
-      </div>
-      <a href="https://dargonlee.github.io/post/ios-ming-ling-xing-gong-ju-kai-fa/" class="btn">
-        Read more
-      </a>
-    </div>
-    
-  </div>
-
-  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
-    
-    <div class="flex-1 order-2 md:order-1">
-      <h2 class="text-2xl font-semibold mb-4">
         <a href="https://dargonlee.github.io/post/tweak-kai-fa-shou-ce/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
           Tweak开发手册
         </a>
@@ -592,71 +490,10 @@ debugserver *:10011 -a WeChat
     </div>
     
   </div>
-
-  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
-    
-    <div class="flex-1 order-2 md:order-1">
-      <h2 class="text-2xl font-semibold mb-4">
-        <a href="https://dargonlee.github.io/post/javascript-diao-shi-ji-qiao/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
-          JavaScript 调试技巧
-        </a>
-      </h2>
-      <div class="mb-4 text-xs text-gray-500">2020-03-16</div>
-      <div class="mb-4 text-gray-500 dark:text-gray-300">
-        
-自动断点
-有时候在执行 JavaScript 代码的时候，可能来不及设置断点，代码就被执行了，其实可以通过在代码中写上 debugger（代码中第 8 行），让代码执行到 debugger 的位置自动暂停。
-
-function b() {...
-      </div>
-      <a href="https://dargonlee.github.io/post/javascript-diao-shi-ji-qiao/" class="btn">
-        Read more
-      </a>
-    </div>
-    
-  </div>
-
-  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
-    
-    <div class="flex-1 order-2 md:order-1">
-      <h2 class="text-2xl font-semibold mb-4">
-        <a href="https://dargonlee.github.io/post/kai-qi-yi-ge-webserver/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
-          开启一个 WebServer
-        </a>
-      </h2>
-      <div class="mb-4 text-xs text-gray-500">2020-03-09</div>
-      <div class="mb-4 text-gray-500 dark:text-gray-300">
-        <blockquote>
-<p>在 Mac 上开启一个 WebServer，把写好的页面部署到 WebServer 上并可以通过 「ip+端口」 的形式访问。</p>
-</blockquote>
-<h3 id="mac-自带的-webserver">mac 自带的 WebServer</h3>
-<p>mac 自带了一个 WebServer Apache，可以使用命令来开启关闭 WebServer：</p>
-<pre><code class="language-shell">sudo apachectl start //开启
-sudo apachectl restart //重启 
-sudo apachectl stop //关闭 
-</code></pre>
-
-      </div>
-      <a href="https://dargonlee.github.io/post/kai-qi-yi-ge-webserver/" class="btn">
-        Read more
-      </a>
-    </div>
-    
-  </div>
   
       </div>
 
       
-  <div class="my-4 flex justify-between px-4 md:px-0">
-    
-    
-      <a href="https://dargonlee.github.io/page/2" class="btn btn-white">
-        下一页
-        <i class="ri-arrow-right-line ml-4"></i>
-      </a>
-    
-  </div>
-
       <footer class="py-12 text-center px-4 md:px-0" v-pre>
   Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Harlans</a>
 </footer>
@@ -666,5 +503,4 @@ sudo apachectl stop //关闭
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://dargonlee.github.io/media/scripts/main.js"></script>
 </body>
-
 </html>

@@ -4,31 +4,61 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>常用LLDB指令 - 七里田间的守望者</title>
+<title>iOS命令行工具开发 - 七里田间的守望者</title>
 <link rel="shortcut icon" href="https://dargonlee.github.io/favicon.ico">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"> -->
 <link rel="stylesheet" href="https://dargonlee.github.io/media/css/tailwind.css">
 <link rel="stylesheet" href="https://dargonlee.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="常用LLDB指令 - 七里田间的守望者 - Atom Feed" href="https://dargonlee.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="iOS命令行工具开发 - 七里田间的守望者 - Atom Feed" href="https://dargonlee.github.io/atom.xml">
 
     
 
-  <meta name="description" content="指令格式
-&amp;lt;command&amp;gt; [&amp;lt;subcommand&amp;gt; [&amp;lt;subcommand&amp;gt;]...] &amp;lt;actions&amp;gt; [-options [options value]] [argument[a..." />
-  <meta property="og:title" content="常用LLDB指令 - 七里田间的守望者">
-  <meta property="og:description" content="指令格式
-&amp;lt;command&amp;gt; [&amp;lt;subcommand&amp;gt; [&amp;lt;subcommand&amp;gt;]...] &amp;lt;actions&amp;gt; [-options [options value]] [argument[a..." />
+  <meta name="description" content="本质
+
+可执行文件
+跟App内部的可执行文件差不多
+只不过没有UI界面
+需要可执行权限
+
+新建一个iOS项目
+
+把main.m文件的改为return 0；
+然后在代码里面写自己代码就可了
+写完代码后，真机编译.app文件，取出里面的可执行文..." />
+  <meta property="og:title" content="iOS命令行工具开发 - 七里田间的守望者">
+  <meta property="og:description" content="本质
+
+可执行文件
+跟App内部的可执行文件差不多
+只不过没有UI界面
+需要可执行权限
+
+新建一个iOS项目
+
+把main.m文件的改为return 0；
+然后在代码里面写自己代码就可了
+写完代码后，真机编译.app文件，取出里面的可执行文..." />
   <meta property="og:type" content="articles">
-  <meta property="og:url" content="https://dargonlee.github.io/post/chang-yong-lldb-zhi-ling/" />
+  <meta property="og:url" content="https://dargonlee.github.io/post/ios-ming-ling-xing-gong-ju-kai-fa/" />
   <meta property="og:image" content="https://dargonlee.github.io/images/avatar.png">
   <meta property="og:image:height" content="630">
   <meta property="og:image:width" content="1200">
-  <meta name="twitter:title" content="常用LLDB指令 - 七里田间的守望者">
-  <meta name="twitter:description" content="指令格式
-&amp;lt;command&amp;gt; [&amp;lt;subcommand&amp;gt; [&amp;lt;subcommand&amp;gt;]...] &amp;lt;actions&amp;gt; [-options [options value]] [argument[a...">
+  <meta name="twitter:title" content="iOS命令行工具开发 - 七里田间的守望者">
+  <meta name="twitter:description" content="本质
+
+可执行文件
+跟App内部的可执行文件差不多
+只不过没有UI界面
+需要可执行权限
+
+新建一个iOS项目
+
+把main.m文件的改为return 0；
+然后在代码里面写自己代码就可了
+写完代码后，真机编译.app文件，取出里面的可执行文...">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="canonical" href="https://dargonlee.github.io/post/chang-yong-lldb-zhi-ling/">
+  <link rel="canonical" href="https://dargonlee.github.io/post/ios-ming-ling-xing-gong-ju-kai-fa/">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css">
@@ -48,168 +78,76 @@
     <div class="max-w-4xl w-full mx-auto">
       <div class="shadow-box bg-white dark:bg-gray-600 rounded-lg pt-32 md:pt-64 px-4 md:px-8 pb-8 animated fadeIn mb-8">
         <h1 class="text-5xl font-semibold leading-normal pb-8 mb-8 border-b-8 border-gray-700">
-          常用LLDB指令
+          iOS命令行工具开发
         </h1>
         
         <div class="mb-8 flex flex-wrap">
-          <div class="text-gray-400 text-sm mr-4">2020-07-25 · 4 min read</div>
-          
-            <a href="https://dargonlee.github.io/tag/FYEus9TQd/" class="text-gray-700 text-sm border-b-2 border-dotted border-gray-200 hover:border-gray-600 transition-all duration-100 inline-flex mr-2">
-              <i class="ri-hashtag"></i>
-              iOS逆向
-            </a>
+          <div class="text-gray-400 text-sm mr-4">2020-07-25 · 2 min read</div>
           
         </div>
         <div class="markdown mb-8" v-pre>
-          <h5 id="指令格式">指令格式</h5>
-<pre><code>&lt;command&gt; [&lt;subcommand&gt; [&lt;subcommand&gt;]...] &lt;actions&gt; [-options [options value]] [argument[argument]...]
-</code></pre>
+          <h4 id="本质">本质</h4>
 <ul>
-<li><command> 命令</li>
-<li><subcommand>子命令</li>
-<li><actions>命令操作</li>
-<li><options>命令选项</li>
-<li><argument> 命令参数</li>
+<li>可执行文件</li>
+<li>跟App内部的可执行文件差不多</li>
+<li>只不过没有UI界面</li>
+<li>需要可执行权限</li>
 </ul>
-<p>比如给<code>test</code>函数设置断点</p>
+<h5 id="新建一个ios项目">新建一个iOS项目</h5>
+<ul>
+<li>把<code>main.m</code>文件的改为<code>return 0；</code></li>
+<li>然后在代码里面写自己代码就可了</li>
+<li>写完代码后，真机编译<code>.app</code>文件，取出里面的可执行文件</li>
+<li>真机编译的时候记得处理下签名认证</li>
+<li>然后拷贝到<code>/usr/bin</code>目录下</li>
+<li>授权可执行权限<code>chomd +x /usr/bin/xxx</code></li>
+</ul>
 <!-- more -->
-<pre><code>breakpoint set -n test
-</code></pre>
-<ul>
-<li>breakpoint是<command></li>
-<li>set是<actions></li>
-<li>-n是<options></li>
-<li>test是<argument></li>
-</ul>
-<h5 id="help指令">help指令</h5>
-<blockquote>
-<p>查看指令用法</p>
-</blockquote>
-<p>比如</p>
-<pre><code>help breakpoint 
-</code></pre>
-<pre><code>help breakpoint set
-</code></pre>
-<h5 id="expression-cmd-options-expr">expression <cmd-options>--<expr></h5>
-<blockquote>
-<p>执行一个表达式</p>
-</blockquote>
-<ul>
-<li><cmd-options> 命令行选项</li>
-<li>-- 命令选项结束符 表示所有的命令选项已经设置完毕 如果没有命令选项，--可以省略</li>
-<li><expr> 需要执行的表达式</li>
-</ul>
-<pre><code>expression self.view.backgroundColor = [UIColor redColor]
-</code></pre>
-<ul>
-<li>expression、expression--和指令print、p、call的效果一样</li>
-<li>expression -O --和po指令效果一样</li>
-</ul>
-<h5 id="thread-backtrace">thread backtrace</h5>
-<ul>
-<li>打印线程的堆栈信息</li>
-<li>和指令bt效果一样</li>
-</ul>
-<h5 id="thread-return-expr">thread return [<expr>]</h5>
-<ul>
-<li>让函数直接返回某一个值，不会执行断点后面的代码</li>
-</ul>
-<h5 id="frame-variable-variable-name">frame variable [<variable-name>]</h5>
-<ul>
-<li>打印当前栈帧的变量</li>
-</ul>
-<h5 id="thread-continue-continue-c-程序继续运行">thread continue 、continue、c ：程序继续运行</h5>
-<h5 id="thread-step-over-next-n-单步运行-把子函数当做整体一步执行">thread step-over 、next、n ：单步运行、把子函数当做整体一步执行</h5>
-<h5 id="thread-step-in-step-s-单步运行-遇到子函数进入到子函数中">thread step-in 、step、s ：单步运行、遇到子函数进入到子函数中</h5>
-<h5 id="thread-step-out-finish直接执行完当前函数所有代码-返回到上一个函数">thread step-out 、finish：直接执行完当前函数所有代码、返回到上一个函数</h5>
-<h5 id="si-ni和s-n类似">si、ni和s、n类似</h5>
-<ul>
-<li>s、n是源码级别的</li>
-<li>si、ni是汇编指令级别的</li>
-</ul>
-<h5 id="breakpoint-set-设置断点">breakpoint set 设置断点</h5>
-<ul>
-<li>breakpoint set -a 函数地址</li>
-</ul>
-<pre><code>
-</code></pre>
-<ul>
-<li>breakpoint set -n 函数名称</li>
-</ul>
-<pre><code>breakpoint set -n test
+<pre><code>#import &lt;mach-o/fat.h&gt;
+#import &lt;mach-o/loader.h&gt;
 
-breakpoint set -n  touchBegan:withEvent:
 
-breakpoint set -n &quot;-[ViewController touchBegan:withEvent:]&quot;
+if (argv[1] == @&quot;-l&quot;) {
+            
+}
+NSString *path = @&quot;&quot;;// 可执行文件的路径
+NSFileHandle *handle = [NSFileHandle fileHandleForReadingAtPath:path];
+// 读取最前面的4个字节(magic,number)
+int lenght = sizeof(uint32_t);
+NSData *magicData = [handle readDataOfLength:lenght];
+//魔数用来标识文件类型
+uint32_t magicNumber;
+[magicData getBytes:&amp;magicNumber length:lenght];
+if (magicNumber == FAT_CIGAM || magicNumber == FAT_MAGIC) { // 胖二进制文件
+    
+}else if (magicNumber == MH_CIGAM || magicNumber == MH_MAGIC) { // 非arm64文件
+    
+}else if (magicNumber == MH_CIGAM_64 || magicNumber == MH_MAGIC_64) { // arm64文件
+    
+}
+[handle closeFile];
 </code></pre>
-<p><strong>breakpoint set -n test 简写为 br set -n test</strong></p>
+<h5 id="由于个人签名有效期有限">由于个人签名有效期有限</h5>
 <ul>
-<li>
-<p>breakpoint set -r 正则表达式</p>
-</li>
-<li>
-<p>breakpoint set -s 动态库 -n 函数名</p>
-</li>
-<li>
-<p>breakpoint list 列出所有断点</p>
-</li>
-<li>
-<p>breakpoint disable 断点编号 ： 禁用断点</p>
-</li>
-<li>
-<p>breakpoint enable 断点编号 ： 启用断点</p>
-</li>
-<li>
-<p>breakpoint delete 断点编号 ： 删除断点</p>
-</li>
-<li>
-<p>breakpoint command 断点编号 ： 给断点预先设置需要执行的命令，到触发断点时，就会按顺序执行</p>
-</li>
-<li>
-<p>breakpoint command list 断点编号：查看某个断点设置的命令</p>
-</li>
-<li>
-<p>breakpoint command delete 断点编号：删除某个断点设置的命令</p>
-</li>
+<li>我们可以换成手动签名的方式</li>
 </ul>
-<h5 id="内存断点">内存断点</h5>
+<h5 id="签名给可执行文件一定的权限让他可以访问其他app的可执行文件">签名给可执行文件一定的权限，让他可以访问其他App的可执行文件</h5>
+<ul>
+<li>使用<code>ldid导出某一个可执行文件的权限</code></li>
+</ul>
 <blockquote>
-<p>在内存数据发生改变的时候触发 <code>watchpoint set variable 变量</code></p>
+<p>TestCL为可执行文件</p>
 </blockquote>
-<pre><code>watchpoint set variable self-&gt;age
+<pre><code>ldid -e TestCL &gt; TestCL.entitlements
 </code></pre>
 <ul>
-<li><code>watchpoint set expression 地址</code></li>
+<li>重新签上权限(先修改TestCL.entitlements里面的值)</li>
 </ul>
-<pre><code>watchpoint set variable &amp;(self-&gt;_age)
+<pre><code>ldid -STestCl.entitlements TestCL
 </code></pre>
-<ul>
-<li>watchpoint list</li>
-<li>watchpoint disable 断点编号</li>
-<li>watchpoint enable 断点编号</li>
-<li>watchpoint delete 断点编号</li>
-<li>watchpoint command add 断点编号</li>
-<li>watchpoint command list 断点编号</li>
-<li>watchpoint command delete 断点编号</li>
-</ul>
-<h5 id="image-lookup">image lookup</h5>
-<ul>
-<li>image lookup -t 类型：查找某个类型的信息</li>
-<li>image lookup -a 地址：根据内存地址查找在模块中的位置</li>
-<li>image lookup -n 符号或者函数名：查找某个符号或者函数的位置</li>
-<li>image list 列出所加载模块的信息</li>
-<li>image list -o -f 打印出模块的偏移地址、全路径</li>
-</ul>
-<pre><code> image list -o -f | grep WeChat
-</code></pre>
-<h5 id="寄存器">寄存器</h5>
-<ul>
-<li>memory read 读取所有寄存器的值</li>
-<li>memory write 寄存器 值  给某个寄存器写入值</li>
-<li>po $x0:打印方法调用者</li>
-<li>x/s $x1: 打印方法名</li>
-<li>po $x2:打印参数（以此类推，x3 x4也可能是参数）</li>
-</ul>
+<blockquote>
+<p>把自己写的工具的可执行文件权限提升，先把<code>SpringBoard</code>的可执行文件导出来，然后把它的权限导出来，然后把它的权限签到自己写可执行文件上就行了</p>
+</blockquote>
 
         </div>
         <!-- Share to Twitter, Weibo, Telegram -->
@@ -257,23 +195,11 @@ breakpoint set -n &quot;-[ViewController touchBegan:withEvent:]&quot;
 <ul>
 <li>
 <ul>
-<li>
+<li><a href="#%E6%9C%AC%E8%B4%A8">本质</a>
 <ul>
-<li><a href="#%E6%8C%87%E4%BB%A4%E6%A0%BC%E5%BC%8F">指令格式</a></li>
-<li><a href="#help%E6%8C%87%E4%BB%A4">help指令</a></li>
-<li><a href="#expression-cmd-options-expr">expression <cmd-options>--<expr></a></li>
-<li><a href="#thread-backtrace">thread backtrace</a></li>
-<li><a href="#thread-return-expr">thread return [<expr>]</a></li>
-<li><a href="#frame-variable-variable-name">frame variable [<variable-name>]</a></li>
-<li><a href="#thread-continue-continue-c-%E7%A8%8B%E5%BA%8F%E7%BB%A7%E7%BB%AD%E8%BF%90%E8%A1%8C">thread continue 、continue、c ：程序继续运行</a></li>
-<li><a href="#thread-step-over-next-n-%E5%8D%95%E6%AD%A5%E8%BF%90%E8%A1%8C-%E6%8A%8A%E5%AD%90%E5%87%BD%E6%95%B0%E5%BD%93%E5%81%9A%E6%95%B4%E4%BD%93%E4%B8%80%E6%AD%A5%E6%89%A7%E8%A1%8C">thread step-over 、next、n ：单步运行、把子函数当做整体一步执行</a></li>
-<li><a href="#thread-step-in-step-s-%E5%8D%95%E6%AD%A5%E8%BF%90%E8%A1%8C-%E9%81%87%E5%88%B0%E5%AD%90%E5%87%BD%E6%95%B0%E8%BF%9B%E5%85%A5%E5%88%B0%E5%AD%90%E5%87%BD%E6%95%B0%E4%B8%AD">thread step-in 、step、s ：单步运行、遇到子函数进入到子函数中</a></li>
-<li><a href="#thread-step-out-finish%E7%9B%B4%E6%8E%A5%E6%89%A7%E8%A1%8C%E5%AE%8C%E5%BD%93%E5%89%8D%E5%87%BD%E6%95%B0%E6%89%80%E6%9C%89%E4%BB%A3%E7%A0%81-%E8%BF%94%E5%9B%9E%E5%88%B0%E4%B8%8A%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0">thread step-out 、finish：直接执行完当前函数所有代码、返回到上一个函数</a></li>
-<li><a href="#si-ni%E5%92%8Cs-n%E7%B1%BB%E4%BC%BC">si、ni和s、n类似</a></li>
-<li><a href="#breakpoint-set-%E8%AE%BE%E7%BD%AE%E6%96%AD%E7%82%B9">breakpoint set 设置断点</a></li>
-<li><a href="#%E5%86%85%E5%AD%98%E6%96%AD%E7%82%B9">内存断点</a></li>
-<li><a href="#image-lookup">image lookup</a></li>
-<li><a href="#%E5%AF%84%E5%AD%98%E5%99%A8">寄存器</a></li>
+<li><a href="#%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%AAios%E9%A1%B9%E7%9B%AE">新建一个iOS项目</a></li>
+<li><a href="#%E7%94%B1%E4%BA%8E%E4%B8%AA%E4%BA%BA%E7%AD%BE%E5%90%8D%E6%9C%89%E6%95%88%E6%9C%9F%E6%9C%89%E9%99%90">由于个人签名有效期有限</a></li>
+<li><a href="#%E7%AD%BE%E5%90%8D%E7%BB%99%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E4%B8%80%E5%AE%9A%E7%9A%84%E6%9D%83%E9%99%90%E8%AE%A9%E4%BB%96%E5%8F%AF%E4%BB%A5%E8%AE%BF%E9%97%AE%E5%85%B6%E4%BB%96app%E7%9A%84%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6">签名给可执行文件一定的权限，让他可以访问其他App的可执行文件</a></li>
 </ul>
 </li>
 </ul>

@@ -58,6 +58,228 @@
     
     <div class="flex-1 order-2 md:order-1">
       <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://dargonlee.github.io/post/git-de-chang-yong-ming-ling/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          Git的常用命令
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2019-08-12</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <pre><code class="language-bash"># 显示当前的Git配置
+$ git config --list
+
+# 查看仓库配置
+git config --local -l 
+
+# 查看用户配置
+git config --global -l 
+
+# 查看系统配置
+git config --system -l </code></pre>
+
+      </div>
+      <a href="https://dargonlee.github.io/post/git-de-chang-yong-ming-ling/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://dargonlee.github.io/post/css-bu-ju/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          CSS布局
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2019-07-09</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <h1 id="position">position</h1>
+<blockquote>
+<p>为了制作更多复杂的布局，我们需要讨论下<code>position</code>属性。它有一大堆的值，名字还都特抽象，别提有多难记了。让我们先一个个的过一遍，不过你最好还是把这页放到书签里。</p>
+</blockquote>
+<ul>
+<li><code>static</code>元素框正常生成。块级元素生成一个矩形框，作为文档流的一部分；行内元素则会创建一个或多个行框，置于其父元素中。</li>
+</ul>
+<pre><code class="language-css">.static {
+    position: static;
+}
+</code></pre>
+
+      </div>
+      <a href="https://dargonlee.github.io/post/css-bu-ju/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://dargonlee.github.io/post/ios-gei-uilabel-zeng-jia-fu-zhi-nian-tie-gong-neng/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          iOS-给UILabel增加复制粘贴功能
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2019-06-11</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <h2 id="第一步">第一步</h2>
+<pre><code class="language-objectivec">//让label有资格成为第一响应者
+- (BOOL)becomeFirstResponder
+{
+    return YES;
+}
+
+//label能执行哪些操作(比如 拷贝 等)
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{
+    if (action == @selector(copy:) || action == @selector(paste:) || action == @selector(cut:)) return YES;
+    return NO;
+}
+</code></pre>
+
+      </div>
+      <a href="https://dargonlee.github.io/post/ios-gei-uilabel-zeng-jia-fu-zhi-nian-tie-gong-neng/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://dargonlee.github.io/post/xiu-gai-ios-fan-hui-an-niu-de-ji-chong-fang-shi/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          修改iOS返回按钮的几种方式
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2019-02-13</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <h3 id="第一种">第一种</h3>
+<pre><code class="language-objectivec">UIImage *backButtonImage = [[UIImage imageNamed:@&quot;back&quot;] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)];
+
+[[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButtonImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+
+[[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(NSIntegerMin, NSIntegerMin) forBarMetrics:UIBarMetricsDefault];
+</code></pre>
+<blockquote>
+<p>提示:上面这种方法会被系统给拉伸,需要在当前控制器里面设置</p>
+</blockquote>
+
+      </div>
+      <a href="https://dargonlee.github.io/post/xiu-gai-ios-fan-hui-an-niu-de-ji-chong-fang-shi/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://dargonlee.github.io/post/ios-kong-zhi-qi-view-jia-zai-shun-xu-xiang-xi-ban/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          iOS控制器View加载顺序详细版
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2019-01-23</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <p><code>控制器声明周期</code></p>
+<pre><code class="language-objectivec">//通过nib问价初始化触发
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+
+//nib文件被加载的时候，会发送一个消息到nib文件中的每一个对象
+- (void)awakeFromNib
+
+//开始加载视图控制器自带的view
+- (void)loadView
+
+//视图控制器的view被加载完成
+- (void)viewDidLoad
+
+//视图控制器的view将要显示在window上
+
+- (void)viewWillAppear:(BOOL)animated
+
+//视图控制器的view开始更新Autolayout
+- (void)updateViewConstraints
+
+//视图控制器的view开始更新内容视图的位置
+- (void)viewWillLayoutSubviews
+
+//视图控制器的view已经更新内容视图的位置
+- (void)viewDidLayoutSubviews
+
+//视图控制器的view已经显示到window上
+- (void)viewDidAppear:(BOOL)animated
+
+//视图控制的view将要从window上消失
+- (void)viewWillDisappear:(BOOL)animated
+
+//视图控制器的view已经从window上消失
+- (void)viewDidDisappear:(BOOL)animated
+</code></pre>
+
+      </div>
+      <a href="https://dargonlee.github.io/post/ios-kong-zhi-qi-view-jia-zai-shun-xu-xiang-xi-ban/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://dargonlee.github.io/post/hello-gridea/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          Hello Gridea
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2018-12-12</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
+✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
+
+      </div>
+      <a href="https://dargonlee.github.io/post/hello-gridea/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+      <img class="flex-shrink-0 self-start md:ml-4 mb-4 md:mb-0 rounded-sm object-cover featured-img order-1 md:order-2 w-full h-40 md:w-56 md:h-32" loading="lazy" src="https://dargonlee.github.io/post-images/hello-gridea.png" alt="Hello Gridea">
+    
+  </div>
+
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://dargonlee.github.io/post/ios-wkwebview-tong-bu-fan-hui-zhi-gei-js/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          iOS WKWebView 同步返回值给JS
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2018-10-23</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <blockquote>
+<p>我们都知道iOS WKWebView 跟JS通信的时候 由于JS Call OC 同步返回我这里采用了不同于异步messageHandler的通信方式，因此同步返回要单独进行设计</p>
+<p>在我发现下面方法的时候 一般我们处理 与JS交互的时候都是 JS调用我们 然后我们再去调用JS方法 并不能同步给JS返回值</p>
+</blockquote>
+
+      </div>
+      <a href="https://dargonlee.github.io/post/ios-wkwebview-tong-bu-fan-hui-zhi-gei-js/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
         <a href="https://dargonlee.github.io/post/ios-fu-wen-ben/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
           iOS富文本
         </a>

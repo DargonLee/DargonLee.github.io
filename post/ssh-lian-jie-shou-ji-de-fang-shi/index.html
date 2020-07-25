@@ -4,31 +4,52 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>常用LLDB指令 - 七里田间的守望者</title>
+<title>ssh连接手机的方式 - 七里田间的守望者</title>
 <link rel="shortcut icon" href="https://dargonlee.github.io/favicon.ico">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"> -->
 <link rel="stylesheet" href="https://dargonlee.github.io/media/css/tailwind.css">
 <link rel="stylesheet" href="https://dargonlee.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="常用LLDB指令 - 七里田间的守望者 - Atom Feed" href="https://dargonlee.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="ssh连接手机的方式 - 七里田间的守望者 - Atom Feed" href="https://dargonlee.github.io/atom.xml">
 
     
 
-  <meta name="description" content="指令格式
-&amp;lt;command&amp;gt; [&amp;lt;subcommand&amp;gt; [&amp;lt;subcommand&amp;gt;]...] &amp;lt;actions&amp;gt; [-options [options value]] [argument[a..." />
-  <meta property="og:title" content="常用LLDB指令 - 七里田间的守望者">
-  <meta property="og:description" content="指令格式
-&amp;lt;command&amp;gt; [&amp;lt;subcommand&amp;gt; [&amp;lt;subcommand&amp;gt;]...] &amp;lt;actions&amp;gt; [-options [options value]] [argument[a..." />
+  <meta name="description" content="通过USB连接iPhone
+
+用iproxy 转发端口
+
+iproxy 2222 22 进行端口转发
+
+想要支持多个ssh连接的话 需要添加参数 -t
+如果加-t 不行的 请使用usbmuxd的1.0.8版本
+如果是1.0.8版本的需要执行..." />
+  <meta property="og:title" content="ssh连接手机的方式 - 七里田间的守望者">
+  <meta property="og:description" content="通过USB连接iPhone
+
+用iproxy 转发端口
+
+iproxy 2222 22 进行端口转发
+
+想要支持多个ssh连接的话 需要添加参数 -t
+如果加-t 不行的 请使用usbmuxd的1.0.8版本
+如果是1.0.8版本的需要执行..." />
   <meta property="og:type" content="articles">
-  <meta property="og:url" content="https://dargonlee.github.io/post/chang-yong-lldb-zhi-ling/" />
+  <meta property="og:url" content="https://dargonlee.github.io/post/ssh-lian-jie-shou-ji-de-fang-shi/" />
   <meta property="og:image" content="https://dargonlee.github.io/images/avatar.png">
   <meta property="og:image:height" content="630">
   <meta property="og:image:width" content="1200">
-  <meta name="twitter:title" content="常用LLDB指令 - 七里田间的守望者">
-  <meta name="twitter:description" content="指令格式
-&amp;lt;command&amp;gt; [&amp;lt;subcommand&amp;gt; [&amp;lt;subcommand&amp;gt;]...] &amp;lt;actions&amp;gt; [-options [options value]] [argument[a...">
+  <meta name="twitter:title" content="ssh连接手机的方式 - 七里田间的守望者">
+  <meta name="twitter:description" content="通过USB连接iPhone
+
+用iproxy 转发端口
+
+iproxy 2222 22 进行端口转发
+
+想要支持多个ssh连接的话 需要添加参数 -t
+如果加-t 不行的 请使用usbmuxd的1.0.8版本
+如果是1.0.8版本的需要执行...">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="canonical" href="https://dargonlee.github.io/post/chang-yong-lldb-zhi-ling/">
+  <link rel="canonical" href="https://dargonlee.github.io/post/ssh-lian-jie-shou-ji-de-fang-shi/">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css">
@@ -48,11 +69,11 @@
     <div class="max-w-4xl w-full mx-auto">
       <div class="shadow-box bg-white dark:bg-gray-600 rounded-lg pt-32 md:pt-64 px-4 md:px-8 pb-8 animated fadeIn mb-8">
         <h1 class="text-5xl font-semibold leading-normal pb-8 mb-8 border-b-8 border-gray-700">
-          常用LLDB指令
+          ssh连接手机的方式
         </h1>
         
         <div class="mb-8 flex flex-wrap">
-          <div class="text-gray-400 text-sm mr-4">2020-07-25 · 4 min read</div>
+          <div class="text-gray-400 text-sm mr-4">2020-07-25 · 2 min read</div>
           
             <a href="https://dargonlee.github.io/tag/FYEus9TQd/" class="text-gray-700 text-sm border-b-2 border-dotted border-gray-200 hover:border-gray-600 transition-all duration-100 inline-flex mr-2">
               <i class="ri-hashtag"></i>
@@ -61,155 +82,50 @@
           
         </div>
         <div class="markdown mb-8" v-pre>
-          <h5 id="指令格式">指令格式</h5>
-<pre><code>&lt;command&gt; [&lt;subcommand&gt; [&lt;subcommand&gt;]...] &lt;actions&gt; [-options [options value]] [argument[argument]...]
+          <h4 id="通过usb连接iphone">通过USB连接iPhone</h4>
+<ul>
+<li>用<code>iproxy</code> 转发端口</li>
+</ul>
+<pre><code>iproxy 2222 22 进行端口转发
+</code></pre>
+<p>想要支持多个ssh连接的话 需要添加参数 -t<br>
+如果加<code>-t</code> 不行的 请使用<code>usbmuxd</code>的1.0.8版本</p>
+<p>如果是1.0.8版本的需要执行下面的命令进行端口转发</p>
+<pre><code>python tcprelay.py -t 22:2222
+</code></pre>
+<p>这里的<code>-t</code>就是支持多个ssh连接的参数</p>
+<p>然后连接好USB进行登录手机</p>
+<pre><code>ssh -p 2222 root@127.0.0.1
+或者
+ssh -p 2222 root@localhost
+</code></pre>
+<blockquote>
+<p>上面代码意义在于将iPhone的22端口（ssh端口）映射到Mac本地的2222端口</p>
+</blockquote>
+<h4 id="使用scp拷贝文件到手机的某个目录">使用scp拷贝文件到手机的某个目录</h4>
+<ul>
+<li>通过WiFi的方式</li>
+</ul>
+<pre><code>scp 本地文件路径 roo@192.168.1.2:手机的目录
 </code></pre>
 <ul>
-<li><command> 命令</li>
-<li><subcommand>子命令</li>
-<li><actions>命令操作</li>
-<li><options>命令选项</li>
-<li><argument> 命令参数</li>
+<li>通过端口转发的方式</li>
 </ul>
-<p>比如给<code>test</code>函数设置断点</p>
+<pre><code>scp -P 2222 本地文件路径 root@localhost:手机的目录
+</code></pre>
+<p><em><strong>注意：</strong></em></p>
+<blockquote>
+<p>执行脚本的方式有三种<br>
+分别为<code>sh xx.sh</code> <code>base xx.sh</code> <code>source xx.sh</code><br>
+这里的 <code>sh xx.sh</code> <code>base xx.sh</code> 都是系统会开一个子进程去执行命令，执行完之后还是会返回到父进程的执行环境中。</p>
+</blockquote>
 <!-- more -->
-<pre><code>breakpoint set -n test
-</code></pre>
-<ul>
-<li>breakpoint是<command></li>
-<li>set是<actions></li>
-<li>-n是<options></li>
-<li>test是<argument></li>
-</ul>
-<h5 id="help指令">help指令</h5>
-<blockquote>
-<p>查看指令用法</p>
-</blockquote>
-<p>比如</p>
-<pre><code>help breakpoint 
-</code></pre>
-<pre><code>help breakpoint set
-</code></pre>
-<h5 id="expression-cmd-options-expr">expression <cmd-options>--<expr></h5>
-<blockquote>
-<p>执行一个表达式</p>
-</blockquote>
-<ul>
-<li><cmd-options> 命令行选项</li>
-<li>-- 命令选项结束符 表示所有的命令选项已经设置完毕 如果没有命令选项，--可以省略</li>
-<li><expr> 需要执行的表达式</li>
-</ul>
-<pre><code>expression self.view.backgroundColor = [UIColor redColor]
-</code></pre>
-<ul>
-<li>expression、expression--和指令print、p、call的效果一样</li>
-<li>expression -O --和po指令效果一样</li>
-</ul>
-<h5 id="thread-backtrace">thread backtrace</h5>
-<ul>
-<li>打印线程的堆栈信息</li>
-<li>和指令bt效果一样</li>
-</ul>
-<h5 id="thread-return-expr">thread return [<expr>]</h5>
-<ul>
-<li>让函数直接返回某一个值，不会执行断点后面的代码</li>
-</ul>
-<h5 id="frame-variable-variable-name">frame variable [<variable-name>]</h5>
-<ul>
-<li>打印当前栈帧的变量</li>
-</ul>
-<h5 id="thread-continue-continue-c-程序继续运行">thread continue 、continue、c ：程序继续运行</h5>
-<h5 id="thread-step-over-next-n-单步运行-把子函数当做整体一步执行">thread step-over 、next、n ：单步运行、把子函数当做整体一步执行</h5>
-<h5 id="thread-step-in-step-s-单步运行-遇到子函数进入到子函数中">thread step-in 、step、s ：单步运行、遇到子函数进入到子函数中</h5>
-<h5 id="thread-step-out-finish直接执行完当前函数所有代码-返回到上一个函数">thread step-out 、finish：直接执行完当前函数所有代码、返回到上一个函数</h5>
-<h5 id="si-ni和s-n类似">si、ni和s、n类似</h5>
-<ul>
-<li>s、n是源码级别的</li>
-<li>si、ni是汇编指令级别的</li>
-</ul>
-<h5 id="breakpoint-set-设置断点">breakpoint set 设置断点</h5>
-<ul>
-<li>breakpoint set -a 函数地址</li>
-</ul>
-<pre><code>
-</code></pre>
-<ul>
-<li>breakpoint set -n 函数名称</li>
-</ul>
-<pre><code>breakpoint set -n test
-
-breakpoint set -n  touchBegan:withEvent:
-
-breakpoint set -n &quot;-[ViewController touchBegan:withEvent:]&quot;
-</code></pre>
-<p><strong>breakpoint set -n test 简写为 br set -n test</strong></p>
-<ul>
-<li>
-<p>breakpoint set -r 正则表达式</p>
-</li>
-<li>
-<p>breakpoint set -s 动态库 -n 函数名</p>
-</li>
-<li>
-<p>breakpoint list 列出所有断点</p>
-</li>
-<li>
-<p>breakpoint disable 断点编号 ： 禁用断点</p>
-</li>
-<li>
-<p>breakpoint enable 断点编号 ： 启用断点</p>
-</li>
-<li>
-<p>breakpoint delete 断点编号 ： 删除断点</p>
-</li>
-<li>
-<p>breakpoint command 断点编号 ： 给断点预先设置需要执行的命令，到触发断点时，就会按顺序执行</p>
-</li>
-<li>
-<p>breakpoint command list 断点编号：查看某个断点设置的命令</p>
-</li>
-<li>
-<p>breakpoint command delete 断点编号：删除某个断点设置的命令</p>
-</li>
-</ul>
-<h5 id="内存断点">内存断点</h5>
-<blockquote>
-<p>在内存数据发生改变的时候触发 <code>watchpoint set variable 变量</code></p>
-</blockquote>
-<pre><code>watchpoint set variable self-&gt;age
-</code></pre>
-<ul>
-<li><code>watchpoint set expression 地址</code></li>
-</ul>
-<pre><code>watchpoint set variable &amp;(self-&gt;_age)
-</code></pre>
-<ul>
-<li>watchpoint list</li>
-<li>watchpoint disable 断点编号</li>
-<li>watchpoint enable 断点编号</li>
-<li>watchpoint delete 断点编号</li>
-<li>watchpoint command add 断点编号</li>
-<li>watchpoint command list 断点编号</li>
-<li>watchpoint command delete 断点编号</li>
-</ul>
-<h5 id="image-lookup">image lookup</h5>
-<ul>
-<li>image lookup -t 类型：查找某个类型的信息</li>
-<li>image lookup -a 地址：根据内存地址查找在模块中的位置</li>
-<li>image lookup -n 符号或者函数名：查找某个符号或者函数的位置</li>
-<li>image list 列出所加载模块的信息</li>
-<li>image list -o -f 打印出模块的偏移地址、全路径</li>
-</ul>
-<pre><code> image list -o -f | grep WeChat
-</code></pre>
-<h5 id="寄存器">寄存器</h5>
-<ul>
-<li>memory read 读取所有寄存器的值</li>
-<li>memory write 寄存器 值  给某个寄存器写入值</li>
-<li>po $x0:打印方法调用者</li>
-<li>x/s $x1: 打印方法名</li>
-<li>po $x2:打印参数（以此类推，x3 x4也可能是参数）</li>
-</ul>
+<p><code>source xx.sh</code> 和 <code>. xx.sh</code> 一样的</p>
+<p>比如 脚本内部有个命令 <code>cd xx/yy</code>的一个目录，<br>
+用<code>sh xx.sh</code> <code>base xx.sh</code>执行完毕之后 你会发现当前shell执行环境还是之前的，<br>
+不会是<code>xx/yy</code>的环境下<br>
+但是用 <code>source xx.sh</code>这种方式 执行完毕后 就会进入到<code>xx/yy</code>的目录下</p>
+<p>如果想在终端编辑文件 需要在 <code>Cydia</code> 中安装一个vim （https://apt.saurik.com）</p>
 
         </div>
         <!-- Share to Twitter, Weibo, Telegram -->
@@ -257,25 +173,8 @@ breakpoint set -n &quot;-[ViewController touchBegan:withEvent:]&quot;
 <ul>
 <li>
 <ul>
-<li>
-<ul>
-<li><a href="#%E6%8C%87%E4%BB%A4%E6%A0%BC%E5%BC%8F">指令格式</a></li>
-<li><a href="#help%E6%8C%87%E4%BB%A4">help指令</a></li>
-<li><a href="#expression-cmd-options-expr">expression <cmd-options>--<expr></a></li>
-<li><a href="#thread-backtrace">thread backtrace</a></li>
-<li><a href="#thread-return-expr">thread return [<expr>]</a></li>
-<li><a href="#frame-variable-variable-name">frame variable [<variable-name>]</a></li>
-<li><a href="#thread-continue-continue-c-%E7%A8%8B%E5%BA%8F%E7%BB%A7%E7%BB%AD%E8%BF%90%E8%A1%8C">thread continue 、continue、c ：程序继续运行</a></li>
-<li><a href="#thread-step-over-next-n-%E5%8D%95%E6%AD%A5%E8%BF%90%E8%A1%8C-%E6%8A%8A%E5%AD%90%E5%87%BD%E6%95%B0%E5%BD%93%E5%81%9A%E6%95%B4%E4%BD%93%E4%B8%80%E6%AD%A5%E6%89%A7%E8%A1%8C">thread step-over 、next、n ：单步运行、把子函数当做整体一步执行</a></li>
-<li><a href="#thread-step-in-step-s-%E5%8D%95%E6%AD%A5%E8%BF%90%E8%A1%8C-%E9%81%87%E5%88%B0%E5%AD%90%E5%87%BD%E6%95%B0%E8%BF%9B%E5%85%A5%E5%88%B0%E5%AD%90%E5%87%BD%E6%95%B0%E4%B8%AD">thread step-in 、step、s ：单步运行、遇到子函数进入到子函数中</a></li>
-<li><a href="#thread-step-out-finish%E7%9B%B4%E6%8E%A5%E6%89%A7%E8%A1%8C%E5%AE%8C%E5%BD%93%E5%89%8D%E5%87%BD%E6%95%B0%E6%89%80%E6%9C%89%E4%BB%A3%E7%A0%81-%E8%BF%94%E5%9B%9E%E5%88%B0%E4%B8%8A%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0">thread step-out 、finish：直接执行完当前函数所有代码、返回到上一个函数</a></li>
-<li><a href="#si-ni%E5%92%8Cs-n%E7%B1%BB%E4%BC%BC">si、ni和s、n类似</a></li>
-<li><a href="#breakpoint-set-%E8%AE%BE%E7%BD%AE%E6%96%AD%E7%82%B9">breakpoint set 设置断点</a></li>
-<li><a href="#%E5%86%85%E5%AD%98%E6%96%AD%E7%82%B9">内存断点</a></li>
-<li><a href="#image-lookup">image lookup</a></li>
-<li><a href="#%E5%AF%84%E5%AD%98%E5%99%A8">寄存器</a></li>
-</ul>
-</li>
+<li><a href="#%E9%80%9A%E8%BF%87usb%E8%BF%9E%E6%8E%A5iphone">通过USB连接iPhone</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8scp%E6%8B%B7%E8%B4%9D%E6%96%87%E4%BB%B6%E5%88%B0%E6%89%8B%E6%9C%BA%E7%9A%84%E6%9F%90%E4%B8%AA%E7%9B%AE%E5%BD%95">使用scp拷贝文件到手机的某个目录</a></li>
 </ul>
 </li>
 </ul>

@@ -4,31 +4,61 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>常用LLDB指令 - 七里田间的守望者</title>
+<title>逆向常用工具 - 七里田间的守望者</title>
 <link rel="shortcut icon" href="https://dargonlee.github.io/favicon.ico">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"> -->
 <link rel="stylesheet" href="https://dargonlee.github.io/media/css/tailwind.css">
 <link rel="stylesheet" href="https://dargonlee.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="常用LLDB指令 - 七里田间的守望者 - Atom Feed" href="https://dargonlee.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="逆向常用工具 - 七里田间的守望者 - Atom Feed" href="https://dargonlee.github.io/atom.xml">
 
     
 
-  <meta name="description" content="指令格式
-&amp;lt;command&amp;gt; [&amp;lt;subcommand&amp;gt; [&amp;lt;subcommand&amp;gt;]...] &amp;lt;actions&amp;gt; [-options [options value]] [argument[a..." />
-  <meta property="og:title" content="常用LLDB指令 - 七里田间的守望者">
-  <meta property="og:description" content="指令格式
-&amp;lt;command&amp;gt; [&amp;lt;subcommand&amp;gt; [&amp;lt;subcommand&amp;gt;]...] &amp;lt;actions&amp;gt; [-options [options value]] [argument[a..." />
+  <meta name="description" content="逆向APP思路
+
+
+界面分析（Cycript、Reveal）
+
+
+代码分析（对Mach-o文件分析）
+MachOView、class-dump、Hopper Disassembler、ida等
+
+
+动态调试
+对运行的App进行代码调试（de..." />
+  <meta property="og:title" content="逆向常用工具 - 七里田间的守望者">
+  <meta property="og:description" content="逆向APP思路
+
+
+界面分析（Cycript、Reveal）
+
+
+代码分析（对Mach-o文件分析）
+MachOView、class-dump、Hopper Disassembler、ida等
+
+
+动态调试
+对运行的App进行代码调试（de..." />
   <meta property="og:type" content="articles">
-  <meta property="og:url" content="https://dargonlee.github.io/post/chang-yong-lldb-zhi-ling/" />
+  <meta property="og:url" content="https://dargonlee.github.io/post/ni-xiang-chang-yong-gong-ju/" />
   <meta property="og:image" content="https://dargonlee.github.io/images/avatar.png">
   <meta property="og:image:height" content="630">
   <meta property="og:image:width" content="1200">
-  <meta name="twitter:title" content="常用LLDB指令 - 七里田间的守望者">
-  <meta name="twitter:description" content="指令格式
-&amp;lt;command&amp;gt; [&amp;lt;subcommand&amp;gt; [&amp;lt;subcommand&amp;gt;]...] &amp;lt;actions&amp;gt; [-options [options value]] [argument[a...">
+  <meta name="twitter:title" content="逆向常用工具 - 七里田间的守望者">
+  <meta name="twitter:description" content="逆向APP思路
+
+
+界面分析（Cycript、Reveal）
+
+
+代码分析（对Mach-o文件分析）
+MachOView、class-dump、Hopper Disassembler、ida等
+
+
+动态调试
+对运行的App进行代码调试（de...">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="canonical" href="https://dargonlee.github.io/post/chang-yong-lldb-zhi-ling/">
+  <link rel="canonical" href="https://dargonlee.github.io/post/ni-xiang-chang-yong-gong-ju/">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css">
@@ -48,11 +78,11 @@
     <div class="max-w-4xl w-full mx-auto">
       <div class="shadow-box bg-white dark:bg-gray-600 rounded-lg pt-32 md:pt-64 px-4 md:px-8 pb-8 animated fadeIn mb-8">
         <h1 class="text-5xl font-semibold leading-normal pb-8 mb-8 border-b-8 border-gray-700">
-          常用LLDB指令
+          逆向常用工具
         </h1>
         
         <div class="mb-8 flex flex-wrap">
-          <div class="text-gray-400 text-sm mr-4">2020-07-25 · 4 min read</div>
+          <div class="text-gray-400 text-sm mr-4">2020-07-25 · 3 min read</div>
           
             <a href="https://dargonlee.github.io/tag/FYEus9TQd/" class="text-gray-700 text-sm border-b-2 border-dotted border-gray-200 hover:border-gray-600 transition-all duration-100 inline-flex mr-2">
               <i class="ri-hashtag"></i>
@@ -61,155 +91,102 @@
           
         </div>
         <div class="markdown mb-8" v-pre>
-          <h5 id="指令格式">指令格式</h5>
-<pre><code>&lt;command&gt; [&lt;subcommand&gt; [&lt;subcommand&gt;]...] &lt;actions&gt; [-options [options value]] [argument[argument]...]
+          <h4 id="逆向app思路">逆向APP思路</h4>
+<ul>
+<li>
+<p>界面分析（Cycript、Reveal）</p>
+</li>
+<li>
+<p>代码分析（对Mach-o文件分析）<br>
+MachOView、class-dump、Hopper Disassembler、ida等</p>
+</li>
+<li>
+<p>动态调试<br>
+对运行的App进行代码调试（debugserver、LLDB）</p>
+</li>
+<li>
+<p>代码编写<br>
+注入代码到App中，必要时可能会重签名ipa</p>
+</li>
+</ul>
+<h4 id="class-dump的安装">class-dump的安装</h4>
+<ul>
+<li>先去下载 <code>class-dump</code>的可执行文件</li>
+<li>然后把它复制到系统的<code>/usr/local/bin</code>目录下</li>
+<li>执行<code>class-dump -H mach-o文件路径 -o 头文件存放路径</code></li>
+</ul>
+<h4 id="抽取系统框架的可执行文件">抽取系统框架的可执行文件</h4>
+<ul>
+<li>找到系统的动态库缓存文件 <code>Device/System/Libary/Caches/com.apple.dyld</code></li>
+<li>里面会有两个文件一个<code>dyld_shared_cache_arm64</code>的、一个是<code>dyld_shared_cache_armv7s</code> 这里面装的分别是不同架构的系统框架可执行文件</li>
+<li>但是文件太大，我们需要通过一个解析器去给解析处理各个framework的可执行文件</li>
+<li>去找到<code>dyld</code>的源码<code>https://opensource.apple.com/tarballs/dyld/</code> 找到最新版本的下载下来</li>
+<li>找到工程中<code>launch-cache/dsc_extractor.app</code>文件用<code>clang++</code>编译器编译成可执行文件（只要int main函数里面的东西，此函数上面的内容都可以不要）</li>
+<li><code>clang++ -o dsc_extractor dsc_extractor.app</code> 会生成<code>dsc_extractor</code>可执行文件</li>
+<li><code>./dsc_extractor dyld_shared_cache_armv7s armv7s</code> 回车执行 就会抽取包含在系统共享文件中的系统库可执行文件</li>
+</ul>
+<h4 id="mach-o的结构">Mach-o的结构</h4>
+<ul>
+<li><code>file</code>:查看Mach-o文件的结构</li>
+</ul>
+<pre><code>file 文件的路径
 </code></pre>
 <ul>
-<li><command> 命令</li>
-<li><subcommand>子命令</li>
-<li><actions>命令操作</li>
-<li><options>命令选项</li>
-<li><argument> 命令参数</li>
+<li><code>otool</code>:查看Mach-o特定部分和段的内容</li>
 </ul>
-<p>比如给<code>test</code>函数设置断点</p>
+<pre><code>打印Mach-o文件里面链接了哪些库：otool -L 文件地址
+打印Mach-o文件头信息：otool -f 文件地址
+</code></pre>
+<ul>
+<li><code>lipo</code>:常用于多架构Mach-o文件的处理</li>
+</ul>
+<pre><code>查看架构信息：lipo -info 文件路径
+导出特定架构：lipo 文件路径 -thin 架构类型 -output 输出文件路径
+合并多种架构：lipo 文件路径1 文件路径2 -output 输出文件路径 
+</code></pre>
+<h4 id="配置reveal环境">配置Reveal环境</h4>
+<ul>
+<li>先安装<code>Reveal Loader</code> 插件</li>
+<li>然后把Reveal的framework里的RevealServer替换到手里<code>Libary/RHReveal/目录下</code></li>
+<li>killall SpringBoard 重启</li>
+</ul>
+<h4 id="theos-安装">theos 安装</h4>
+<ul>
+<li>安装签名工具<code>brew install ldid</code></li>
+<li>修改环境变量</li>
+</ul>
+<pre><code>vim ~/.zshrc 或者 vim ~/.bash_profile
+export THEOS=~/theos
+export PATH=$THEOS/bin:$PATH
+</code></pre>
+<p>执行<code>source .zshrc</code>这样环境变量才会生效或者重启终端</p>
+<ul>
+<li>下载theos</li>
+</ul>
+<pre><code>git clone --recursive https://github.com/theos/theos.git $THEOS // --recursive递归下载
+</code></pre>
+<ul>
+<li>新建项目</li>
+</ul>
+<pre><code>nic.pl
+</code></pre>
 <!-- more -->
-<pre><code>breakpoint set -n test
-</code></pre>
+<h4 id="theos-tweak的实现过程">theos-tweak的实现过程</h4>
 <ul>
-<li>breakpoint是<command></li>
-<li>set是<actions></li>
-<li>-n是<options></li>
-<li>test是<argument></li>
+<li>编写tweak代码</li>
+<li>make 编译Tweak代码为动态库（*.dylib）</li>
+<li>make package 将dylib文件打包为deb文件</li>
+<li>make install 将deb文件传送到手机，通过Cydia安装deb文件</li>
+<li>插件将会安装到/Libary/MobileSubstrate/DynamicLibraries文件夹中</li>
+<li>*.dylib为编译后的Tweak代码</li>
+<li>*.plist存放着需要Hook AppId</li>
+<li>当打开app时 Cydia Substrate 会让App加载对应的dylib</li>
+<li>修改App内存中的代码逻辑，去执行dylib中的函数代码</li>
 </ul>
-<h5 id="help指令">help指令</h5>
 <blockquote>
-<p>查看指令用法</p>
+<p>所以theos的tweak并不会对app原来的可执行文件进行修改，仅仅是修改了内存中代码逻辑。<br>
+如果希望卸载插件，只需要将/Libary/MobileSubstrate/DynamicLibraries中对应的dylib和plist文件删除即可</p>
 </blockquote>
-<p>比如</p>
-<pre><code>help breakpoint 
-</code></pre>
-<pre><code>help breakpoint set
-</code></pre>
-<h5 id="expression-cmd-options-expr">expression <cmd-options>--<expr></h5>
-<blockquote>
-<p>执行一个表达式</p>
-</blockquote>
-<ul>
-<li><cmd-options> 命令行选项</li>
-<li>-- 命令选项结束符 表示所有的命令选项已经设置完毕 如果没有命令选项，--可以省略</li>
-<li><expr> 需要执行的表达式</li>
-</ul>
-<pre><code>expression self.view.backgroundColor = [UIColor redColor]
-</code></pre>
-<ul>
-<li>expression、expression--和指令print、p、call的效果一样</li>
-<li>expression -O --和po指令效果一样</li>
-</ul>
-<h5 id="thread-backtrace">thread backtrace</h5>
-<ul>
-<li>打印线程的堆栈信息</li>
-<li>和指令bt效果一样</li>
-</ul>
-<h5 id="thread-return-expr">thread return [<expr>]</h5>
-<ul>
-<li>让函数直接返回某一个值，不会执行断点后面的代码</li>
-</ul>
-<h5 id="frame-variable-variable-name">frame variable [<variable-name>]</h5>
-<ul>
-<li>打印当前栈帧的变量</li>
-</ul>
-<h5 id="thread-continue-continue-c-程序继续运行">thread continue 、continue、c ：程序继续运行</h5>
-<h5 id="thread-step-over-next-n-单步运行-把子函数当做整体一步执行">thread step-over 、next、n ：单步运行、把子函数当做整体一步执行</h5>
-<h5 id="thread-step-in-step-s-单步运行-遇到子函数进入到子函数中">thread step-in 、step、s ：单步运行、遇到子函数进入到子函数中</h5>
-<h5 id="thread-step-out-finish直接执行完当前函数所有代码-返回到上一个函数">thread step-out 、finish：直接执行完当前函数所有代码、返回到上一个函数</h5>
-<h5 id="si-ni和s-n类似">si、ni和s、n类似</h5>
-<ul>
-<li>s、n是源码级别的</li>
-<li>si、ni是汇编指令级别的</li>
-</ul>
-<h5 id="breakpoint-set-设置断点">breakpoint set 设置断点</h5>
-<ul>
-<li>breakpoint set -a 函数地址</li>
-</ul>
-<pre><code>
-</code></pre>
-<ul>
-<li>breakpoint set -n 函数名称</li>
-</ul>
-<pre><code>breakpoint set -n test
-
-breakpoint set -n  touchBegan:withEvent:
-
-breakpoint set -n &quot;-[ViewController touchBegan:withEvent:]&quot;
-</code></pre>
-<p><strong>breakpoint set -n test 简写为 br set -n test</strong></p>
-<ul>
-<li>
-<p>breakpoint set -r 正则表达式</p>
-</li>
-<li>
-<p>breakpoint set -s 动态库 -n 函数名</p>
-</li>
-<li>
-<p>breakpoint list 列出所有断点</p>
-</li>
-<li>
-<p>breakpoint disable 断点编号 ： 禁用断点</p>
-</li>
-<li>
-<p>breakpoint enable 断点编号 ： 启用断点</p>
-</li>
-<li>
-<p>breakpoint delete 断点编号 ： 删除断点</p>
-</li>
-<li>
-<p>breakpoint command 断点编号 ： 给断点预先设置需要执行的命令，到触发断点时，就会按顺序执行</p>
-</li>
-<li>
-<p>breakpoint command list 断点编号：查看某个断点设置的命令</p>
-</li>
-<li>
-<p>breakpoint command delete 断点编号：删除某个断点设置的命令</p>
-</li>
-</ul>
-<h5 id="内存断点">内存断点</h5>
-<blockquote>
-<p>在内存数据发生改变的时候触发 <code>watchpoint set variable 变量</code></p>
-</blockquote>
-<pre><code>watchpoint set variable self-&gt;age
-</code></pre>
-<ul>
-<li><code>watchpoint set expression 地址</code></li>
-</ul>
-<pre><code>watchpoint set variable &amp;(self-&gt;_age)
-</code></pre>
-<ul>
-<li>watchpoint list</li>
-<li>watchpoint disable 断点编号</li>
-<li>watchpoint enable 断点编号</li>
-<li>watchpoint delete 断点编号</li>
-<li>watchpoint command add 断点编号</li>
-<li>watchpoint command list 断点编号</li>
-<li>watchpoint command delete 断点编号</li>
-</ul>
-<h5 id="image-lookup">image lookup</h5>
-<ul>
-<li>image lookup -t 类型：查找某个类型的信息</li>
-<li>image lookup -a 地址：根据内存地址查找在模块中的位置</li>
-<li>image lookup -n 符号或者函数名：查找某个符号或者函数的位置</li>
-<li>image list 列出所加载模块的信息</li>
-<li>image list -o -f 打印出模块的偏移地址、全路径</li>
-</ul>
-<pre><code> image list -o -f | grep WeChat
-</code></pre>
-<h5 id="寄存器">寄存器</h5>
-<ul>
-<li>memory read 读取所有寄存器的值</li>
-<li>memory write 寄存器 值  给某个寄存器写入值</li>
-<li>po $x0:打印方法调用者</li>
-<li>x/s $x1: 打印方法名</li>
-<li>po $x2:打印参数（以此类推，x3 x4也可能是参数）</li>
-</ul>
 
         </div>
         <!-- Share to Twitter, Weibo, Telegram -->
@@ -257,25 +234,13 @@ breakpoint set -n &quot;-[ViewController touchBegan:withEvent:]&quot;
 <ul>
 <li>
 <ul>
-<li>
-<ul>
-<li><a href="#%E6%8C%87%E4%BB%A4%E6%A0%BC%E5%BC%8F">指令格式</a></li>
-<li><a href="#help%E6%8C%87%E4%BB%A4">help指令</a></li>
-<li><a href="#expression-cmd-options-expr">expression <cmd-options>--<expr></a></li>
-<li><a href="#thread-backtrace">thread backtrace</a></li>
-<li><a href="#thread-return-expr">thread return [<expr>]</a></li>
-<li><a href="#frame-variable-variable-name">frame variable [<variable-name>]</a></li>
-<li><a href="#thread-continue-continue-c-%E7%A8%8B%E5%BA%8F%E7%BB%A7%E7%BB%AD%E8%BF%90%E8%A1%8C">thread continue 、continue、c ：程序继续运行</a></li>
-<li><a href="#thread-step-over-next-n-%E5%8D%95%E6%AD%A5%E8%BF%90%E8%A1%8C-%E6%8A%8A%E5%AD%90%E5%87%BD%E6%95%B0%E5%BD%93%E5%81%9A%E6%95%B4%E4%BD%93%E4%B8%80%E6%AD%A5%E6%89%A7%E8%A1%8C">thread step-over 、next、n ：单步运行、把子函数当做整体一步执行</a></li>
-<li><a href="#thread-step-in-step-s-%E5%8D%95%E6%AD%A5%E8%BF%90%E8%A1%8C-%E9%81%87%E5%88%B0%E5%AD%90%E5%87%BD%E6%95%B0%E8%BF%9B%E5%85%A5%E5%88%B0%E5%AD%90%E5%87%BD%E6%95%B0%E4%B8%AD">thread step-in 、step、s ：单步运行、遇到子函数进入到子函数中</a></li>
-<li><a href="#thread-step-out-finish%E7%9B%B4%E6%8E%A5%E6%89%A7%E8%A1%8C%E5%AE%8C%E5%BD%93%E5%89%8D%E5%87%BD%E6%95%B0%E6%89%80%E6%9C%89%E4%BB%A3%E7%A0%81-%E8%BF%94%E5%9B%9E%E5%88%B0%E4%B8%8A%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0">thread step-out 、finish：直接执行完当前函数所有代码、返回到上一个函数</a></li>
-<li><a href="#si-ni%E5%92%8Cs-n%E7%B1%BB%E4%BC%BC">si、ni和s、n类似</a></li>
-<li><a href="#breakpoint-set-%E8%AE%BE%E7%BD%AE%E6%96%AD%E7%82%B9">breakpoint set 设置断点</a></li>
-<li><a href="#%E5%86%85%E5%AD%98%E6%96%AD%E7%82%B9">内存断点</a></li>
-<li><a href="#image-lookup">image lookup</a></li>
-<li><a href="#%E5%AF%84%E5%AD%98%E5%99%A8">寄存器</a></li>
-</ul>
-</li>
+<li><a href="#%E9%80%86%E5%90%91app%E6%80%9D%E8%B7%AF">逆向APP思路</a></li>
+<li><a href="#class-dump%E7%9A%84%E5%AE%89%E8%A3%85">class-dump的安装</a></li>
+<li><a href="#%E6%8A%BD%E5%8F%96%E7%B3%BB%E7%BB%9F%E6%A1%86%E6%9E%B6%E7%9A%84%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6">抽取系统框架的可执行文件</a></li>
+<li><a href="#mach-o%E7%9A%84%E7%BB%93%E6%9E%84">Mach-o的结构</a></li>
+<li><a href="#%E9%85%8D%E7%BD%AEreveal%E7%8E%AF%E5%A2%83">配置Reveal环境</a></li>
+<li><a href="#theos-%E5%AE%89%E8%A3%85">theos 安装</a></li>
+<li><a href="#theos-tweak%E7%9A%84%E5%AE%9E%E7%8E%B0%E8%BF%87%E7%A8%8B">theos-tweak的实现过程</a></li>
 </ul>
 </li>
 </ul>

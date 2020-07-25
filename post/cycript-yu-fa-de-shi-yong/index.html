@@ -4,31 +4,49 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>常用LLDB指令 - 七里田间的守望者</title>
+<title>Cycript语法的使用 - 七里田间的守望者</title>
 <link rel="shortcut icon" href="https://dargonlee.github.io/favicon.ico">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"> -->
 <link rel="stylesheet" href="https://dargonlee.github.io/media/css/tailwind.css">
 <link rel="stylesheet" href="https://dargonlee.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="常用LLDB指令 - 七里田间的守望者 - Atom Feed" href="https://dargonlee.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="Cycript语法的使用 - 七里田间的守望者 - Atom Feed" href="https://dargonlee.github.io/atom.xml">
 
     
 
-  <meta name="description" content="指令格式
-&amp;lt;command&amp;gt; [&amp;lt;subcommand&amp;gt; [&amp;lt;subcommand&amp;gt;]...] &amp;lt;actions&amp;gt; [-options [options value]] [argument[a..." />
-  <meta property="og:title" content="常用LLDB指令 - 七里田间的守望者">
-  <meta property="og:description" content="指令格式
-&amp;lt;command&amp;gt; [&amp;lt;subcommand&amp;gt; [&amp;lt;subcommand&amp;gt;]...] &amp;lt;actions&amp;gt; [-options [options value]] [argument[a..." />
+  <meta name="description" content="
+可以用来探索、修改、调试正在运行的Mac/iOS 的APP。
+
+
+在手机上安装 Cycript 插件
+使用的使用需要先用Mac终端连接手机
+终端输入 cycript 就进入了调试环境了
+cycript -p [进程ID] 或者[com.S..." />
+  <meta property="og:title" content="Cycript语法的使用 - 七里田间的守望者">
+  <meta property="og:description" content="
+可以用来探索、修改、调试正在运行的Mac/iOS 的APP。
+
+
+在手机上安装 Cycript 插件
+使用的使用需要先用Mac终端连接手机
+终端输入 cycript 就进入了调试环境了
+cycript -p [进程ID] 或者[com.S..." />
   <meta property="og:type" content="articles">
-  <meta property="og:url" content="https://dargonlee.github.io/post/chang-yong-lldb-zhi-ling/" />
+  <meta property="og:url" content="https://dargonlee.github.io/post/cycript-yu-fa-de-shi-yong/" />
   <meta property="og:image" content="https://dargonlee.github.io/images/avatar.png">
   <meta property="og:image:height" content="630">
   <meta property="og:image:width" content="1200">
-  <meta name="twitter:title" content="常用LLDB指令 - 七里田间的守望者">
-  <meta name="twitter:description" content="指令格式
-&amp;lt;command&amp;gt; [&amp;lt;subcommand&amp;gt; [&amp;lt;subcommand&amp;gt;]...] &amp;lt;actions&amp;gt; [-options [options value]] [argument[a...">
+  <meta name="twitter:title" content="Cycript语法的使用 - 七里田间的守望者">
+  <meta name="twitter:description" content="
+可以用来探索、修改、调试正在运行的Mac/iOS 的APP。
+
+
+在手机上安装 Cycript 插件
+使用的使用需要先用Mac终端连接手机
+终端输入 cycript 就进入了调试环境了
+cycript -p [进程ID] 或者[com.S...">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="canonical" href="https://dargonlee.github.io/post/chang-yong-lldb-zhi-ling/">
+  <link rel="canonical" href="https://dargonlee.github.io/post/cycript-yu-fa-de-shi-yong/">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css">
@@ -48,11 +66,11 @@
     <div class="max-w-4xl w-full mx-auto">
       <div class="shadow-box bg-white dark:bg-gray-600 rounded-lg pt-32 md:pt-64 px-4 md:px-8 pb-8 animated fadeIn mb-8">
         <h1 class="text-5xl font-semibold leading-normal pb-8 mb-8 border-b-8 border-gray-700">
-          常用LLDB指令
+          Cycript语法的使用
         </h1>
         
         <div class="mb-8 flex flex-wrap">
-          <div class="text-gray-400 text-sm mr-4">2020-07-25 · 4 min read</div>
+          <div class="text-gray-400 text-sm mr-4">2020-07-25 · 3 min read</div>
           
             <a href="https://dargonlee.github.io/tag/FYEus9TQd/" class="text-gray-700 text-sm border-b-2 border-dotted border-gray-200 hover:border-gray-600 transition-all duration-100 inline-flex mr-2">
               <i class="ri-hashtag"></i>
@@ -61,155 +79,87 @@
           
         </div>
         <div class="markdown mb-8" v-pre>
-          <h5 id="指令格式">指令格式</h5>
-<pre><code>&lt;command&gt; [&lt;subcommand&gt; [&lt;subcommand&gt;]...] &lt;actions&gt; [-options [options value]] [argument[argument]...]
-</code></pre>
+          <blockquote>
+<p>可以用来探索、修改、调试正在运行的Mac/iOS 的APP。</p>
+</blockquote>
 <ul>
-<li><command> 命令</li>
-<li><subcommand>子命令</li>
-<li><actions>命令操作</li>
-<li><options>命令选项</li>
-<li><argument> 命令参数</li>
+<li>在手机上安装 Cycript 插件</li>
+<li>使用的使用需要先用Mac终端连接手机</li>
+<li>终端输入 <code>cycript</code> 就进入了调试环境了</li>
+<li>cycript -p [进程ID] 或者[com.SpringBoard]或者[可执行文件的名称]</li>
+<li>可以用<code>ps</code>指令获取某个应用程序的进程id</li>
+<li>退出 control + d</li>
 </ul>
-<p>比如给<code>test</code>函数设置断点</p>
 <!-- more -->
-<pre><code>breakpoint set -n test
+<h4 id="ps-指令-process-status-的缩写">ps 指令 【process status 的缩写】</h4>
+<ul>
+<li>先在手机上安装 <code>adv-cmds</code> 插件</li>
+<li><code>ps -A 列出所有进程</code></li>
+<li><code>ps A | grep 关键词</code></li>
+</ul>
+<h4 id="语法">语法</h4>
+<p><code>UIApp</code> = <code>[UIApplication sharedApplication]</code></p>
+<p>定义变量</p>
+<pre><code> var xx = UIApp.keyWindow
 </code></pre>
-<ul>
-<li>breakpoint是<command></li>
-<li>set是<actions></li>
-<li>-n是<options></li>
-<li>test是<argument></li>
-</ul>
-<h5 id="help指令">help指令</h5>
-<blockquote>
-<p>查看指令用法</p>
-</blockquote>
-<p>比如</p>
-<pre><code>help breakpoint 
+<p>用内存地址获取对象</p>
+<pre><code>#内存地址
 </code></pre>
-<pre><code>help breakpoint set
+<p>获取当前程序用到的类</p>
+<pre><code>ObjectiveC.classes
 </code></pre>
-<h5 id="expression-cmd-options-expr">expression <cmd-options>--<expr></h5>
-<blockquote>
-<p>执行一个表达式</p>
-</blockquote>
-<ul>
-<li><cmd-options> 命令行选项</li>
-<li>-- 命令选项结束符 表示所有的命令选项已经设置完毕 如果没有命令选项，--可以省略</li>
-<li><expr> 需要执行的表达式</li>
-</ul>
-<pre><code>expression self.view.backgroundColor = [UIColor redColor]
+<p>查看对象所有成员变量</p>
+<pre><code>*UIApp
+或者
+*#对象内存地址
 </code></pre>
-<ul>
-<li>expression、expression--和指令print、p、call的效果一样</li>
-<li>expression -O --和po指令效果一样</li>
-</ul>
-<h5 id="thread-backtrace">thread backtrace</h5>
-<ul>
-<li>打印线程的堆栈信息</li>
-<li>和指令bt效果一样</li>
-</ul>
-<h5 id="thread-return-expr">thread return [<expr>]</h5>
-<ul>
-<li>让函数直接返回某一个值，不会执行断点后面的代码</li>
-</ul>
-<h5 id="frame-variable-variable-name">frame variable [<variable-name>]</h5>
-<ul>
-<li>打印当前栈帧的变量</li>
-</ul>
-<h5 id="thread-continue-continue-c-程序继续运行">thread continue 、continue、c ：程序继续运行</h5>
-<h5 id="thread-step-over-next-n-单步运行-把子函数当做整体一步执行">thread step-over 、next、n ：单步运行、把子函数当做整体一步执行</h5>
-<h5 id="thread-step-in-step-s-单步运行-遇到子函数进入到子函数中">thread step-in 、step、s ：单步运行、遇到子函数进入到子函数中</h5>
-<h5 id="thread-step-out-finish直接执行完当前函数所有代码-返回到上一个函数">thread step-out 、finish：直接执行完当前函数所有代码、返回到上一个函数</h5>
-<h5 id="si-ni和s-n类似">si、ni和s、n类似</h5>
-<ul>
-<li>s、n是源码级别的</li>
-<li>si、ni是汇编指令级别的</li>
-</ul>
-<h5 id="breakpoint-set-设置断点">breakpoint set 设置断点</h5>
-<ul>
-<li>breakpoint set -a 函数地址</li>
-</ul>
-<pre><code>
+<p>递归打印View的所有子控件</p>
+<pre><code>[UIApp.keyWindow recursiveDescription]
+想要排版好看点的话
+[UIApp.keyWindow recursiveDescription].toString()
 </code></pre>
-<ul>
-<li>breakpoint set -n 函数名称</li>
-</ul>
-<pre><code>breakpoint set -n test
+<p>以上两种写法的常用形式</p>
+<pre><code>UIApp.keyWindow.recursiveDescription().toString()
+</code></pre>
+<p>筛选出某中类型的对象</p>
+<pre><code>choose(UIViewController)
+choose(UITableViewCell)
+</code></pre>
+<p>拷贝封装好的js文件到iPhone</p>
+<pre><code>scp -P 2222 文件在Mac上的路径/MJTool.js root@localhost:/usr/lib/cycript0.9
+</code></pre>
+<p>如果想要保证自己写的文件和其他的文件不冲突的话</p>
+<pre><code>scp -P 2222 文件在Mac上的路径/MJTool.cy root@localhost:/usr/lib/cycript0.9/com/harlans
+</code></pre>
+<h3 id="封装cy文件">封装<code>cy</code>文件</h3>
+<p>新建<code>test.cy</code>文件</p>
+<pre><code>(function(exports) {
+    MJSum = function (a, b) {
+        return a + b;
+    };
 
-breakpoint set -n  touchBegan:withEvent:
-
-breakpoint set -n &quot;-[ViewController touchBegan:withEvent:]&quot;
+    exports.minus = function (a, b) {
+        return a - b;
+    };
+    
+    exports.age = 18;
+    
+    MJAppId = [NSBundle mainBundle].bundleIdentifier;
+    
+    exports.RootVc = function () {
+        return UIApp.keyWindow.rootViewController;
+    };
+    
+    exports.DocPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+    
+})(exports);
 </code></pre>
-<p><strong>breakpoint set -n test 简写为 br set -n test</strong></p>
-<ul>
-<li>
-<p>breakpoint set -r 正则表达式</p>
-</li>
-<li>
-<p>breakpoint set -s 动态库 -n 函数名</p>
-</li>
-<li>
-<p>breakpoint list 列出所有断点</p>
-</li>
-<li>
-<p>breakpoint disable 断点编号 ： 禁用断点</p>
-</li>
-<li>
-<p>breakpoint enable 断点编号 ： 启用断点</p>
-</li>
-<li>
-<p>breakpoint delete 断点编号 ： 删除断点</p>
-</li>
-<li>
-<p>breakpoint command 断点编号 ： 给断点预先设置需要执行的命令，到触发断点时，就会按顺序执行</p>
-</li>
-<li>
-<p>breakpoint command list 断点编号：查看某个断点设置的命令</p>
-</li>
-<li>
-<p>breakpoint command delete 断点编号：删除某个断点设置的命令</p>
-</li>
-</ul>
-<h5 id="内存断点">内存断点</h5>
+<p>然后通过<code>iFunBox</code>拷贝到手机上 <code>/usr/lib/cycript0.9/</code>目录下</p>
+<p>使用的时候直接在<code>@import test</code>后，直接输入<code>test.sum(1, 10)</code>就行了(但是这样的调用方式适用于 开头带<code>exports</code>的函数形式,如果开头不带<code>exports</code>就是属于全局的函数了直接调用<code>AppId</code>即可)</p>
 <blockquote>
-<p>在内存数据发生改变的时候触发 <code>watchpoint set variable 变量</code></p>
+<p>注意如果你的<code>test.cy</code>文件不再cycript0.9这个目录下的话需要导入的时候加上，比如 <code>@import com.mj.test</code> 这样才会生效</p>
 </blockquote>
-<pre><code>watchpoint set variable self-&gt;age
-</code></pre>
-<ul>
-<li><code>watchpoint set expression 地址</code></li>
-</ul>
-<pre><code>watchpoint set variable &amp;(self-&gt;_age)
-</code></pre>
-<ul>
-<li>watchpoint list</li>
-<li>watchpoint disable 断点编号</li>
-<li>watchpoint enable 断点编号</li>
-<li>watchpoint delete 断点编号</li>
-<li>watchpoint command add 断点编号</li>
-<li>watchpoint command list 断点编号</li>
-<li>watchpoint command delete 断点编号</li>
-</ul>
-<h5 id="image-lookup">image lookup</h5>
-<ul>
-<li>image lookup -t 类型：查找某个类型的信息</li>
-<li>image lookup -a 地址：根据内存地址查找在模块中的位置</li>
-<li>image lookup -n 符号或者函数名：查找某个符号或者函数的位置</li>
-<li>image list 列出所加载模块的信息</li>
-<li>image list -o -f 打印出模块的偏移地址、全路径</li>
-</ul>
-<pre><code> image list -o -f | grep WeChat
-</code></pre>
-<h5 id="寄存器">寄存器</h5>
-<ul>
-<li>memory read 读取所有寄存器的值</li>
-<li>memory write 寄存器 值  给某个寄存器写入值</li>
-<li>po $x0:打印方法调用者</li>
-<li>x/s $x1: 打印方法名</li>
-<li>po $x2:打印参数（以此类推，x3 x4也可能是参数）</li>
-</ul>
+<p><strong><a href="https://github.com/CoderMJLee/mjcript">MJ封装的库</a></strong></p>
 
         </div>
         <!-- Share to Twitter, Weibo, Telegram -->
@@ -257,27 +207,11 @@ breakpoint set -n &quot;-[ViewController touchBegan:withEvent:]&quot;
 <ul>
 <li>
 <ul>
-<li>
-<ul>
-<li><a href="#%E6%8C%87%E4%BB%A4%E6%A0%BC%E5%BC%8F">指令格式</a></li>
-<li><a href="#help%E6%8C%87%E4%BB%A4">help指令</a></li>
-<li><a href="#expression-cmd-options-expr">expression <cmd-options>--<expr></a></li>
-<li><a href="#thread-backtrace">thread backtrace</a></li>
-<li><a href="#thread-return-expr">thread return [<expr>]</a></li>
-<li><a href="#frame-variable-variable-name">frame variable [<variable-name>]</a></li>
-<li><a href="#thread-continue-continue-c-%E7%A8%8B%E5%BA%8F%E7%BB%A7%E7%BB%AD%E8%BF%90%E8%A1%8C">thread continue 、continue、c ：程序继续运行</a></li>
-<li><a href="#thread-step-over-next-n-%E5%8D%95%E6%AD%A5%E8%BF%90%E8%A1%8C-%E6%8A%8A%E5%AD%90%E5%87%BD%E6%95%B0%E5%BD%93%E5%81%9A%E6%95%B4%E4%BD%93%E4%B8%80%E6%AD%A5%E6%89%A7%E8%A1%8C">thread step-over 、next、n ：单步运行、把子函数当做整体一步执行</a></li>
-<li><a href="#thread-step-in-step-s-%E5%8D%95%E6%AD%A5%E8%BF%90%E8%A1%8C-%E9%81%87%E5%88%B0%E5%AD%90%E5%87%BD%E6%95%B0%E8%BF%9B%E5%85%A5%E5%88%B0%E5%AD%90%E5%87%BD%E6%95%B0%E4%B8%AD">thread step-in 、step、s ：单步运行、遇到子函数进入到子函数中</a></li>
-<li><a href="#thread-step-out-finish%E7%9B%B4%E6%8E%A5%E6%89%A7%E8%A1%8C%E5%AE%8C%E5%BD%93%E5%89%8D%E5%87%BD%E6%95%B0%E6%89%80%E6%9C%89%E4%BB%A3%E7%A0%81-%E8%BF%94%E5%9B%9E%E5%88%B0%E4%B8%8A%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0">thread step-out 、finish：直接执行完当前函数所有代码、返回到上一个函数</a></li>
-<li><a href="#si-ni%E5%92%8Cs-n%E7%B1%BB%E4%BC%BC">si、ni和s、n类似</a></li>
-<li><a href="#breakpoint-set-%E8%AE%BE%E7%BD%AE%E6%96%AD%E7%82%B9">breakpoint set 设置断点</a></li>
-<li><a href="#%E5%86%85%E5%AD%98%E6%96%AD%E7%82%B9">内存断点</a></li>
-<li><a href="#image-lookup">image lookup</a></li>
-<li><a href="#%E5%AF%84%E5%AD%98%E5%99%A8">寄存器</a></li>
+<li><a href="#ps-%E6%8C%87%E4%BB%A4-process-status-%E7%9A%84%E7%BC%A9%E5%86%99">ps 指令 【process status 的缩写】</a></li>
+<li><a href="#%E8%AF%AD%E6%B3%95">语法</a></li>
 </ul>
 </li>
-</ul>
-</li>
+<li><a href="#%E5%B0%81%E8%A3%85cy%E6%96%87%E4%BB%B6">封装<code>cy</code>文件</a></li>
 </ul>
 </li>
 </ul>
