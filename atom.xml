@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-03-16T02:59:42.975Z</updated>
+    <updated>2020-07-25T12:02:45.522Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
@@ -10,6 +10,162 @@
     <logo>https://dargonlee.github.io/images/avatar.png</logo>
     <icon>https://dargonlee.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 七里田间的守望者</rights>
+    <entry>
+        <title type="html"><![CDATA[常用LLDB指令]]></title>
+        <id>https://dargonlee.github.io/post/chang-yong-lldb-zhi-ling/</id>
+        <link href="https://dargonlee.github.io/post/chang-yong-lldb-zhi-ling/">
+        </link>
+        <updated>2020-07-25T12:02:12.000Z</updated>
+        <content type="html"><![CDATA[<h5 id="指令格式">指令格式</h5>
+<pre><code>&lt;command&gt; [&lt;subcommand&gt; [&lt;subcommand&gt;]...] &lt;actions&gt; [-options [options value]] [argument[argument]...]
+</code></pre>
+<ul>
+<li><command> 命令</li>
+<li><subcommand>子命令</li>
+<li><actions>命令操作</li>
+<li><options>命令选项</li>
+<li><argument> 命令参数</li>
+</ul>
+<p>比如给<code>test</code>函数设置断点</p>
+<pre><code>breakpoint set -n test
+</code></pre>
+<ul>
+<li>breakpoint是<command></li>
+<li>set是<actions></li>
+<li>-n是<options></li>
+<li>test是<argument></li>
+</ul>
+<h5 id="help指令">help指令</h5>
+<blockquote>
+<p>查看指令用法</p>
+</blockquote>
+<p>比如</p>
+<pre><code>help breakpoint 
+</code></pre>
+<pre><code>help breakpoint set
+</code></pre>
+<h5 id="expression-cmd-options-expr">expression <cmd-options>--<expr></h5>
+<blockquote>
+<p>执行一个表达式</p>
+</blockquote>
+<ul>
+<li><cmd-options> 命令行选项</li>
+<li>-- 命令选项结束符 表示所有的命令选项已经设置完毕 如果没有命令选项，--可以省略</li>
+<li><expr> 需要执行的表达式</li>
+</ul>
+<pre><code>expression self.view.backgroundColor = [UIColor redColor]
+</code></pre>
+<ul>
+<li>expression、expression--和指令print、p、call的效果一样</li>
+<li>expression -O --和po指令效果一样</li>
+</ul>
+<h5 id="thread-backtrace">thread backtrace</h5>
+<ul>
+<li>打印线程的堆栈信息</li>
+<li>和指令bt效果一样</li>
+</ul>
+<h5 id="thread-return-expr">thread return [<expr>]</h5>
+<ul>
+<li>让函数直接返回某一个值，不会执行断点后面的代码</li>
+</ul>
+<h5 id="frame-variable-variable-name">frame variable [<variable-name>]</h5>
+<ul>
+<li>打印当前栈帧的变量</li>
+</ul>
+<h5 id="thread-continue-continue-c-程序继续运行">thread continue 、continue、c ：程序继续运行</h5>
+<h5 id="thread-step-over-next-n-单步运行-把子函数当做整体一步执行">thread step-over 、next、n ：单步运行、把子函数当做整体一步执行</h5>
+<h5 id="thread-step-in-step-s-单步运行-遇到子函数进入到子函数中">thread step-in 、step、s ：单步运行、遇到子函数进入到子函数中</h5>
+<h5 id="thread-step-out-finish直接执行完当前函数所有代码-返回到上一个函数">thread step-out 、finish：直接执行完当前函数所有代码、返回到上一个函数</h5>
+<h5 id="si-ni和s-n类似">si、ni和s、n类似</h5>
+<ul>
+<li>s、n是源码级别的</li>
+<li>si、ni是汇编指令级别的</li>
+</ul>
+<h5 id="breakpoint-set-设置断点">breakpoint set 设置断点</h5>
+<ul>
+<li>breakpoint set -a 函数地址</li>
+</ul>
+<pre><code>
+</code></pre>
+<ul>
+<li>breakpoint set -n 函数名称</li>
+</ul>
+<pre><code>breakpoint set -n test
+
+breakpoint set -n  touchBegan:withEvent:
+
+breakpoint set -n &quot;-[ViewController touchBegan:withEvent:]&quot;
+</code></pre>
+<p><strong>breakpoint set -n test 简写为 br set -n test</strong></p>
+<ul>
+<li>
+<p>breakpoint set -r 正则表达式</p>
+</li>
+<li>
+<p>breakpoint set -s 动态库 -n 函数名</p>
+</li>
+<li>
+<p>breakpoint list 列出所有断点</p>
+</li>
+<li>
+<p>breakpoint disable 断点编号 ： 禁用断点</p>
+</li>
+<li>
+<p>breakpoint enable 断点编号 ： 启用断点</p>
+</li>
+<li>
+<p>breakpoint delete 断点编号 ： 删除断点</p>
+</li>
+<li>
+<p>breakpoint command 断点编号 ： 给断点预先设置需要执行的命令，到触发断点时，就会按顺序执行</p>
+</li>
+<li>
+<p>breakpoint command list 断点编号：查看某个断点设置的命令</p>
+</li>
+<li>
+<p>breakpoint command delete 断点编号：删除某个断点设置的命令</p>
+</li>
+</ul>
+<h5 id="内存断点">内存断点</h5>
+<blockquote>
+<p>在内存数据发生改变的时候触发 <code>watchpoint set variable 变量</code></p>
+</blockquote>
+<pre><code>watchpoint set variable self-&gt;age
+</code></pre>
+<ul>
+<li><code>watchpoint set expression 地址</code></li>
+</ul>
+<pre><code>watchpoint set variable &amp;(self-&gt;_age)
+</code></pre>
+<ul>
+<li>watchpoint list</li>
+<li>watchpoint disable 断点编号</li>
+<li>watchpoint enable 断点编号</li>
+<li>watchpoint delete 断点编号</li>
+<li>watchpoint command add 断点编号</li>
+<li>watchpoint command list 断点编号</li>
+<li>watchpoint command delete 断点编号</li>
+</ul>
+<h5 id="image-lookup">image lookup</h5>
+<ul>
+<li>image lookup -t 类型：查找某个类型的信息</li>
+<li>image lookup -a 地址：根据内存地址查找在模块中的位置</li>
+<li>image lookup -n 符号或者函数名：查找某个符号或者函数的位置</li>
+<li>image list 列出所加载模块的信息</li>
+<li>image list -o -f 打印出模块的偏移地址、全路径</li>
+</ul>
+<pre><code> image list -o -f | grep WeChat
+</code></pre>
+<h5 id="寄存器">寄存器</h5>
+<ul>
+<li>memory read 读取所有寄存器的值</li>
+<li>memory write 寄存器 值  给某个寄存器写入值</li>
+<li>po $x0:打印方法调用者</li>
+<li>x/s $x1: 打印方法名</li>
+<li>po $x2:打印参数（以此类推，x3 x4也可能是参数）</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[JavaScript 调试技巧]]></title>
         <id>https://dargonlee.github.io/post/javascript-diao-shi-ji-qiao/</id>
@@ -1930,134 +2086,6 @@ main() {
 </blockquote>
 <p>然后就可以在当前项目中使用了 如下图所示<br>
 <img src="https://upload-images.jianshu.io/upload_images/646265-5035cf57f5cfad11.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png" loading="lazy"></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[解决定时器的循环引用]]></title>
-        <id>https://dargonlee.github.io/post/jie-jue-ding-shi-qi-de-xun-huan-yin-yong/</id>
-        <link href="https://dargonlee.github.io/post/jie-jue-ding-shi-qi-de-xun-huan-yin-yong/">
-        </link>
-        <updated>2019-11-15T02:40:51.000Z</updated>
-        <summary type="html"><![CDATA[<p>一般使用定时器的方法，在控制器返回上级的时候。定时器都不会停止，会导致循环引用，控制器的<code>delloc</code>方法不会调用。<br>
-以下两种方式就是为了解决，定时器在控制器返回上级的时候解决循环引用的问题。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>一般使用定时器的方法，在控制器返回上级的时候。定时器都不会停止，会导致循环引用，控制器的<code>delloc</code>方法不会调用。<br>
-以下两种方式就是为了解决，定时器在控制器返回上级的时候解决循环引用的问题。</p>
-<!-- more --> 
-<h5 id="在控制器中使用定时器常规的方法">在控制器中使用定时器常规的方法</h5>
-<pre><code class="language-objectivec">@interface ViewController ()
-
-@property (nonatomic,strong) NSTimer *timer;
-
-@property (nonatomic,strong) CADisplayLink *link;
-
-@end
-</code></pre>
-<pre><code class="language-objectivec">
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    // Timer的使用
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timerTest) userInfo:nil repeats:YES];
-    
-    // CADisplayLink的使用
-    self.link = [CADisplayLink displayLinkWithTarget:self selector:@selector(timerTest)];
-    [self.link addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
-}
-
-- (void)timerTest
-{
-    NSLog(@&quot;%s&quot;, __func__);
-}
-</code></pre>
-<p>以上这种写法就是常规的写法，就是在一个控制器push到当前这个控制器的时候开启定时器。<br>
-但是这种写法有问题，会产生循环引用问题，从而导致内存泄露。<br>
-<code>ViewController</code> 引用 <code>timer定时器</code> <code>timer</code>的<code>target</code>又引用<code>ViewController</code> 而且三者都是使用 <code>storng</code>引用 这样在 <code>ViewController</code>返回上级的时候，不会调用<code>delloc</code>方法 从而导致循环引用。</p>
-<h4 id="解决方法的思路">解决方法的思路：</h4>
-<p>我们知道引起循环引用的问题是 <code>ViewController</code> <code>timer</code> <code>timer的target</code> 三者都是强引用导致的 我们只要在这个三个中间一个地方给设置<code>weak</code>引用 就不会产生循环引用了。<br>
-思路就是 -&gt; 设置<code>timer</code>的<code>target</code>的时候不要直接设置 <code>ViewController</code> 而是设置一个 自定义的对象 比如 <code>TimerTarget</code> 然后由这个对象对控制器<code>弱引用</code>，本来由控制器的直接调用的定时方法，现在由 <code>TimerTarget</code> 对象对控制器进行转发。从而达到解决循环引用的问题。<br>
-代码如下：</p>
-<pre><code class="language-objectivec">
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
-    self.link = [CADisplayLink displayLinkWithTarget:[TimerTarget proxyWithTarget:self] selector:@selector(timerTest)];
-    
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:[TimerTarget proxyWithTarget:self] selector:@selector(timerTest) userInfo:nil repeats:YES];
-}
-
-- (void)timerTest
-{
-    NSLog(@&quot;%s&quot;, __func__);
-}
-</code></pre>
-<p><code>TimerTarget对象的方法实现</code></p>
-<pre><code class="language-objc">@interface TimerTarget : NSObject
-
-@property (nonatomic, weak) id target;
-// 接收一个可以相应 定时器的对象
-+ (instancetype)proxyWithTarget:(id)target;
-
-@end
-
-
-+ (instancetype)proxyWithTarget:(id)target
-{
-    TimerTarget *targets = [[TimerTarget alloc]init];
-    targets.target = target;//然后对外部的对象进行弱引用
-    return targets;
-}
-// 在定时器给当前对象发送方法的时候 会走当前对象的消息转发机制 
-// 然后可以在这个方法里面对弱应用的对象去响应要调用的方法
-- (id)forwardingTargetForSelector:(SEL)aSelector
-{
-    return self.target;
-}
-</code></pre>
-<blockquote>
-<p>上面的方法可以解决问题，但是这样效率不够高。因为在 <code>TimerTarget</code> 在做消息转发之前，会对父类方法查找和方法缓存中去找方法。这样效率不高。</p>
-</blockquote>
-<p>下面介绍一个苹果提供专门进行消息转发的类叫<code>NSProxy</code> 上面的解决方法我们是继承<code>NSObject</code> 下面我们可以直接继承这个类<br>
-代码如下：</p>
-<pre><code class="language-objectivec">@interface TimerProxy : NSProxy
-
-@property (nonatomic, weak) id target;
-
-+ (instancetype)proxyWithTarget:(id)target;
-
-@end
-
-
-
-+ (instancetype)proxyWithTarget:(id)target
-{
-    // NSProxy 不需要init方法
-    TimerProxy *targets = [TimerProxy alloc];
-    targets.target = target;
-    return targets;
-}
-
-- (NSMethodSignature *)methodSignatureForSelector:(SEL)sel
-{
-    return [self.target methodSignatureForSelector:sel];
-}
-
-- (void)forwardInvocation:(NSInvocation *)invocation
-{
-    [invocation invokeWithTarget:self.target];
-}
-</code></pre>
-<p>这样的话 在定时的方法来的时候可以直接进行转发，而不会再去父类找了。</p>
-<h4 id="补充">补充</h4>
-<pre><code class="language-objectivec">__weak typeof(self) weakSelf = self;
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 repeats:YES block:^(NSTimer * _Nonnull timer) {
-        [weakSelf timerTest];
-    }];
-</code></pre>
-<p>这种block的方法也可以解决循环引用</p>
 ]]></content>
     </entry>
 </feed>
