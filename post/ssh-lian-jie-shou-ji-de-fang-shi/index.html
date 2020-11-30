@@ -99,6 +99,7 @@ iproxy 2222 22 进行端口转发
 或者
 ssh -p 2222 root@localhost
 </code></pre>
+<!-- more -->
 <blockquote>
 <p>上面代码意义在于将iPhone的22端口（ssh端口）映射到Mac本地的2222端口</p>
 </blockquote>
@@ -119,7 +120,6 @@ ssh -p 2222 root@localhost
 分别为<code>sh xx.sh</code> <code>base xx.sh</code> <code>source xx.sh</code><br>
 这里的 <code>sh xx.sh</code> <code>base xx.sh</code> 都是系统会开一个子进程去执行命令，执行完之后还是会返回到父进程的执行环境中。</p>
 </blockquote>
-<!-- more -->
 <p><code>source xx.sh</code> 和 <code>. xx.sh</code> 一样的</p>
 <p>比如 脚本内部有个命令 <code>cd xx/yy</code>的一个目录，<br>
 用<code>sh xx.sh</code> <code>base xx.sh</code>执行完毕之后 你会发现当前shell执行环境还是之前的，<br>

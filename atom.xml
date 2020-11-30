@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-11-30T13:01:13.699Z</updated>
+    <updated>2020-11-30T13:02:37.374Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
@@ -33,26 +33,6 @@
 或者
 ssh -p 2222 root@localhost
 </code></pre>
-<blockquote>
-<p>上面代码意义在于将iPhone的22端口（ssh端口）映射到Mac本地的2222端口</p>
-</blockquote>
-<h4 id="使用scp拷贝文件到手机的某个目录">使用scp拷贝文件到手机的某个目录</h4>
-<ul>
-<li>通过WiFi的方式</li>
-</ul>
-<pre><code class="language-shell">scp 本地文件路径 roo@192.168.1.2:手机的目录
-</code></pre>
-<ul>
-<li>通过端口转发的方式</li>
-</ul>
-<pre><code class="language-shell">scp -P 2222 本地文件路径 root@localhost:手机的目录
-</code></pre>
-<p><em><strong>注意：</strong></em></p>
-<blockquote>
-<p>执行脚本的方式有三种<br>
-分别为<code>sh xx.sh</code> <code>base xx.sh</code> <code>source xx.sh</code><br>
-这里的 <code>sh xx.sh</code> <code>base xx.sh</code> 都是系统会开一个子进程去执行命令，执行完之后还是会返回到父进程的执行环境中。</p>
-</blockquote>
 ]]></summary>
         <content type="html"><![CDATA[<h4 id="通过usb连接iphone">通过USB连接iPhone</h4>
 <ul>
@@ -71,6 +51,7 @@ ssh -p 2222 root@localhost
 或者
 ssh -p 2222 root@localhost
 </code></pre>
+<!-- more -->
 <blockquote>
 <p>上面代码意义在于将iPhone的22端口（ssh端口）映射到Mac本地的2222端口</p>
 </blockquote>
@@ -91,7 +72,6 @@ ssh -p 2222 root@localhost
 分别为<code>sh xx.sh</code> <code>base xx.sh</code> <code>source xx.sh</code><br>
 这里的 <code>sh xx.sh</code> <code>base xx.sh</code> 都是系统会开一个子进程去执行命令，执行完之后还是会返回到父进程的执行环境中。</p>
 </blockquote>
-<!-- more -->
 <p><code>source xx.sh</code> 和 <code>. xx.sh</code> 一样的</p>
 <p>比如 脚本内部有个命令 <code>cd xx/yy</code>的一个目录，<br>
 用<code>sh xx.sh</code> <code>base xx.sh</code>执行完毕之后 你会发现当前shell执行环境还是之前的，<br>
