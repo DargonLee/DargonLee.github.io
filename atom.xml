@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-11-30T13:02:37.374Z</updated>
+    <updated>2020-11-30T13:03:44.806Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
@@ -28,11 +28,6 @@
 <pre><code class="language-shell">python tcprelay.py -t 22:2222
 </code></pre>
 <p>这里的<code>-t</code>就是支持多个ssh连接的参数</p>
-<p>然后连接好USB进行登录手机</p>
-<pre><code class="language-shell">ssh -p 2222 root@127.0.0.1
-或者
-ssh -p 2222 root@localhost
-</code></pre>
 ]]></summary>
         <content type="html"><![CDATA[<h4 id="通过usb连接iphone">通过USB连接iPhone</h4>
 <ul>
@@ -46,12 +41,12 @@ ssh -p 2222 root@localhost
 <pre><code class="language-shell">python tcprelay.py -t 22:2222
 </code></pre>
 <p>这里的<code>-t</code>就是支持多个ssh连接的参数</p>
+<!-- more -->
 <p>然后连接好USB进行登录手机</p>
 <pre><code class="language-shell">ssh -p 2222 root@127.0.0.1
 或者
 ssh -p 2222 root@localhost
 </code></pre>
-<!-- more -->
 <blockquote>
 <p>上面代码意义在于将iPhone的22端口（ssh端口）映射到Mac本地的2222端口</p>
 </blockquote>

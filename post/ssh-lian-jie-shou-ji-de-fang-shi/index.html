@@ -94,12 +94,12 @@ iproxy 2222 22 进行端口转发
 <pre><code class="language-shell">python tcprelay.py -t 22:2222
 </code></pre>
 <p>这里的<code>-t</code>就是支持多个ssh连接的参数</p>
+<!-- more -->
 <p>然后连接好USB进行登录手机</p>
 <pre><code class="language-shell">ssh -p 2222 root@127.0.0.1
 或者
 ssh -p 2222 root@localhost
 </code></pre>
-<!-- more -->
 <blockquote>
 <p>上面代码意义在于将iPhone的22端口（ssh端口）映射到Mac本地的2222端口</p>
 </blockquote>
