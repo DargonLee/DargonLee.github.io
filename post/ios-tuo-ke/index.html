@@ -127,7 +127,7 @@
 <li>dumpdecrypted: https://github.com/stefanesser/dumpdecrypted</li>
 </ul>
 <h5 id="判断可执行文件是否加密">判断可执行文件是否加密</h5>
-<pre><code>otool -l 文件路径 | grep crpyt 
+<pre><code class="language-shell">otool -l 文件路径 | grep crpyt 
 </code></pre>
 <p>如果cryptid 为1 是加密的 0是没有加密的</p>
 <h4 id="cluth脱壳">Cluth脱壳</h4>
@@ -136,7 +136,7 @@
 </blockquote>
 <p>把下载好的文件直接拷贝到手机的这个路径下<code>usr/bin</code></p>
 <p>然后在连接手机端的命令窗口上输入：<code>Cluth脱壳</code>就行了，如果报错没有权限的话可以执行下面命令给这个执行文件授权</p>
-<pre><code>chmod +x /usr/bin/Cluth
+<pre><code class="language-shell">chmod +x /usr/bin/Cluth
 </code></pre>
 <ul>
 <li>列出手机上安装的应用：<code>Cluth -i</code>（只列出被加密的应用程序）</li>
@@ -153,7 +153,7 @@
 <li>连接手机的终端进入动态库所在的目录</li>
 <li>使用环境变量<code>DYLD_INSERT_LIBRARIES</code>将<code>dylib</code>注入到要脱壳的可执行文件中（可执行文件的路径可以先打开APP然后执行<code>ps -A</code> 来查看）</li>
 </ul>
-<pre><code>root# DYLD_INSERT_LIBRARIES=dumpdecrypted.dylib 要脱壳的可执行文件路径（/var/Container/Bundle/Application/xxxx/yy.app/yy）
+<pre><code class="language-shell">root# DYLD_INSERT_LIBRARIES=dumpdecrypted.dylib 要脱壳的可执行文件路径（/var/Container/Bundle/Application/xxxx/yy.app/yy）
 </code></pre>
 <p>yy.decrypted 文件就是脱壳后的文件</p>
 

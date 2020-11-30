@@ -100,40 +100,40 @@ cycript -p [进程ID] 或者[com.S...">
 <h4 id="语法">语法</h4>
 <p><code>UIApp</code> = <code>[UIApplication sharedApplication]</code></p>
 <p>定义变量</p>
-<pre><code> var xx = UIApp.keyWindow
+<pre><code class="language-swift"> var xx = UIApp.keyWindow
 </code></pre>
 <p>用内存地址获取对象</p>
-<pre><code>#内存地址
+<pre><code># 内存地址
 </code></pre>
 <p>获取当前程序用到的类</p>
-<pre><code>ObjectiveC.classes
+<pre><code class="language-swift">ObjectiveC.classes
 </code></pre>
 <p>查看对象所有成员变量</p>
-<pre><code>*UIApp
+<pre><code class="language-swift">*UIApp
 或者
 *#对象内存地址
 </code></pre>
 <p>递归打印View的所有子控件</p>
-<pre><code>[UIApp.keyWindow recursiveDescription]
+<pre><code class="language-swift">[UIApp.keyWindow recursiveDescription]
 想要排版好看点的话
 [UIApp.keyWindow recursiveDescription].toString()
 </code></pre>
 <p>以上两种写法的常用形式</p>
-<pre><code>UIApp.keyWindow.recursiveDescription().toString()
+<pre><code class="language-swift">UIApp.keyWindow.recursiveDescription().toString()
 </code></pre>
 <p>筛选出某中类型的对象</p>
-<pre><code>choose(UIViewController)
+<pre><code class="language-swift">choose(UIViewController)
 choose(UITableViewCell)
 </code></pre>
 <p>拷贝封装好的js文件到iPhone</p>
-<pre><code>scp -P 2222 文件在Mac上的路径/MJTool.js root@localhost:/usr/lib/cycript0.9
+<pre><code class="language-shell">scp -P 2222 文件在Mac上的路径/MJTool.js root@localhost:/usr/lib/cycript0.9
 </code></pre>
 <p>如果想要保证自己写的文件和其他的文件不冲突的话</p>
 <pre><code>scp -P 2222 文件在Mac上的路径/MJTool.cy root@localhost:/usr/lib/cycript0.9/com/harlans
 </code></pre>
 <h3 id="封装cy文件">封装<code>cy</code>文件</h3>
 <p>新建<code>test.cy</code>文件</p>
-<pre><code>(function(exports) {
+<pre><code class="language-swift">(function(exports) {
     MJSum = function (a, b) {
         return a + b;
     };

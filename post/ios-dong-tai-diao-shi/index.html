@@ -127,26 +127,26 @@ Xcod...">
 <li>iPhone上的<code>/Developer</code>的目录是只读的，无法直接对<code>/Developer/usr/bin/debugserver</code>文件签名，需要先把debugserver文件复制到Mac上</li>
 <li>通过ldid命令导出debugserver文件现在的权限</li>
 </ul>
-<pre><code>ldid -e debugserver &gt; debugserver.entitlements // 会生成一个debugserver.entitlements文件
+<pre><code class="language-shell">ldid -e debugserver &gt; debugserver.entitlements // 会生成一个debugserver.entitlements文件
 </code></pre>
 <ul>
 <li>在<code>debugserver.entitlements</code>文件开始编辑点击加号 添加 <code>get-task-allow</code> 和 <code>task_for_pid-allow</code> 并设置值为YES</li>
 <li>编辑好后保存再重新签名</li>
 </ul>
-<pre><code>ldid -Sdebugserver.entitlements debugserver // 然后debugserver的权限就加上去了
+<pre><code class="language-shell">ldid -Sdebugserver.entitlements debugserver // 然后debugserver的权限就加上去了
 </code></pre>
 <ul>
 <li><strong>注意</strong>由于iPhone上的<code>/Developer</code>的目录是只读的，所以你签好文件不能直接赋值到手机上</li>
 <li>可以直接把它放到<code>usr/bin</code>目录下，可以直接使用</li>
 </ul>
-<pre><code>chmod +x /usr/bin/debugserver //给执行权限
+<pre><code class="language-shell">chmod +x /usr/bin/debugserver //给执行权限
 </code></pre>
 <ul>
 <li>然后在手机终端就可以直接使用了</li>
 </ul>
 <h6 id="让debugserver附加到某个app进程中">让debugserver附加到某个APP进程中</h6>
 <p>先使用ssh登录到手机root用户然后执行下面命令</p>
-<pre><code>debugserver *:端口号 -a 进程
+<pre><code class="language-shell">debugserver *:端口号 -a 进程
 debugserver *:10011 -a WeChat
 </code></pre>
 <ul>
@@ -157,37 +157,37 @@ debugserver *:10011 -a WeChat
 <ul>
 <li>启动LLDB</li>
 </ul>
-<pre><code>lldb
+<pre><code class="language-shell">lldb
 </code></pre>
 <ul>
 <li>连接debugserver服务</li>
 </ul>
-<pre><code>(lldb) process connect connect://手机IP地址:debugserver服务的端口号
+<pre><code class="language-shell">(lldb) process connect connect://手机IP地址:debugserver服务的端口号
 (lldb) process connect connect://10.1.125.100:10011
 </code></pre>
 <ul>
 <li>如果是通过端口转发的方式连接手机的话通过下面方式连接<br>
 转发端口</li>
 </ul>
-<pre><code>iproxy 22:2222 10011:9999 // 这样就转发了手机上的两个端口
+<pre><code class="language-shell">iproxy 22:2222 10011:9999 // 这样就转发了手机上的两个端口
 </code></pre>
 <p>然后登录到手机</p>
-<pre><code>ssh -p 2222 root@localhost
+<pre><code class="language-shell">ssh -p 2222 root@localhost
 </code></pre>
 <p>转发debugserver端口</p>
-<pre><code>debugserver *:10011 -a WeChat
+<pre><code class="language-shell">debugserver *:10011 -a WeChat
 </code></pre>
 <p>之后再使用lldb连接debugserver服务器</p>
-<pre><code>(lldb) process connect connect://localhost:10011
+<pre><code class="language-shell">(lldb) process connect connect://localhost:10011
 </code></pre>
 <ul>
 <li>使用LLDB的<code>c</code>命令让程序先继续运行</li>
 </ul>
-<pre><code>(lldb)  c
+<pre><code class="language-shell">(lldb)  c
 </code></pre>
 <p>然后就监听成功了。</p>
 <h6 id="通过debugserver启动app">通过debugserver启动APP</h6>
-<pre><code>debugserver -x auto*:端口号 APP可执行文件路径
+<pre><code class="language-shell">debugserver -x auto*:端口号 APP可执行文件路径
 </code></pre>
 <!-- more -->
 <h6 id="通过xcode直接调试任意app">通过Xcode直接调试任意App</h6>

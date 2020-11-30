@@ -86,16 +86,16 @@ iproxy 2222 22 进行端口转发
 <ul>
 <li>用<code>iproxy</code> 转发端口</li>
 </ul>
-<pre><code>iproxy 2222 22 进行端口转发
+<pre><code class="language-shell">iproxy 2222 22 进行端口转发
 </code></pre>
 <p>想要支持多个ssh连接的话 需要添加参数 -t<br>
 如果加<code>-t</code> 不行的 请使用<code>usbmuxd</code>的1.0.8版本</p>
 <p>如果是1.0.8版本的需要执行下面的命令进行端口转发</p>
-<pre><code>python tcprelay.py -t 22:2222
+<pre><code class="language-shell">python tcprelay.py -t 22:2222
 </code></pre>
 <p>这里的<code>-t</code>就是支持多个ssh连接的参数</p>
 <p>然后连接好USB进行登录手机</p>
-<pre><code>ssh -p 2222 root@127.0.0.1
+<pre><code class="language-shell">ssh -p 2222 root@127.0.0.1
 或者
 ssh -p 2222 root@localhost
 </code></pre>
@@ -106,12 +106,12 @@ ssh -p 2222 root@localhost
 <ul>
 <li>通过WiFi的方式</li>
 </ul>
-<pre><code>scp 本地文件路径 roo@192.168.1.2:手机的目录
+<pre><code class="language-shell">scp 本地文件路径 roo@192.168.1.2:手机的目录
 </code></pre>
 <ul>
 <li>通过端口转发的方式</li>
 </ul>
-<pre><code>scp -P 2222 本地文件路径 root@localhost:手机的目录
+<pre><code class="language-shell">scp -P 2222 本地文件路径 root@localhost:手机的目录
 </code></pre>
 <p><em><strong>注意：</strong></em></p>
 <blockquote>

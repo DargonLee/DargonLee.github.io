@@ -116,7 +116,7 @@
     
   </div>
   <div class="md:mx-8 flex-shrink-0 self-start rounded-full border-4 border-dotted border-transparent hover:border-yellow-50 p-2 w-32 h-32 order-1 md:order-2 mx-auto s3-dotted">
-    <img class="rounded-full object-cover" src="https://dargonlee.github.io/images/avatar.png?v=1595680750671" alt="七里田间的守望者" width="100%" height="100%">
+    <img class="rounded-full object-cover" src="https://dargonlee.github.io/images/avatar.png?v=1606740941431" alt="七里田间的守望者" width="100%" height="100%">
   </div>
 </header>
       
@@ -137,16 +137,16 @@
 <ul>
 <li>用<code>iproxy</code> 转发端口</li>
 </ul>
-<pre><code>iproxy 2222 22 进行端口转发
+<pre><code class="language-shell">iproxy 2222 22 进行端口转发
 </code></pre>
 <p>想要支持多个ssh连接的话 需要添加参数 -t<br>
 如果加<code>-t</code> 不行的 请使用<code>usbmuxd</code>的1.0.8版本</p>
 <p>如果是1.0.8版本的需要执行下面的命令进行端口转发</p>
-<pre><code>python tcprelay.py -t 22:2222
+<pre><code class="language-shell">python tcprelay.py -t 22:2222
 </code></pre>
 <p>这里的<code>-t</code>就是支持多个ssh连接的参数</p>
 <p>然后连接好USB进行登录手机</p>
-<pre><code>ssh -p 2222 root@127.0.0.1
+<pre><code class="language-shell">ssh -p 2222 root@127.0.0.1
 或者
 ssh -p 2222 root@localhost
 </code></pre>
@@ -157,12 +157,12 @@ ssh -p 2222 root@localhost
 <ul>
 <li>通过WiFi的方式</li>
 </ul>
-<pre><code>scp 本地文件路径 roo@192.168.1.2:手机的目录
+<pre><code class="language-shell">scp 本地文件路径 roo@192.168.1.2:手机的目录
 </code></pre>
 <ul>
 <li>通过端口转发的方式</li>
 </ul>
-<pre><code>scp -P 2222 本地文件路径 root@localhost:手机的目录
+<pre><code class="language-shell">scp -P 2222 本地文件路径 root@localhost:手机的目录
 </code></pre>
 <p><em><strong>注意：</strong></em></p>
 <blockquote>
@@ -255,7 +255,7 @@ ssh -p 2222 root@localhost
 <li>dumpdecrypted: https://github.com/stefanesser/dumpdecrypted</li>
 </ul>
 <h5 id="判断可执行文件是否加密">判断可执行文件是否加密</h5>
-<pre><code>otool -l 文件路径 | grep crpyt 
+<pre><code class="language-shell">otool -l 文件路径 | grep crpyt 
 </code></pre>
 <p>如果cryptid 为1 是加密的 0是没有加密的</p>
 <h4 id="cluth脱壳">Cluth脱壳</h4>
@@ -264,7 +264,7 @@ ssh -p 2222 root@localhost
 </blockquote>
 <p>把下载好的文件直接拷贝到手机的这个路径下<code>usr/bin</code></p>
 <p>然后在连接手机端的命令窗口上输入：<code>Cluth脱壳</code>就行了，如果报错没有权限的话可以执行下面命令给这个执行文件授权</p>
-<pre><code>chmod +x /usr/bin/Cluth
+<pre><code class="language-shell">chmod +x /usr/bin/Cluth
 </code></pre>
 <ul>
 <li>列出手机上安装的应用：<code>Cluth -i</code>（只列出被加密的应用程序）</li>
@@ -492,26 +492,26 @@ export PATH=$THEOS/bin:$PATH
 <li>iPhone上的<code>/Developer</code>的目录是只读的，无法直接对<code>/Developer/usr/bin/debugserver</code>文件签名，需要先把debugserver文件复制到Mac上</li>
 <li>通过ldid命令导出debugserver文件现在的权限</li>
 </ul>
-<pre><code>ldid -e debugserver &gt; debugserver.entitlements // 会生成一个debugserver.entitlements文件
+<pre><code class="language-shell">ldid -e debugserver &gt; debugserver.entitlements // 会生成一个debugserver.entitlements文件
 </code></pre>
 <ul>
 <li>在<code>debugserver.entitlements</code>文件开始编辑点击加号 添加 <code>get-task-allow</code> 和 <code>task_for_pid-allow</code> 并设置值为YES</li>
 <li>编辑好后保存再重新签名</li>
 </ul>
-<pre><code>ldid -Sdebugserver.entitlements debugserver // 然后debugserver的权限就加上去了
+<pre><code class="language-shell">ldid -Sdebugserver.entitlements debugserver // 然后debugserver的权限就加上去了
 </code></pre>
 <ul>
 <li><strong>注意</strong>由于iPhone上的<code>/Developer</code>的目录是只读的，所以你签好文件不能直接赋值到手机上</li>
 <li>可以直接把它放到<code>usr/bin</code>目录下，可以直接使用</li>
 </ul>
-<pre><code>chmod +x /usr/bin/debugserver //给执行权限
+<pre><code class="language-shell">chmod +x /usr/bin/debugserver //给执行权限
 </code></pre>
 <ul>
 <li>然后在手机终端就可以直接使用了</li>
 </ul>
 <h6 id="让debugserver附加到某个app进程中">让debugserver附加到某个APP进程中</h6>
 <p>先使用ssh登录到手机root用户然后执行下面命令</p>
-<pre><code>debugserver *:端口号 -a 进程
+<pre><code class="language-shell">debugserver *:端口号 -a 进程
 debugserver *:10011 -a WeChat
 </code></pre>
 <ul>
@@ -522,37 +522,37 @@ debugserver *:10011 -a WeChat
 <ul>
 <li>启动LLDB</li>
 </ul>
-<pre><code>lldb
+<pre><code class="language-shell">lldb
 </code></pre>
 <ul>
 <li>连接debugserver服务</li>
 </ul>
-<pre><code>(lldb) process connect connect://手机IP地址:debugserver服务的端口号
+<pre><code class="language-shell">(lldb) process connect connect://手机IP地址:debugserver服务的端口号
 (lldb) process connect connect://10.1.125.100:10011
 </code></pre>
 <ul>
 <li>如果是通过端口转发的方式连接手机的话通过下面方式连接<br>
 转发端口</li>
 </ul>
-<pre><code>iproxy 22:2222 10011:9999 // 这样就转发了手机上的两个端口
+<pre><code class="language-shell">iproxy 22:2222 10011:9999 // 这样就转发了手机上的两个端口
 </code></pre>
 <p>然后登录到手机</p>
-<pre><code>ssh -p 2222 root@localhost
+<pre><code class="language-shell">ssh -p 2222 root@localhost
 </code></pre>
 <p>转发debugserver端口</p>
-<pre><code>debugserver *:10011 -a WeChat
+<pre><code class="language-shell">debugserver *:10011 -a WeChat
 </code></pre>
 <p>之后再使用lldb连接debugserver服务器</p>
-<pre><code>(lldb) process connect connect://localhost:10011
+<pre><code class="language-shell">(lldb) process connect connect://localhost:10011
 </code></pre>
 <ul>
 <li>使用LLDB的<code>c</code>命令让程序先继续运行</li>
 </ul>
-<pre><code>(lldb)  c
+<pre><code class="language-shell">(lldb)  c
 </code></pre>
 <p>然后就监听成功了。</p>
 <h6 id="通过debugserver启动app">通过debugserver启动APP</h6>
-<pre><code>debugserver -x auto*:端口号 APP可执行文件路径
+<pre><code class="language-shell">debugserver -x auto*:端口号 APP可执行文件路径
 </code></pre>
 
       </div>

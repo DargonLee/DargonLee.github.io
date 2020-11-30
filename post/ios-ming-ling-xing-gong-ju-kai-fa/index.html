@@ -103,7 +103,7 @@
 <li>授权可执行权限<code>chomd +x /usr/bin/xxx</code></li>
 </ul>
 <!-- more -->
-<pre><code>#import &lt;mach-o/fat.h&gt;
+<pre><code class="language-swift">#import &lt;mach-o/fat.h&gt;
 #import &lt;mach-o/loader.h&gt;
 
 
@@ -138,12 +138,12 @@ if (magicNumber == FAT_CIGAM || magicNumber == FAT_MAGIC) { // 胖二进制文�
 <blockquote>
 <p>TestCL为可执行文件</p>
 </blockquote>
-<pre><code>ldid -e TestCL &gt; TestCL.entitlements
+<pre><code class="language-shell">ldid -e TestCL &gt; TestCL.entitlements
 </code></pre>
 <ul>
 <li>重新签上权限(先修改TestCL.entitlements里面的值)</li>
 </ul>
-<pre><code>ldid -STestCl.entitlements TestCL
+<pre><code class="language-shell">ldid -STestCl.entitlements TestCL
 </code></pre>
 <blockquote>
 <p>把自己写的工具的可执行文件权限提升，先把<code>SpringBoard</code>的可执行文件导出来，然后把它的权限导出来，然后把它的权限签到自己写可执行文件上就行了</p>
