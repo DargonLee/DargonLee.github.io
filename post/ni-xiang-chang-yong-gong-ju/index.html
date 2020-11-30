@@ -109,6 +109,7 @@ MachOView、class-dump、Hopper Disassembler、ida等</p>
 注入代码到App中，必要时可能会重签名ipa</p>
 </li>
 </ul>
+<!-- more -->
 <h4 id="class-dump的安装">class-dump的安装</h4>
 <ul>
 <li>先去下载 <code>class-dump</code>的可执行文件</li>
@@ -129,18 +130,18 @@ MachOView、class-dump、Hopper Disassembler、ida等</p>
 <ul>
 <li><code>file</code>:查看Mach-o文件的结构</li>
 </ul>
-<pre><code>file 文件的路径
+<pre><code class="language-shell">file 文件的路径
 </code></pre>
 <ul>
 <li><code>otool</code>:查看Mach-o特定部分和段的内容</li>
 </ul>
-<pre><code>打印Mach-o文件里面链接了哪些库：otool -L 文件地址
+<pre><code class="language-shell">打印Mach-o文件里面链接了哪些库：otool -L 文件地址
 打印Mach-o文件头信息：otool -f 文件地址
 </code></pre>
 <ul>
 <li><code>lipo</code>:常用于多架构Mach-o文件的处理</li>
 </ul>
-<pre><code>查看架构信息：lipo -info 文件路径
+<pre><code class="language-shell">查看架构信息：lipo -info 文件路径
 导出特定架构：lipo 文件路径 -thin 架构类型 -output 输出文件路径
 合并多种架构：lipo 文件路径1 文件路径2 -output 输出文件路径 
 </code></pre>
@@ -155,7 +156,7 @@ MachOView、class-dump、Hopper Disassembler、ida等</p>
 <li>安装签名工具<code>brew install ldid</code></li>
 <li>修改环境变量</li>
 </ul>
-<pre><code>vim ~/.zshrc 或者 vim ~/.bash_profile
+<pre><code class="language-shell">vim ~/.zshrc 或者 vim ~/.bash_profile
 export THEOS=~/theos
 export PATH=$THEOS/bin:$PATH
 </code></pre>
@@ -163,14 +164,13 @@ export PATH=$THEOS/bin:$PATH
 <ul>
 <li>下载theos</li>
 </ul>
-<pre><code>git clone --recursive https://github.com/theos/theos.git $THEOS // --recursive递归下载
+<pre><code class="language-shell">git clone --recursive https://github.com/theos/theos.git $THEOS // --recursive递归下载
 </code></pre>
 <ul>
 <li>新建项目</li>
 </ul>
-<pre><code>nic.pl
+<pre><code class="language-shell">nic.pl
 </code></pre>
-<!-- more -->
 <h4 id="theos-tweak的实现过程">theos-tweak的实现过程</h4>
 <ul>
 <li>编写tweak代码</li>

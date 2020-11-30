@@ -182,27 +182,6 @@ ssh -p 2222 root@localhost
 <blockquote>
 <p>执行要脱壳的APP，将已经解密后的程序，从内存中直接拷贝出来。</p>
 </blockquote>
-<h5 id="ios中脱壳工具">iOS中脱壳工具</h5>
-<ul>
-<li>Cluth：https://github.com/KJCracks/Cluth</li>
-<li>dumpdecrypted: https://github.com/stefanesser/dumpdecrypted</li>
-</ul>
-<h5 id="判断可执行文件是否加密">判断可执行文件是否加密</h5>
-<pre><code class="language-shell">otool -l 文件路径 | grep crpyt 
-</code></pre>
-<p>如果cryptid 为1 是加密的 0是没有加密的</p>
-<h4 id="cluth脱壳">Cluth脱壳</h4>
-<blockquote>
-<p>下载最新版本：https://github.com/KJCracks/Cluth</p>
-</blockquote>
-<p>把下载好的文件直接拷贝到手机的这个路径下<code>usr/bin</code></p>
-<p>然后在连接手机端的命令窗口上输入：<code>Cluth脱壳</code>就行了，如果报错没有权限的话可以执行下面命令给这个执行文件授权</p>
-<pre><code class="language-shell">chmod +x /usr/bin/Cluth
-</code></pre>
-<ul>
-<li>列出手机上安装的应用：<code>Cluth -i</code>（只列出被加密的应用程序）</li>
-<li>脱壳：<code>Cluth -d 应用的bundleId</code>（会输出一个脱壳后的ipa文件路径，把ipa文件拷贝到电脑上就行了）</li>
-</ul>
 
       </div>
       <a href="https://dargonlee.github.io/post/ios-tuo-ke/" class="btn">
@@ -240,67 +219,6 @@ MachOView、class-dump、Hopper Disassembler、ida等</p>
 注入代码到App中，必要时可能会重签名ipa</p>
 </li>
 </ul>
-<h4 id="class-dump的安装">class-dump的安装</h4>
-<ul>
-<li>先去下载 <code>class-dump</code>的可执行文件</li>
-<li>然后把它复制到系统的<code>/usr/local/bin</code>目录下</li>
-<li>执行<code>class-dump -H mach-o文件路径 -o 头文件存放路径</code></li>
-</ul>
-<h4 id="抽取系统框架的可执行文件">抽取系统框架的可执行文件</h4>
-<ul>
-<li>找到系统的动态库缓存文件 <code>Device/System/Libary/Caches/com.apple.dyld</code></li>
-<li>里面会有两个文件一个<code>dyld_shared_cache_arm64</code>的、一个是<code>dyld_shared_cache_armv7s</code> 这里面装的分别是不同架构的系统框架可执行文件</li>
-<li>但是文件太大，我们需要通过一个解析器去给解析处理各个framework的可执行文件</li>
-<li>去找到<code>dyld</code>的源码<code>https://opensource.apple.com/tarballs/dyld/</code> 找到最新版本的下载下来</li>
-<li>找到工程中<code>launch-cache/dsc_extractor.app</code>文件用<code>clang++</code>编译器编译成可执行文件（只要int main函数里面的东西，此函数上面的内容都可以不要）</li>
-<li><code>clang++ -o dsc_extractor dsc_extractor.app</code> 会生成<code>dsc_extractor</code>可执行文件</li>
-<li><code>./dsc_extractor dyld_shared_cache_armv7s armv7s</code> 回车执行 就会抽取包含在系统共享文件中的系统库可执行文件</li>
-</ul>
-<h4 id="mach-o的结构">Mach-o的结构</h4>
-<ul>
-<li><code>file</code>:查看Mach-o文件的结构</li>
-</ul>
-<pre><code>file 文件的路径
-</code></pre>
-<ul>
-<li><code>otool</code>:查看Mach-o特定部分和段的内容</li>
-</ul>
-<pre><code>打印Mach-o文件里面链接了哪些库：otool -L 文件地址
-打印Mach-o文件头信息：otool -f 文件地址
-</code></pre>
-<ul>
-<li><code>lipo</code>:常用于多架构Mach-o文件的处理</li>
-</ul>
-<pre><code>查看架构信息：lipo -info 文件路径
-导出特定架构：lipo 文件路径 -thin 架构类型 -output 输出文件路径
-合并多种架构：lipo 文件路径1 文件路径2 -output 输出文件路径 
-</code></pre>
-<h4 id="配置reveal环境">配置Reveal环境</h4>
-<ul>
-<li>先安装<code>Reveal Loader</code> 插件</li>
-<li>然后把Reveal的framework里的RevealServer替换到手里<code>Libary/RHReveal/目录下</code></li>
-<li>killall SpringBoard 重启</li>
-</ul>
-<h4 id="theos-安装">theos 安装</h4>
-<ul>
-<li>安装签名工具<code>brew install ldid</code></li>
-<li>修改环境变量</li>
-</ul>
-<pre><code>vim ~/.zshrc 或者 vim ~/.bash_profile
-export THEOS=~/theos
-export PATH=$THEOS/bin:$PATH
-</code></pre>
-<p>执行<code>source .zshrc</code>这样环境变量才会生效或者重启终端</p>
-<ul>
-<li>下载theos</li>
-</ul>
-<pre><code>git clone --recursive https://github.com/theos/theos.git $THEOS // --recursive递归下载
-</code></pre>
-<ul>
-<li>新建项目</li>
-</ul>
-<pre><code>nic.pl
-</code></pre>
 
       </div>
       <a href="https://dargonlee.github.io/post/ni-xiang-chang-yong-gong-ju/" class="btn">
@@ -374,84 +292,6 @@ export PATH=$THEOS/bin:$PATH
 <p>Xcode的调试局限性：一般只能安装通过Xcode安装的APP</p>
 </li>
 </ul>
-<h4 id="动态调试任意app">动态调试任意APP</h4>
-<h6 id="debugserver的权限问题">debugserver的权限问题</h6>
-<ul>
-<li>
-<p>默认情况下<code>/Developer/usr/bin/debugserver</code>缺少一定的权限，只能调试通过Xcode安装的APP，无法调试其他APP 比如App Store上的APP</p>
-</li>
-<li>
-<p>如果希望调试其他APP，需要对debugserver进行重新签名，签上2个调试相关的权限</p>
-</li>
-</ul>
-<p><code>get-task-allow</code> 和 <code>task_for_pid-allow</code></p>
-<h6 id="如何给debugserver签上权限">如何给debugserver签上权限</h6>
-<ul>
-<li>iPhone上的<code>/Developer</code>的目录是只读的，无法直接对<code>/Developer/usr/bin/debugserver</code>文件签名，需要先把debugserver文件复制到Mac上</li>
-<li>通过ldid命令导出debugserver文件现在的权限</li>
-</ul>
-<pre><code class="language-shell">ldid -e debugserver &gt; debugserver.entitlements // 会生成一个debugserver.entitlements文件
-</code></pre>
-<ul>
-<li>在<code>debugserver.entitlements</code>文件开始编辑点击加号 添加 <code>get-task-allow</code> 和 <code>task_for_pid-allow</code> 并设置值为YES</li>
-<li>编辑好后保存再重新签名</li>
-</ul>
-<pre><code class="language-shell">ldid -Sdebugserver.entitlements debugserver // 然后debugserver的权限就加上去了
-</code></pre>
-<ul>
-<li><strong>注意</strong>由于iPhone上的<code>/Developer</code>的目录是只读的，所以你签好文件不能直接赋值到手机上</li>
-<li>可以直接把它放到<code>usr/bin</code>目录下，可以直接使用</li>
-</ul>
-<pre><code class="language-shell">chmod +x /usr/bin/debugserver //给执行权限
-</code></pre>
-<ul>
-<li>然后在手机终端就可以直接使用了</li>
-</ul>
-<h6 id="让debugserver附加到某个app进程中">让debugserver附加到某个APP进程中</h6>
-<p>先使用ssh登录到手机root用户然后执行下面命令</p>
-<pre><code class="language-shell">debugserver *:端口号 -a 进程
-debugserver *:10011 -a WeChat
-</code></pre>
-<ul>
-<li><code>*:端口号</code>：使用iPhone的某个端口启动debugserver服务（只要不是保留端口就行）</li>
-<li><code>-a</code>:进程输入APP的进程信息（进程ID或者进程名称）</li>
-</ul>
-<h6 id="在mac上启动lldb远程连接iphone上的debugserver服务">在Mac上启动LLDB，远程连接iPhone上的debugserver服务</h6>
-<ul>
-<li>启动LLDB</li>
-</ul>
-<pre><code class="language-shell">lldb
-</code></pre>
-<ul>
-<li>连接debugserver服务</li>
-</ul>
-<pre><code class="language-shell">(lldb) process connect connect://手机IP地址:debugserver服务的端口号
-(lldb) process connect connect://10.1.125.100:10011
-</code></pre>
-<ul>
-<li>如果是通过端口转发的方式连接手机的话通过下面方式连接<br>
-转发端口</li>
-</ul>
-<pre><code class="language-shell">iproxy 22:2222 10011:9999 // 这样就转发了手机上的两个端口
-</code></pre>
-<p>然后登录到手机</p>
-<pre><code class="language-shell">ssh -p 2222 root@localhost
-</code></pre>
-<p>转发debugserver端口</p>
-<pre><code class="language-shell">debugserver *:10011 -a WeChat
-</code></pre>
-<p>之后再使用lldb连接debugserver服务器</p>
-<pre><code class="language-shell">(lldb) process connect connect://localhost:10011
-</code></pre>
-<ul>
-<li>使用LLDB的<code>c</code>命令让程序先继续运行</li>
-</ul>
-<pre><code class="language-shell">(lldb)  c
-</code></pre>
-<p>然后就监听成功了。</p>
-<h6 id="通过debugserver启动app">通过debugserver启动APP</h6>
-<pre><code class="language-shell">debugserver -x auto*:端口号 APP可执行文件路径
-</code></pre>
 
       </div>
       <a href="https://dargonlee.github.io/post/ios-dong-tai-diao-shi/" class="btn">
