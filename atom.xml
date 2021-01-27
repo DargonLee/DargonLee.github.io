@@ -2,14 +2,592 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dargonlee.github.io</id>
     <title>七里田间的守望者</title>
-    <updated>2020-11-30T13:32:28.684Z</updated>
+    <updated>2021-01-27T13:26:16.819Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dargonlee.github.io"/>
     <link rel="self" href="https://dargonlee.github.io/atom.xml"/>
     <subtitle>我不在乎是悲伤的离别还是不痛快的离别，只要是离开一个地方，我总希望离开的时候自己心中有数。</subtitle>
     <logo>https://dargonlee.github.io/images/avatar.png</logo>
     <icon>https://dargonlee.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2020, 七里田间的守望者</rights>
+    <rights>All rights reserved 2021, 七里田间的守望者</rights>
+    <entry>
+        <title type="html"><![CDATA[Python文件操作]]></title>
+        <id>https://dargonlee.github.io/post/python-wen-jian-cao-zuo/</id>
+        <link href="https://dargonlee.github.io/post/python-wen-jian-cao-zuo/">
+        </link>
+        <updated>2021-01-23T04:02:19.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="文件读写">文件读写</h3>
+<pre><code class="language-python"># 文件读写
+# r 只读 默认值
+# w 只写 内容清空
+# a 只写 内容不清空 只能在末尾追加内容
+# r+ 读写 末尾追加内容
+# w+ 读写 内容会被清空
+# a+ 读写 写文件只能追加内容
+# 使用with 打开文件后，自动关闭文件
+# 不使用with的话就要主动调用f.close()
+with open(&quot;result.txt&quot;, 'r') as f:
+    data = f.read()
+    print(&quot;text: {}&quot;.format(data))
+
+with open(&quot;result.txt&quot;, 'w') as f:
+    data = &quot;hello python&quot;
+    # 返回写入的字符串长度
+    l = f.write(data)
+    print(&quot;{}&quot;.format(l))
+</code></pre>
+<h3 id="获取目录下的所有文件">获取目录下的所有文件</h3>
+<pre><code class="language-python"># 获取目录信息
+dirs = os.scandir(&quot;../venv&quot;)
+for entry in dirs:
+    # 判断文件或者文件夹是否存在
+    # if entry.is_dir() or entry.is_file():
+        print(entry.name)
+dirs.close()
+
+entrys = Path(&quot;../venv&quot;)
+for entry in entrys.iterdir():
+    print(entry.name)
+</code></pre>
+<h3 id="列出目录下的所有文件">列出目录下的所有文件</h3>
+<pre><code class="language-python">basepath = &quot;../venv&quot;
+for entry in os.listdir(basepath):
+    # 判断是否为文件夹
+    if os.path.isdir(os.path.join(basepath, entry)):
+        print(entry)
+    # 判断是否为文件
+    if os.path.isfile(os.path.join(basepath, entry)):
+        print(entry)
+</code></pre>
+<h3 id="获取文件的属性">获取文件的属性</h3>
+<pre><code class="language-python"># 获取文件属性
+with os.scandir(&quot;../venv&quot;) as entries:
+    for entry in entries:
+        info = entry.stat()
+        print(info.st_mtime)
+        print('{} 上次修改时间为 {}'.format(entry.name, timestamp2datetime(info.st_mtime)))
+</code></pre>
+<h4 id="转换-unix-时间戳为-datetime对象">转换 UNIX 时间戳为 datetime对象</h4>
+<pre><code class="language-python">
+def timestamp2datetime(timestamp, convert_to_local=True, utc=8, is_remove_ms=True):
+    &quot;&quot;&quot;                                                                           
+    转换 UNIX 时间戳为 datetime对象                                                       
+    :param timestamp: 时间戳                                                         
+    :param convert_to_local: 是否转为本地时间                                             
+    :param utc: 时区信息，中国为utc+8                                                     
+    :param is_remove_ms: 是否去除毫秒                                                   
+    :return: datetime 对象                                                          
+    &quot;&quot;&quot;
+    if is_remove_ms:
+        timestamp = int(timestamp)
+    dt = datetime.datetime.utcfromtimestamp(timestamp)
+    if convert_to_local:
+        dt = dt + datetime.timedelta(hours=utc)
+    return dt
+
+
+def convert_date(timestamp, format='%Y-%m-%d %H:%M:%S'):
+    dt = timestamp2datetime(timestamp)
+    return dt.strftime(format) 
+</code></pre>
+<h3 id="创建目录">创建目录</h3>
+<pre><code class="language-python">os.mkdir(&quot;example_directory&quot;)
+</code></pre>
+<p>如果该目录已经存在，os.mkdir() 将抛出 FileExistsError 异常。或者，你也可以使用 pathlib 来创建目录:</p>
+<pre><code class="language-python">from pathlib import Path
+
+try:
+    p = Path('example_directory')
+    p.mkdir()
+except FileExistsError as e:
+    print(e)
+
+# 或者 你可以给 .mkdir() 传入 exist_ok=True 参数来忽略 FileExistsError 异常:
+p = Path('example_directory')
+p.mkdir(exist_ok=True)
+</code></pre>
+<h3 id="创建多个目录">创建多个目录</h3>
+<p><code>os.makedirs()</code> 和在bash中运行 <code>mkdir -p</code> 类似。例如，要创建一组目录像 <code>2018/10/05</code>，你可以像下面那样操作:</p>
+<pre><code class="language-python">import os
+os.makedirs('2018/10/05', mode=0o770)
+</code></pre>
+<p>也可以像下面创建</p>
+<pre><code class="language-python">from pathlib import Path
+
+p = Path('2018/10/05')
+p.mkdir(parents=True, exist_ok=True)
+</code></pre>
+<p>运行上述代码会得到像下面的结构：</p>
+<pre><code class="language-python">└── 2018
+    └── 10
+        └── 05
+</code></pre>
+<h3 id="文件名模式匹配">文件名模式匹配</h3>
+<p>使用上述方法之一获取目录中的文件列表后，你可能希望搜索和特定的模式匹配的文件。</p>
+<p>下面这些是你可以使用的方法和函数：</p>
+<p>endswith() 和 startswith() 字符串方法<br>
+fnmatch.fnmatch()<br>
+glob.glob()<br>
+pathlib.Path.glob()<br>
+这些方法和函数是下面要讨论的。本小节的示例将在名为 some_directory 的目录下执行，该目录具有以下的结构：</p>
+<pre><code class="language-python">.
+├── admin.py
+├── data_01_backup.txt
+├── data_01.txt
+├── data_02_backup.txt
+├── data_02.txt
+├── data_03_backup.txt
+├── data_03.txt
+├── sub_dir
+│   ├── file1.py
+│   └── file2.py
+└── tests.py
+</code></pre>
+<p>如果你正在使用 Bash shell，你可以使用以下的命令创建上述目录结构:</p>
+<pre><code class="language-python">mkdir some_directory
+cd some_directory
+mkdir sub_dir
+touch sub_dir/file1.py sub_dir/file2.py
+touch data_{01..03}.txt data_{01..03}_backup.txt admin.py tests.py
+</code></pre>
+<h3 id="使用字符串方法">使用字符串方法</h3>
+<p>Python有几个内置 修改和操作字符串 的方法。当在匹配文件名时，其中的两个方法 .startswith() 和 .endswith() 非常有用。要做到这点，首先要获取一个目录列表，然后遍历。</p>
+<pre><code class="language-python">import os
+
+for f_name in os.listdir('some_directory'):
+    if f_name.endswith('.txt'):
+        print(f_name)
+</code></pre>
+<p>上述代码找到 some_directory 中的所有文件，遍历并使用 .endswith() 来打印所有扩展名为 .txt 的文件名。运行代码在我的电脑上输出如下:</p>
+<pre><code class="language-python">data_01.txt
+data_01_backup.txt
+data_02.txt
+data_02_backup.txt
+data_03.txt
+data_03_backup.txt
+</code></pre>
+<h3 id="遍历目录和处理文件">遍历目录和处理文件</h3>
+<p>一个常见的编程任务是遍历目录树并处理目录树中的文件。让我们来探讨一下如何使用内置的Python函数 os.walk() 来实现这一功能。os.walk() 用于通过从上到下或从下到上遍历树来生成目录树中的文件名。处于本节的目的，我们想操作以下的目录树:</p>
+<pre><code class="language-python">├── folder_1
+│   ├── file1.py
+│   ├── file2.py
+│   └── file3.py
+├── folder_2
+│   ├── file4.py
+│   ├── file5.py
+│   └── file6.py
+├── test1.txt
+└── test2.txt
+</code></pre>
+<p>以下是一个示例，演示如何使用 os.walk() 列出目录树中的所有文件和目录。</p>
+<p>os.walk() 默认是从上到下遍历目录:</p>
+<p>python import os for dirpath, dirname, files in os.walk('.'): print(f'Found directory: {dirpath}') for file_name in files: print(file_name)</p>
+<p>os.walk() 在每个循环中返回三个值：</p>
+<p>当前文件夹的名称<br>
+当前文件夹中子文件夹的列表<br>
+当前文件夹中文件的列表<br>
+在每次迭代中，会打印出它找到的子目录和文件的名称：</p>
+<pre><code class="language-python">Found directory: .
+test1.txt
+test2.txt
+Found directory: ./folder_1
+file1.py
+file3.py
+file2.py
+Found directory: ./folder_2
+file4.py
+file5.py
+file6.py
+</code></pre>
+<p>要以自下而上的方式遍历目录树，则将 topdown=False 关键字参数传递给 os.walk() ：</p>
+<pre><code class="language-python">for dirpath, dirnames, files in os.walk('.', topdown=False):
+    print(f'Found directory: {dirpath}')
+    for file_name in files:
+        print(file_name)
+</code></pre>
+<p>传递 topdown=False 参数将使 os.walk() 首先打印出它在子目录中找到的文件:</p>
+<pre><code class="language-python">Found directory: ./folder_1
+file1.py
+file3.py
+file2.py
+Found directory: ./folder_2
+file4.py
+file5.py
+file6.py
+Found directory: .
+test1.txt
+test2.txt
+</code></pre>
+<p>如你看见的，程序在列出根目录的内容之前列出子目录的内容。 这在在你想要递归删除文件和目录的情况下非常有用。 你将在以下部分中学习如何执行此操作。 默认情况下，os.walk 不会访问通过软连接创建的目录。 可以通过使用 followlinks = True 参数来覆盖默认行为。</p>
+<h3 id="创建临时文件和目录">创建临时文件和目录</h3>
+<p>Python提供了 tempfile 模块来便捷的创建临时文件和目录。</p>
+<p>tempfile 可以在你程序运行时打开并存储临时的数据在文件或目录中。 tempfile 会在你程序停止运行后删除这些临时文件。</p>
+<p>现在，让我们看看如何创建一个临时文件:</p>
+<pre><code class="language-python">from tempfile import  TemporaryFile
+
+# 创建一个临时文件并为其写入一些数据
+fp = TemporaryFile('w+t')
+fp.write('Hello World!')
+# 回到开始，从文件中读取数据
+fp.seek(0)
+data = fp.read()
+print(data)
+# 关闭文件，之后他将会被删除
+fp.close()
+</code></pre>
+<p>第一步是从 tempfile 模块导入 TemporaryFile 。 接下来，使用 TemporaryFile() 方法并传入一个你想打开这个文件的模式来创建一个类似于对象的文件。这将创建并打开一个可用作临时存储区域的文件。</p>
+<p>在上面的示例中，模式为 w + t，这使得 tempfile 在写入模式下创建临时文本文件。 没有必要为临时文件提供文件名，因为在脚本运行完毕后它将被销毁。</p>
+<p>写入文件后，您可以从中读取并在完成处理后将其关闭。 一旦文件关闭后，将从文件系统中删除。 如果需要命名使用 tempfile 生成的临时文件，请使用 tempfile.NamedTemporaryFile() 。</p>
+<p>使用 tempfile 创建的临时文件和目录存储在用于存储临时文件的特殊系统目录中。 Python将在目录列表搜索用户可以在其中创建文件的目录。</p>
+<p>在Windows上，目录按顺序为 C:\TEMP，C:\TMP，\TEMP 和 \TMP。 在所有其他平台上，目录按顺序为 / tmp，/var/tmp 和 /usr/tmp 。 如果上述目录中都没有，tempfile 将在当前目录中存储临时文件和目录。</p>
+<p>.TemporaryFile() 也是一个上下文管理器，因此它可以与with语句一起使用。 使用上下文管理器会在读取文件后自动关闭和删除文件：</p>
+<pre><code class="language-python">with TemporaryFile('w+t') as fp:
+    fp.write('Hello universe!')
+    fp.seek(0)
+    fp.read()
+# 临时文件现在已经被关闭和删除
+</code></pre>
+<p>这将创建一个临时文件并从中读取数据。 一旦读取文件的内容，就会关闭临时文件并从文件系统中删除。</p>
+<p>tempfile 也可用于创建临时目录。 让我们看一下如何使用 tempfile.TemporaryDirectory()来做到这一点：</p>
+<pre><code class="language-python">import tempfile
+import os
+
+tmp = ''
+with tempfile.TemporaryDirectory() as tmpdir:
+    print('Created temporary directory ', tmpdir)
+    tmp = tmpdir
+    print(os.path.exists(tmpdir))
+
+print(tmp)
+print(os.path.exists(tmp))
+</code></pre>
+<p>调用 tempfile.TemporaryDirectory() 会在文件系统中创建一个临时目录，并返回一个表示该目录的对象。 在上面的示例中，使用上下文管理器创建目录，目录的名称存储在 tmpdir 变量中。 第三行打印出临时目录的名称，os.path.exists(tmpdir) 来确认目录是否实际在文件系统中创建。</p>
+<p>在上下文管理器退出上下文后，临时目录将被删除，并且对 os.path.exists(tmpdir)的调用将返回False，这意味着该目录已成功删除。</p>
+<h3 id="删除文件和目录">删除文件和目录</h3>
+<p>您可以使用 os，shutil 和 pathlib 模块中的方法删除单个文件，目录和整个目录树。 以下将介绍如何删除你不再需要的文件和目录。</p>
+<p>Python中删除文件<br>
+要删除单个文件，请使用 pathlib.Path.unlink()，os.remove() 或 os.unlink()。</p>
+<p>os.remove() 和 os.unlink() 在语义上是相同的。 要使用 os.remove()删除文件，请执行以下操作：</p>
+<pre><code class="language-python">import os
+
+data_file = 'C:\\Users\\vuyisile\\Desktop\\Test\\data.txt'
+os.remove(data_file)
+</code></pre>
+<p>使用 os.unlink() 删除文件与使用 os.remove() 的方式类似：</p>
+<pre><code class="language-python">import os
+
+data_file = 'C:\\Users\\vuyisile\\Desktop\\Test\\data.txt'
+os.unlink(data_file)
+</code></pre>
+<p>在文件上调用 .unlink() 或 .remove() 会从文件系统中删除该文件。 如果传递给它们的路径指向目录而不是文件，这两个函数将抛出 OSError 。 为避免这种情况，可以检查你要删除的内容是否是文件，并在确认是文件时执行删除操作，或者可以使用异常处理来处理 OSError ：</p>
+<pre><code class="language-python">import os
+
+data_file = 'home/data.txt'
+# 如果类型是文件则进行删除
+if os.path.is_file(data_file):
+    os.remove(data_file)
+else:
+    print(f'Error: {data_file} not a valid filename')
+</code></pre>
+<p>os.path.is_file() 检查 data_file 是否实际上是一个文件。 如果是，则通过调用 os.remove() 删除它。 如果 data_file 指向文件夹，则会向控制台输出错误消息。</p>
+<p>以下示例说明如何在删除文件时使用异常处理来处理错误：</p>
+<pre><code class="language-python">import os
+
+data_file = 'home/data.txt'
+# 使用异常处理
+try:
+    os.remove(data_file)
+except OSError as e:
+    print(f'Error: {data_file} : {e.strerror}')
+</code></pre>
+<p>上面的代码尝试在检查其类型之前先删除该文件。 如果 data_file 实际上不是文件，则抛出的 OSError 将在except子句中处理，并向控制台输出错误消息。 打印出的错误消息使用 Python f-strings 格式化。</p>
+<p>最后，你还可以使用 pathlib.Path.unlink() 删除文件：</p>
+<pre><code class="language-python">from pathlib import Path
+
+data_file = Path('home/data.txt')
+try:
+    data_file.unlink()
+except IsADirectoryError as e:
+    print(f'Error: {data_file} : {e.strerror}')
+
+</code></pre>
+<p>这将创建一个名为 data_file 的 Path 对象，该对象指向一个文件。 在 data_file 上调用.unlink（）将删除 home / data.txt 。 如果 data_file 指向目录，则引发 IsADirectoryError 。 值得注意的是，上面的Python程序和运行它的用户具有相同的权限。 如果用户没有删除文件的权限，则会引发 PermissionError 。</p>
+<h3 id="删除目录">删除目录</h3>
+<p>标准库提供了一下函数来删除目录:</p>
+<p>os.rmdir()<br>
+pathlib.Path.rmdir()<br>
+shutil.rmtree()<br>
+要删除单个目录或文件夹可以使用 os.rmdir() 或 pathlib.Path.rmdir() 。这两个函数只在你删除空目录的时候有效。如果目录不为空，则会抛出 OSError 。下面演示如何删除一个文件夹:</p>
+<pre><code class="language-python">import os
+
+trash_dir = 'my_documents/bad_dir'
+
+try:
+    os.rmdir(trash_dir)
+except OSError as e:
+    print(f'Error: {trash_dir} : {e.strerror}')
+</code></pre>
+<p>现在，trash_dir 已经通过 os.rmdir() 被删除了。如果目录不为空，则会在屏幕上打印错误信息:</p>
+<pre><code class="language-python">Traceback (most recent call last):
+  File '&lt;stdin&gt;', line 1, in &lt;module&gt;
+OSError: [Errno 39] Directory not empty: 'my_documents/bad_dir'
+</code></pre>
+<p>同样，你也可使用 pathlib 来删除目录:</p>
+<pre><code class="language-python">from pathlib import Path
+
+trash_dir = Path('my_documents/bad_dir')
+
+try:
+    trash_dir.rmdir()
+except OSError as e:
+    print(f'Error: {trash_dir} : {e.strerror}')
+</code></pre>
+<p>这里创建了一个 Path 对象指向要被删除的目录。如果目录为空，调用 Path 对象的 .rmdir() 方法删除它。</p>
+<h3 id="删除完整的目录树">删除完整的目录树</h3>
+<p>要删除非空目录和完整的目录树，Python提供了 shutil.rmtree() :</p>
+<pre><code class="language-python">import shutil
+
+trash_dir = 'my_documents/bad_dir'
+
+try:
+    shutil.rmtree(trash_dir)
+except OSError as e:
+    print(f'Error: {trash_dir} : {e.strerror}')
+</code></pre>
+<p>当调用 shutil.rmtree() 时，trash_dir 中的所有内容都将被删除。 在某些情况下，你可能希望以递归方式删除空文件夹。 你可以使用上面讨论的方法之一结合 os.walk() 来完成此操作:</p>
+<pre><code class="language-python">import os
+
+for dirpath, dirnames, files in os.walk('.', topdown=False):
+    try:
+        os.rmdir(dirpath)
+    except OSError as ex:
+        pass
+</code></pre>
+<h3 id="从加密的文档提取数据">从加密的文档提取数据</h3>
+<p>zipfile 支持提取受密码保护的ZIP。 要提取受密码保护的ZIP文件，请将密码作为参数传递给 .extract() 或.extractall() 方法：</p>
+<pre><code class="language-python">&gt;&gt;&gt; import zipfile
+
+&gt;&gt;&gt; with zipfile.ZipFile('secret.zip', 'r') as pwd_zip:
+...     # 从加密的文档提取数据
+...     pwd_zip.extractall(path='extract_dir', pwd='Quish3@o')
+</code></pre>
+<p>将以读取模式打开 secret.zip 存档。 密码提供给 .extractall() ，并且压缩文件内容被提取到 extract_dir 。 由于with语句，在完成提取后，存档文件会自动关闭。</p>
+<h3 id="创建新的存档文件">创建新的存档文件</h3>
+<p>要创建新的ZIP存档，请以写入模式（w）打开 ZipFile 对象并添加要归档的文件：</p>
+<pre><code class="language-python">&gt;&gt;&gt; import zipfile
+
+&gt;&gt;&gt; file_list = ['file1.py', 'sub_dir/', 'sub_dir/bar.py', 'sub_dir/foo.py']
+&gt;&gt;&gt; with zipfile.ZipFile('new.zip', 'w') as new_zip:
+...     for name in file_list:
+...         new_zip.write(name)
+
+</code></pre>
+<p>在该示例中，new_zip 以写入模式打开，file_list 中的每个文件都添加到存档文件中。 with语句结束后，将关闭 new_zip 。 以写入模式打开ZIP文件会删除压缩文件的内容并创建新存档文件。</p>
+<p>要将文件添加到现有的存档文件，请以追加模式打开 ZipFile 对象，然后添加文件：</p>
+<pre><code class="language-python">&gt;&gt;&gt; with zipfile.ZipFile('new.zip', 'a') as new_zip:
+...     new_zip.write('data.txt')
+...     new_zip.write('latin.txt')
+</code></pre>
+<p>这里打开在上一个示例中以追加模式创建的 new.zip 存档。 在追加模式下打开 ZipFile 对象允许将新文件添加到ZIP文件而不删除其当前内容。 将文件添加到ZIP文件后，with语句将脱离上下文并关闭ZIP文件。</p>
+<h3 id="打开tar存档文件">打开TAR存档文件</h3>
+<p>TAR文件是像ZIP等未压缩的文件存档。 它们可以使用 gzip，bzip2 和 lzma 压缩方法进行压缩。 TarFile 类允许读取和写入TAR存档。</p>
+<p>下面是从存档中读取：</p>
+<pre><code class="language-python">import tarfile
+
+with tarfile.open('example.tar', 'r') as tar_file:
+    print(tar_file.getnames())
+</code></pre>
+<p>tarfile 对象像大多数类似文件的对象一样打开。 它们有一个 open() 函数，它采用一种模式来确定文件的打开方式。</p>
+<p>使用“r”，“w”或“a”模式分别打开未压缩的TAR文件以进行读取，写入和追加。 要打开压缩的TAR文件，请将模式参数传递给 tarfile.open()，其格式为 filemode [:compression] 。 下表列出了可以打开TAR文件的可能模式：</p>
+<p>| 模式 | 行为 | | ----- | ----------------------------- | | r | 以无压缩的读取模式打开存档 | | r:gz | 以gzip压缩的读取模式打开存档 | | r:bz2 | 以bzip2压缩的读取模式打开存档 | | w | 以无压缩的写入模式打开存档 | | w:gz | 以gzip压缩的写入模式打开存档 | | w:xz | 以lzma压缩的写入模式打开存档 | | a | 以无压缩的追加模式打开存档 |</p>
+<p>.open() 默认为'r'模式。 要读取未压缩的TAR文件并检索其中的文件名，请使用 .getnames() ：</p>
+<pre><code class="language-python">&gt;&gt;&gt; import tarfile
+
+&gt;&gt;&gt; tar = tarfile.open('example.tar', mode='r')
+&gt;&gt;&gt; tar.getnames()
+['CONTRIBUTING.rst', 'README.md', 'app.py']
+
+</code></pre>
+<p>这以列表的方式返回存档中内容的名字。</p>
+<p>注意：为了向你展示如何使用不同的tarfile对象方法，示例中的TAR文件在交互式REPL会话中手动打开和关闭。<br>
+通过这种方式与TAR文件交互，你可以查看运行每个命令的输出。 通常，你可能希望使用上下文管理器来打开类似文件的对象。<br>
+此外可以使用特殊属性访问存档中每个条目的元数据：</p>
+<pre><code class="language-python">&gt;&gt;&gt; for entry in tar.getmembers():
+...     print(entry.name)
+...     print(' Modified:', time.ctime(entry.mtime))
+...     print(' Size    :', entry.size, 'bytes')
+...     print()
+CONTRIBUTING.rst
+ Modified: Sat Nov  1 09:09:51 2018
+ Size    : 402 bytes
+
+README.md
+ Modified: Sat Nov  3 07:29:40 2018
+ Size    : 5426 bytes
+
+app.py
+ Modified: Sat Nov  3 07:29:13 2018
+ Size    : 6218 bytes
+</code></pre>
+<p>在此示例中，循环遍历 .getmembers() 返回的文件列表，并打印出每个文件的属性。.getmembers() 返回的对象具有可以通过编程方式访问的属性，例如归档中每个文件的名称，大小和上次修改时间。 在读取或写入存档后，必须关闭它以释放系统资源。</p>
+<h3 id="从tar存档中提取文件">从TAR存档中提取文件</h3>
+<p>在本节中，你将学习如何使用以下方法从TAR存档中提取文件：</p>
+<p>.extract()<br>
+.extractfile()<br>
+.extractall()</p>
+<p>要从TAR存档中提取单个文件，请使用 extract() ，传入文件名：</p>
+<pre><code class="language-python">&gt;&gt;&gt; tar.extract('README.md')
+&gt;&gt;&gt; os.listdir('.')
+['README.md', 'example.tar']
+</code></pre>
+<p>README.md 文件从存档中提取到文件系统。 调用 os.listdir() 确认 README.md 文件已成功提取到当前目录中。 要从存档中解压缩或提取所有内容，请使用 .extractall() ：</p>
+<pre><code>&gt;&gt;&gt; tar.extractall(path=&quot;extracted/&quot;)
+</code></pre>
+<p>.extractall() 有一个可选的 path 参数来指定解压缩文件的去向。 这里，存档被提取到 extracted 目录中。 以下命令显示已成功提取存档：</p>
+<pre><code>$ ls
+example.tar  extracted  README.md
+
+$ tree
+.
+├── example.tar
+├── extracted
+|   ├── app.py
+|   ├── CONTRIBUTING.rst
+|   └── README.md
+└── README.md
+
+1 directory, 5 files
+
+$ ls extracted/
+app.py  CONTRIBUTING.rst  README.md
+</code></pre>
+<p>要提取文件对象以进行读取或写入，请使用 .extractfile() ，它接收 文件名或 TarInfo 对象作为参数。 .extractfile() 返回一个可以读取和使用的类文件对象：</p>
+<pre><code class="language-python">&gt;&gt;&gt; f = tar.extractfile('app.py')
+&gt;&gt;&gt; f.read()
+&gt;&gt;&gt; tar.close()
+</code></pre>
+<p>打开的存档应在读取或写入后始终关闭。 要关闭存档，请在存档文件句柄上调用 .close() ，或在创建 tarfile对象时使用with语句，以便在完成后自动关闭存档。 这将释放系统资源，并将你对存档所做的任何更改写入文件系统。</p>
+<h3 id="创建新的tar存档">创建新的TAR存档</h3>
+<p>创建新的TAR存档，你可以这样操作:</p>
+<pre><code class="language-python">&gt;&gt;&gt; import tarfile
+
+&gt;&gt;&gt; file_list = ['app.py', 'config.py', 'CONTRIBUTORS.md', 'tests.py']
+&gt;&gt;&gt; with tarfile.open('packages.tar', mode='w') as tar:
+...     for file in file_list:
+...         tar.add(file)
+
+&gt;&gt;&gt; # Read the contents of the newly created archive
+&gt;&gt;&gt; with tarfile.open('package.tar', mode='r') as t:
+...     for member in t.getmembers():
+...         print(member.name)
+app.py
+config.py
+CONTRIBUTORS.md
+tests.py
+
+</code></pre>
+<p>首先，你要创建要添加到存档的文件列表，这样你就不必手动添加每个文件。</p>
+<p>下一行使用with光线文管理器在写入模式下打开名为 packages.tar 的新存档。 以写入模式（'w'）打开存档使你可以将新文件写入存档。 将删除存档中的所有现有文件，并创建新存档。</p>
+<p>创建并填充存档后，with上下文管理器会自动关闭它并将其保存到文件系统。 最后三行打开刚刚创建的存档，并打印出其中包含的文件的名称。</p>
+<p>要将新文件添加到现有存档，请以追加模式（'a'）打开存档：</p>
+<pre><code class="language-python">&gt;&gt;&gt; with tarfile.open('package.tar', mode='a') as tar:
+...     tar.add('foo.bar')
+
+&gt;&gt;&gt; with tarfile.open('package.tar', mode='r') as tar:
+...     for member in tar.getmembers():
+...         print(member.name)
+app.py
+config.py
+CONTRIBUTORS.md
+tests.py
+foo.bar
+</code></pre>
+<p>在追加模式下打开存档允许你向其添加新文件而不删除其中已存在的文件。</p>
+<h3 id="使用压缩存档">使用压缩存档</h3>
+<p>tarfile 可以读取和写入使用 gzip，bzip2 和 lzma 压缩的TAR存档文件。 要读取或写入压缩存档，请使用tarfile.open() ，为压缩类型传递适当的模式。</p>
+<p>例如，要读取或写入使用 gzip 压缩的TAR存档的数据，请分别使用 'r:gz' 或 'w:gz' 模式：</p>
+<pre><code class="language-python">&gt;&gt;&gt; files = ['app.py', 'config.py', 'tests.py']
+&gt;&gt;&gt; with tarfile.open('packages.tar.gz', mode='w:gz') as tar:
+...     tar.add('app.py')
+...     tar.add('config.py')
+...     tar.add('tests.py')
+
+&gt;&gt;&gt; with tarfile.open('packages.tar.gz', mode='r:gz') as t:
+...     for member in t.getmembers():
+...         print(member.name)
+app.py
+config.py
+tests.py
+
+</code></pre>
+<p>'w:gz' 以写模式模式打开 gzip 压缩的存档，'r:gz' 以读模式打开 gzip 压缩的存档。 无法在追加模式下打开压缩存档。 要将文件添加到压缩存档，你必须创建新存档。</p>
+<h3 id="一个更简单的方式创建存档">一个更简单的方式创建存档</h3>
+<p>Python标准库还支持使用 shutil 模块中的高级方法创建TAR和ZIP存档。 shutil 中的归档实用工具允许你创建，读取和提取ZIP和TAR归档。 这些实用工具依赖于较底层的 tarfile 和 zipfile 模块。</p>
+<h4 id="使用-shutilmake_archive-创建存档">使用 shutil.make_archive() 创建存档</h4>
+<p>shutil.make_archive() 至少接收两个参数：归档的名称和归档格式。</p>
+<p>默认情况下，它将当前目录中的所有文件压缩为 format 参数中指定的归档格式。 你可以传入可选的 root_dir 参数来压缩不同目录中的文件。 .make_archive() 支持 zip ，tar ，bztar 和 gztar 存档格式。</p>
+<p>以下是使用 shutil 创建TAR存档的方法：</p>
+<pre><code class="language-python">import shutil
+
+# shutil.make_archive(base_name, format, root_dir)
+shutil.make_archive('data/backup', 'tar', 'data/')
+
+</code></pre>
+<p>这将复制 data / 中的所有内容，并在文件系统中创建名为 backup.tar 的存档并返回其名称。 要提取存档，请调用 .unpack_archive() ：</p>
+<pre><code class="language-python">shutil.unpack_archive('backup.tar', 'extract_dir/')
+
+</code></pre>
+<p>调用 .unpack_archive() 并传入存档名称和目标目录，将 backup.tar 的内容提取到 extract_dir/ 中。 ZIP存档可以以相同的方式创建和提取。</p>
+<h3 id="读取多个文件">读取多个文件</h3>
+<p>Python支持通过 fileinput 模块从多个输入流或文件列表中读取数据。 此模块允许你快速轻松地循环遍历一个或多个文本文件的内容。 以下是使用 fileinput 的典型方法：</p>
+<pre><code class="language-python">import fileinput
+for line in fileinput.input()
+    process(line)
+</code></pre>
+<p>fileinput 默认从传递给 sys.argv 的命令行参数获取其输入。</p>
+<h3 id="使用-fileinput-循环遍历多个文件">使用 fileinput 循环遍历多个文件</h3>
+<p>让我们使用 fileinput 构建一个普通的UNIX工具 cat 的原始版本。 cat 工具按顺序读取文件，将它们写入标准输出。 当在命令行参数中给出多个文件时，cat 将连接文本文件并在终端中显示结果：</p>
+<pre><code class="language-python"># File: fileinput-example.py
+import fileinput
+import sys
+
+files = fileinput.input()
+for line in files:
+    if fileinput.isfirstline():
+        print(f'\n--- Reading {fileinput.filename()} ---')
+    print(' -&gt; ' + line, end='')
+print()
+</code></pre>
+<p>在当前目录中有两个文本文件，运行此命令会产生以下输出：</p>
+<pre><code>$ python3 fileinput-example.py bacon.txt cupcake.txt
+--- Reading bacon.txt ---
+ -&gt; Spicy jalapeno bacon ipsum dolor amet in in aute est qui enim aliquip,
+ -&gt; irure cillum drumstick elit.
+ -&gt; Doner jowl shank ea exercitation landjaeger incididunt ut porchetta.
+ -&gt; Tenderloin bacon aliquip cupidatat chicken chuck quis anim et swine.
+ -&gt; Tri-tip doner kevin cillum ham veniam cow hamburger.
+ -&gt; Turkey pork loin cupidatat filet mignon capicola brisket cupim ad in.
+ -&gt; Ball tip dolor do magna laboris nisi pancetta nostrud doner.
+
+--- Reading cupcake.txt ---
+ -&gt; Cupcake ipsum dolor sit amet candy I love cheesecake fruitcake.
+ -&gt; Topping muffin cotton candy.
+ -&gt; Gummies macaroon jujubes jelly beans marzipan.
+
+</code></pre>
+<p>fileinput 允许你检索有关每一行的更多信息，例如它是否是第一行(.isfirstline())，行号(.lineno())和文件名(.filename())。 你可以在 这里 读更多关于它的内容。</p>
+<h3 id="总结">总结</h3>
+<p>你现在知道如何使用Python对文件和文件组执行最常见的操作。 你已经了解使用不同的内置模块来读取，查找和操作文件。</p>
+<p>你现在可以用Python来实现:</p>
+<p>获取目录内容和文件属性<br>
+创建目录和目录树<br>
+使用匹配模式匹配文件名<br>
+创建临时文件和目录<br>
+移动，重命名，复制和删除文件或目录<br>
+从不同类型的存档文件中读取和提取数据<br>
+使用 fileinput 同时读取多个文件</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[ssh连接手机的方式]]></title>
         <id>https://dargonlee.github.io/post/ssh-lian-jie-shou-ji-de-fang-shi/</id>
@@ -970,59 +1548,6 @@ let pkg = {
 console.table(pkg);
 </code></pre>
 <figure data-type="image" tabindex="1"><img src="https://dargonlee.github.io/post-images/1584327572021.webp" alt="" loading="lazy"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[开启一个 WebServer]]></title>
-        <id>https://dargonlee.github.io/post/kai-qi-yi-ge-webserver/</id>
-        <link href="https://dargonlee.github.io/post/kai-qi-yi-ge-webserver/">
-        </link>
-        <updated>2020-03-09T08:17:37.000Z</updated>
-        <summary type="html"><![CDATA[<blockquote>
-<p>在 Mac 上开启一个 WebServer，把写好的页面部署到 WebServer 上并可以通过 「ip+端口」 的形式访问。</p>
-</blockquote>
-<h3 id="mac-自带的-webserver">mac 自带的 WebServer</h3>
-<p>mac 自带了一个 WebServer Apache，可以使用命令来开启关闭 WebServer：</p>
-<pre><code class="language-shell">sudo apachectl start //开启
-sudo apachectl restart //重启 
-sudo apachectl stop //关闭 
-</code></pre>
-]]></summary>
-        <content type="html"><![CDATA[<blockquote>
-<p>在 Mac 上开启一个 WebServer，把写好的页面部署到 WebServer 上并可以通过 「ip+端口」 的形式访问。</p>
-</blockquote>
-<h3 id="mac-自带的-webserver">mac 自带的 WebServer</h3>
-<p>mac 自带了一个 WebServer Apache，可以使用命令来开启关闭 WebServer：</p>
-<pre><code class="language-shell">sudo apachectl start //开启
-sudo apachectl restart //重启 
-sudo apachectl stop //关闭 
-</code></pre>
-<!-- more -->
-<p>打开终端窗口，输入 <code>sudo apachectl start</code>，便可以开启 webServer，在浏览器中输入 127.0.0.1 。会打开一个默认的网页：<strong>It works</strong>。</p>
-<p>把写好的html内容放到 <code>/Library/WebServer/Documents</code> 这个目录下。<strong>最好html文件以index.html来命名的</strong><br>
-然后就可以通过 127.0.0.1 这个 ip 地址来访问具体的页面<br>
-在浏览器中输入：<a href="http://127.0.0.1/index.html">http://127.0.0.1/index.html</a> 便可以访问写的html网页。这里的index.html是写好的文件，当然你也可以以其他名字命名，但是在网页访问的时候要写那重新命名的那个名字，<br>
-比如：<a href="http://127.0.0.1/test.html">http://127.0.0.1/test.html</a></p>
-<h3 id="fis3">FIS3</h3>
-<p>安装前需要先安装Node 可以到 Node 官网下载安装 https://nodejs.org/zh-cn/。<br>
-安装Node完成后，在终端输入下面命令看是否安装正常</p>
-<pre><code class="language-shell">node -v // node的版本
-v10.7.0
-
-npm -v // npm 的版本
-6.13.7
-</code></pre>
-<p>安装<br>
-<code>npm install -g fis3</code> 如果报错权限问题 试下加<code>sudo</code><br>
-如果安装过程中出现问题，可以参考 http://fis.baidu.com/fis3/docs/beginning/install.html 。</p>
-<p>安装成功后我们通过 Fis3 来开启一个 WebServer，达到与 mac 的 WebServer  同样的效果。</p>
-<ol start="0">
-<li>首先<code>cd</code> 到你要部署的文件夹下</li>
-<li>然后通过<code>fis3 server start</code> 开启 WebServer</li>
-<li>通过 fis3 release 把相关代码部署到 WebServer【通过 <code>fis3 server open</code> 可以打开 WebServer 所在目录】</li>
-<li>根据提示在浏览器输入<code>http://127.0.0.1:8080/</code></li>
-</ol>
-<p>** 大功告成！！！**</p>
 ]]></content>
     </entry>
 </feed>
