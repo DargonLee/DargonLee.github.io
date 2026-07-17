@@ -93,9 +93,9 @@ description: Harlans (DargonLee) 个人主页 — iOS、AI 与工程实践。
         <span class="card-link">进入知识库 →</span>
       </a>
       <a class="card" href="{{ '/reading/' | relative_url }}">
-        <h3>阅读</h3>
-        <p>读过的书、文章与课程，记录收获与摘录。</p>
-        <span class="card-link">查看阅读 →</span>
+        <h3>书架</h3>
+        <p>正在读、已读、未读分层陈列，附笔记与摘录入口。</p>
+        <span class="card-link">走进书架 →</span>
       </a>
       <a class="card" href="{{ '/blog/' | relative_url }}">
         <h3>博客</h3>

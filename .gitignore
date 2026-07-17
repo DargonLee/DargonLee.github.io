@@ -21,3 +21,11 @@ vendor/ruby/
 # Local env
 .env
 .env.*
+
+# Local ebook files (covers live in assets/images/books/)
+books/*
+!books/README.md
+*.epub
+*.mobi
+*.azw
+*.azw3

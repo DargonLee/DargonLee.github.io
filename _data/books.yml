@@ -1,0 +1,37 @@
+# 书架书目
+# status: reading（正在读）| read（已读）| unread（未读 / 想读）
+# cover: 封面路径，放在 assets/images/books/
+# note: 可选，对应 _reading/ 笔记的相对路径（无则只展示书卡）
+# file: 可选，本地 books/ 目录下的电子书文件名（不进入公开页面）
+
+- id: zhishenshinei
+  title: 置身事内
+  subtitle: 中国政府与经济发展
+  author: 兰小欢
+  status: reading
+  cover: /assets/images/books/zhishenshinei.jpg
+  year: 2021
+  tags: [经济, 公共管理]
+  blurb: 从地方政府行为解释中国经济发展，读懂「怎么做」背后的激励结构。
+  file: 置身事内-兰小欢.epub
+
+- id: jieyou-zahuodian
+  title: 解忧杂货店
+  author: 东野圭吾
+  status: unread
+  cover: /assets/images/books/jieyou-zahuodian.jpg
+  year: 2012
+  tags: [小说, 推理]
+  blurb: 一家能回复烦恼信的杂货店，温柔又锋利的故事。
+  file: 解忧杂货店-东野圭吾.epub
+
+- id: ddia
+  title: Designing Data-Intensive Applications
+  author: Martin Kleppmann
+  status: read
+  cover: null
+  accent: "linear-gradient(145deg, #1e3a5f 0%, #0f172a 55%, #312e81 100%)"
+  year: 2017
+  tags: [Systems, Backend]
+  blurb: 经典分布式与数据系统书，工程视角的词汇与权衡体系。
+  note: /reading/designing-data-intensive-apps/

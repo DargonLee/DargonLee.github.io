@@ -45,10 +45,13 @@ _data/
   nav.yml                # 导航
   projects.yml           # 项目数据
   skills.yml             # 技能数据
+  books.yml              # 书架书目（已读 / 未读 / 正在读）
 
 _posts/                  # 博客文章  YYYY-MM-DD-title.md
 _knowledge/              # 知识库文档（collection）
 _reading/                # 阅读笔记（collection）
+books/                   # 本地电子书（gitignore，不部署）
+assets/images/books/     # 图书封面图
 
 _layouts/                # 页面布局
 _includes/               # 导航 / 页脚等片段
@@ -69,8 +72,12 @@ assets/                  # CSS / JS
    tags: [Debug]
    ---
    ```
-4. **阅读笔记**：在 `_reading/` 新建 Markdown（字段同上）。
-5. **博客**：在 `_posts/` 使用 `YYYY-MM-DD-slug.md`。
+4. **书架新书**：
+   - 电子书放 `books/`（已被 gitignore，不提交）
+   - 封面放 `assets/images/books/`
+   - 在 `_data/books.yml` 追加条目，`status` 为 `reading` | `read` | `unread`
+5. **阅读笔记**：在 `_reading/` 新建 Markdown；有笔记时在 `books.yml` 填 `note` 路径。
+6. **博客**：在 `_posts/` 使用 `YYYY-MM-DD-slug.md`。
 
 ---
 

@@ -1,0 +1,60 @@
+{% comment %}
+  Expects: book (from site.data.books)
+{% endcomment %}
+{% assign status_label = book.status %}
+{% if book.status == 'reading' %}
+  {% assign status_label = '正在读' %}
+{% elsif book.status == 'read' %}
+  {% assign status_label = '已读' %}
+{% else %}
+  {% assign status_label = '未读' %}
+{% endif %}
+
+{% if book.note %}
+<a class="book-card" href="{{ book.note | relative_url }}" aria-label="{{ book.title }} — 阅读笔记">
+{% else %}
+<article class="book-card book-card--static" aria-label="{{ book.title }}">
+{% endif %}
+
+  <div class="book-cover-wrap">
+    <div class="book-spine" aria-hidden="true"></div>
+    {% if book.cover %}
+    <div class="book-cover">
+      <img
+        src="{{ book.cover | relative_url }}"
+        alt="《{{ book.title }}》封面"
+        loading="lazy"
+        decoding="async"
+      >
+    </div>
+    {% else %}
+    <div class="book-cover book-cover--placeholder" style="background: {{ book.accent | default: 'linear-gradient(145deg, #27272a, #18181b)' }};">
+      <span class="book-cover-title">{{ book.title }}</span>
+      <span class="book-cover-author">{{ book.author }}</span>
+    </div>
+    {% endif %}
+    <span class="book-status-badge book-status-badge--{{ book.status }}">{{ status_label }}</span>
+  </div>
+
+  <div class="book-meta">
+    <h3 class="book-title">{{ book.title }}</h3>
+    {% if book.subtitle %}<p class="book-subtitle">{{ book.subtitle }}</p>{% endif %}
+    <p class="book-author">{{ book.author }}{% if book.year %} · {{ book.year }}{% endif %}</p>
+    {% if book.blurb %}<p class="book-blurb">{{ book.blurb }}</p>{% endif %}
+    {% if book.tags %}
+    <div class="tags">
+      {% for tag in book.tags %}
+      <span class="tag">{{ tag }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% if book.note %}
+    <span class="card-link">阅读笔记 →</span>
+    {% endif %}
+  </div>
+
+{% if book.note %}
+</a>
+{% else %}
+</article>
+{% endif %}

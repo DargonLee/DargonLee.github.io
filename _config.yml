@@ -67,6 +67,7 @@ exclude:
   - vendor
   - README.md
   - AGENTS.md
+  - books
   - .github
   - .bundle
   - .sass-cache
