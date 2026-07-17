@@ -1,0 +1,35 @@
+- name: DeepSeek iOS
+  blurb: 移动端 AI 助手：对话、提示词与本地效率交互，一眼可见的聊天式主界面。
+  url: https://github.com/DargonLee/DeepSeek
+  image: /assets/images/projects/deepseek.jpg
+  image_fit: contain
+  image_bg: "#f7f8fa"
+  emoji: "🤖"
+  accent: linear-gradient(135deg, #3b82f6, #8b5cf6)
+  tags:
+    - iOS
+    - AI
+
+- name: EasyPasta
+  blurb: 跨平台剪贴板历史管理：一键搜索、固定常用片段，macOS 桌面效率工具。
+  url: https://github.com/DargonLee/easy_pasta
+  image: /assets/images/projects/easypasta.jpg
+  image_fit: cover
+  image_bg: "#0c0c0e"
+  emoji: "📋"
+  accent: linear-gradient(135deg, #f59e0b, #ef4444)
+  tags:
+    - Flutter
+    - Productivity
+
+- name: LookinRootless
+  blurb: 面向 Dopamine Rootless 越狱的 Lookin 注入方案，真机 UI 层级可视化调试。
+  url: https://github.com/DargonLee/LookinRootless
+  image: /assets/images/projects/lookin.jpg
+  image_fit: cover
+  image_bg: "#111113"
+  emoji: "🔧"
+  accent: linear-gradient(135deg, #6366f1, #a78bfa)
+  tags:
+    - Jailbreak
+    - Debug

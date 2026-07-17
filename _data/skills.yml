@@ -1,0 +1,23 @@
+- name: iOS / Swift
+  summary: Objective-C、SwiftUI、UIKit、Xcode 调试与越狱 Tweak 开发
+  tags:
+    - Swift
+    - UIKit
+    - SwiftUI
+    - Tweak
+
+- name: AI & Tools
+  summary: AI 助手集成、Frida 脚本、自动化打包、跨平台工程
+  tags:
+    - LLM
+    - Frida
+    - Flutter
+    - React Native
+
+- name: Engineering
+  summary: Python / Shell 脚本、Jekyll & GitHub Pages、Jenkins CI
+  tags:
+    - Python
+    - Shell
+    - Jekyll
+    - Jenkins

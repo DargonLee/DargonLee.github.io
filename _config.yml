@@ -1,8 +1,78 @@
-title: DargonLee | iOS & AI Developer
+title: DargonLee
+tagline: iOS · AI · Builder
+description: >-
+  Harlans (DargonLee) 的个人站点：简历、项目、阅读与问题知识库。
+  全面展示技术成长与实践沉淀。
+url: "https://dargonlee.github.io"
+baseurl: ""
+
+author:
+  name: Harlans (DargonLee)
+  github: DargonLee
+  avatar: https://avatars.githubusercontent.com/u/13093607?v=4
+
+# Cayman remote theme — site plumbing; visual design is fully customized.
 remote_theme: pages-themes/cayman@v0.2.0
+show_downloads: false
+github:
+  is_project_page: false
+
 plugins:
   - jekyll-remote-theme
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
 
-description: Passionate iOS Developer & AI Enthusiast
-show_downloads: false
-github_username: DargonLee
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+timezone: Asia/Shanghai
+lang: zh-CN
+
+# Future-ready content areas (resume / reading / knowledge base).
+collections:
+  knowledge:
+    output: true
+    permalink: /knowledge/:name/
+  reading:
+    output: true
+    permalink: /reading/:name/
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      permalink: /blog/:year/:month/:day/:title/
+  - scope:
+      path: ""
+      type: knowledge
+    values:
+      layout: doc
+  - scope:
+      path: ""
+      type: reading
+    values:
+      layout: doc
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - README.md
+  - AGENTS.md
+  - .github
+  - .bundle
+  - .sass-cache
+  - .jekyll-cache
+  - .gitignore
+
+sass:
+  style: compressed
+

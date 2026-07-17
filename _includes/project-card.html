@@ -1,0 +1,33 @@
+<article class="card project-card">
+  <a class="project-media" href="{{ project.url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ project.name }}">
+    {% if project.image %}
+    <div
+      class="project-cover project-cover--image project-cover--{{ project.image_fit | default: 'cover' }}"
+      style="background-color: {{ project.image_bg | default: '#111113' }};"
+    >
+      <img
+        src="{{ project.image | relative_url }}"
+        alt="{{ project.name }} 界面预览"
+        loading="lazy"
+        decoding="async"
+      >
+    </div>
+    {% else %}
+    <div class="project-cover" style="background: {{ project.accent }};" aria-hidden="true">
+      {{ project.emoji }}
+    </div>
+    {% endif %}
+  </a>
+  <div class="project-body">
+    <h3>{{ project.name }}</h3>
+    <p>{{ project.blurb }}</p>
+    {% if project.tags %}
+    <div class="tags">
+      {% for tag in project.tags %}
+      <span class="tag">{{ tag }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <a class="card-link" href="{{ project.url }}" target="_blank" rel="noopener noreferrer">查看详情 →</a>
+  </div>
+</article>

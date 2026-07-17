@@ -1,0 +1,10 @@
+- title: 首页
+  url: /
+- title: 项目
+  url: /projects/
+- title: 知识库
+  url: /knowledge/
+- title: 阅读
+  url: /reading/
+- title: 博客
+  url: /blog/

@@ -1,0 +1,38 @@
+<header class="site-nav" id="site-nav">
+  <div class="container">
+    <a class="brand" href="{{ '/' | relative_url }}">
+      <span class="brand-mark">D</span>
+      <span>{{ site.title }}</span>
+    </a>
+
+    <nav aria-label="主导航">
+      <ul class="nav-links">
+        {% for item in site.data.nav %}
+          {% assign item_path = item.url | relative_url %}
+          {% assign current = page.url %}
+          {% assign is_active = false %}
+          {% if item.url == '/' %}
+            {% if current == '/' %}{% assign is_active = true %}{% endif %}
+          {% else %}
+            {% if current == item.url or current contains item.url %}
+              {% assign is_active = true %}
+            {% endif %}
+          {% endif %}
+          <li>
+            <a href="{{ item_path }}" {% if is_active %}class="is-active"{% endif %}>
+              {{ item.title }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <a class="nav-cta" href="https://github.com/{{ site.author.github }}" target="_blank" rel="noopener noreferrer">
+      GitHub
+    </a>
+
+    <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="site-nav">
+      ☰
+    </button>
+  </div>
+</header>
