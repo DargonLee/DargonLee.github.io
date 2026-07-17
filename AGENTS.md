@@ -50,7 +50,7 @@ _data/
 _posts/                  # 博客文章  YYYY-MM-DD-title.md
 _knowledge/              # 知识库文档（collection）
 _reading/                # 阅读笔记（collection）
-books/                   # 本地电子书（gitignore，不部署）
+books/                   # 电子书源文件（入库；Jekyll exclude 不部署下载）
 assets/images/books/     # 图书封面图
 
 _layouts/                # 页面布局
@@ -73,7 +73,7 @@ assets/                  # CSS / JS
    ---
    ```
 4. **书架新书**：
-   - 电子书放 `books/`（已被 gitignore，不提交）
+   - 电子书放 `books/`（可提交；站点不提供下载）
    - 封面放 `assets/images/books/`
    - 在 `_data/books.yml` 追加条目，`status` 为 `reading` | `read` | `unread`
 5. **阅读笔记**：在 `_reading/` 新建 Markdown；有笔记时在 `books.yml` 填 `note` 路径。

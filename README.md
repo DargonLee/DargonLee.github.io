@@ -38,7 +38,7 @@ bundle exec jekyll build
 | 技能 | `_data/skills.yml` |
 | 知识库 | `_knowledge/*.md` |
 | 书架书目 | `_data/books.yml` + 封面 `assets/images/books/` |
-| 本地电子书 | `books/`（gitignore，不部署） |
+| 电子书 | `books/`（入库；Jekyll 不部署下载） |
 | 阅读笔记 | `_reading/*.md` |
 | 博客 | `_posts/YYYY-MM-DD-title.md` |
 
